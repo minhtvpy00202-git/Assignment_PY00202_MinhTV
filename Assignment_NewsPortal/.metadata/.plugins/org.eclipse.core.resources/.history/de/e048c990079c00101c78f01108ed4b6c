@@ -1,0 +1,8 @@
+<%@ include file="../layout/header.jsp" %>
+<main class="container">
+  <h1>Bảng điều khiển phóng viên</h1>
+  <p>Số bài đã viết: 10</p>
+  <p>Bài chờ duyệt: 2</p>
+  <p>Bài bị từ chối: 1</p>
+</main>
+<%@ include file="../layout/footer.jsp" %>

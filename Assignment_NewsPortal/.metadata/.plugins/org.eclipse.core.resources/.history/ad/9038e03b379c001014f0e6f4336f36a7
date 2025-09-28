@@ -1,0 +1,16 @@
+package com.newsportal.model;
+
+import java.util.Date;
+
+public class User {
+	public int Id;
+	public String Password;
+	public String Fullname;
+	public Date Birthday;
+	public boolean Gender;
+	public String Mobile;
+	public String Email;
+	public String Role;
+	
+	
+}

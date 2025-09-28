@@ -1,0 +1,5 @@
+package com.newsportal.controller;
+
+public class AdminDashboardServlet {
+
+}

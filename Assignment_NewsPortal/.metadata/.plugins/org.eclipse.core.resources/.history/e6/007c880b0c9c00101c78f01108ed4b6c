@@ -1,0 +1,18 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Sửa bài #101</h1>
+    <form class="form" action="${pageContext.request.contextPath}/reporter/post/edit" method="post">
+      <input type="hidden" name="id" value="101">
+      <label>Tiêu đề</label><input name="title" value="Bài mẫu">
+      <label>Chuyên mục</label>
+      <select name="category"><option selected>Tin tức</option><option>Thể thao</option></select>
+      <label>Tóm tắt</label><textarea name="summary">Lorem…</textarea>
+      <label>Nội dung</label><textarea name="content" rows="10">Nội dung…</textarea>
+      <button>Lưu</button>
+    </form>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

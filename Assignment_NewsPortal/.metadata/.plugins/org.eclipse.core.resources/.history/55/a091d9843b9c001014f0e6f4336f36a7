@@ -1,0 +1,228 @@
+package com.newsportal.dao;
+
+import com.newsportal.model.News;
+import com.newsportal.util.DB;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewsDAO {
+
+    /* ------------ Public listing / search ------------- */
+
+    public List<News> latest(int top) throws Exception {
+        String sql = "SELECT TOP(?) * FROM News WHERE Approved=1 ORDER BY PostedDate DESC";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, top);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+
+    public List<News> byCategory(int categoryId, int page, int size) throws Exception {
+        String sql = """
+                SELECT * FROM News
+                WHERE Approved=1 AND CategoryId=?
+                ORDER BY PostedDate DESC
+                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY""";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, (page - 1) * size);
+            ps.setInt(3, size);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+
+    public int countByCategory(int categoryId) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT COUNT(*) FROM News WHERE Approved=1 AND CategoryId=?")) {
+            ps.setInt(1, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next(); return rs.getInt(1);
+            }
+        }
+    }
+
+    public List<News> search(String q, int page, int size) throws Exception {
+        String like = "%" + q + "%";
+        String sql = """
+                SELECT * FROM News
+                WHERE Approved=1 AND (Title LIKE ? OR Content LIKE ?)
+                ORDER BY PostedDate DESC
+                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY""";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ps.setInt(3, (page - 1) * size);
+            ps.setInt(4, size);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+
+    public int countSearch(String q) throws Exception {
+        String like = "%" + q + "%";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT COUNT(*) FROM News WHERE Approved=1 AND (Title LIKE ? OR Content LIKE ?)")) {
+            ps.setString(1, like);
+            ps.setString(2, like);
+            try (ResultSet rs = ps.executeQuery()) { rs.next(); return rs.getInt(1); }
+        }
+    }
+
+    public News find(int id) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM News WHERE Id=?")) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? map(rs) : null;
+            }
+        }
+    }
+
+    public void increaseView(int id) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE News SET ViewCount = ViewCount + 1 WHERE Id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    /* ------------- Reporter CRUD -------------- */
+
+    public List<News> byReporter(int userId) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM News WHERE ReporterId=? ORDER BY PostedDate DESC")) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+
+    public int insert(News n) throws Exception {
+        String sql = """
+                INSERT INTO News(Title,Content,Image,PostedDate,Author,ViewCount,CategoryId,Home,Approved,ReporterId)
+                VALUES(?,?,?,?,?,0,?,?,0,?)""";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, n.getTitle());
+            ps.setString(2, n.getContent());
+            ps.setString(3, n.getImage());
+            LocalDateTime now = n.getPostedDate() != null ? n.getPostedDate() : LocalDateTime.now();
+            ps.setTimestamp(4, Timestamp.valueOf(now));
+            ps.setString(5, n.getAuthor());
+            ps.setInt(6, n.getCategoryId());
+            ps.setBoolean(7, n.isHome());
+            if (n.getReporterId() == null) ps.setNull(8, Types.INTEGER);
+            else ps.setInt(8, n.getReporterId());
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                return keys.next() ? keys.getInt(1) : 0;
+            }
+        }
+    }
+
+    public void update(News n) throws Exception {
+        String sql = """
+                UPDATE News
+                SET Title=?, Content=?, Image=?, CategoryId=?, Home=?
+                WHERE Id=? AND (ReporterId=? OR ? IS NULL)""";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, n.getTitle());
+            ps.setString(2, n.getContent());
+            ps.setString(3, n.getImage());
+            ps.setInt(4, n.getCategoryId());
+            ps.setBoolean(5, n.isHome());
+            ps.setInt(6, n.getId());
+            if (n.getReporterId() == null) {
+                ps.setNull(7, Types.INTEGER);
+                ps.setNull(8, Types.INTEGER);
+            } else {
+                ps.setInt(7, n.getReporterId());
+                ps.setInt(8, n.getReporterId());
+            }
+            ps.executeUpdate();
+        }
+    }
+
+    public void delete(int id, Integer reporterId) throws Exception {
+        String sql = "DELETE FROM News WHERE Id=? AND (ReporterId=? OR ? IS NULL)";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            if (reporterId == null) {
+                ps.setNull(2, Types.INTEGER);
+                ps.setNull(3, Types.INTEGER);
+            } else {
+                ps.setInt(2, reporterId);
+                ps.setInt(3, reporterId);
+            }
+            ps.executeUpdate();
+        }
+    }
+
+    /* ------------- Admin approve -------------- */
+
+    public List<News> waiting() throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM News WHERE Approved=0 ORDER BY PostedDate DESC");
+             ResultSet rs = ps.executeQuery()) {
+            List<News> list = new ArrayList<>();
+            while (rs.next()) list.add(map(rs));
+            return list;
+        }
+    }
+
+    public void setApproved(int id, boolean ok) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE News SET Approved=? WHERE Id=?")) {
+            ps.setBoolean(1, ok);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        }
+    }
+
+    /* ------------- mapper -------------- */
+    private News map(ResultSet rs) throws Exception {
+        News n = new News();
+        n.setId(rs.getInt("Id"));
+        n.setTitle(rs.getString("Title"));
+        n.setContent(rs.getString("Content"));
+        n.setImage(rs.getString("Image"));
+        Timestamp ts = rs.getTimestamp("PostedDate");
+        n.setPostedDate(ts != null ? ts.toLocalDateTime() : null);
+        n.setAuthor(rs.getString("Author"));
+        n.setViewCount(rs.getInt("ViewCount"));
+        n.setCategoryId(rs.getInt("CategoryId"));
+        n.setHome(rs.getBoolean("Home"));
+        n.setApproved(rs.getBoolean("Approved"));
+        Object rid = rs.getObject("ReporterId");
+        n.setReporterId(rid == null ? null : rs.getInt("ReporterId"));
+        return n;
+    }
+}

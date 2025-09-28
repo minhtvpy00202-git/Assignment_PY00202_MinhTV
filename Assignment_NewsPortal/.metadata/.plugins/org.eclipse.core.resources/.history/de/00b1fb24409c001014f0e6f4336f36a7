@@ -1,0 +1,62 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%@ include file="layout/header.jsp" %>
+
+<main class="container">
+  <!-- Trang nhất -->
+  <section>
+    <h1>Trang nhất</h1>
+    <c:choose>
+      <c:when test="${not empty homeList}">
+        <ul>
+          <c:forEach var="n" items="${homeList}">
+            <li>
+              <a href="${pageContext.request.contextPath}/news/${n.id}">${n.title}</a>
+              <small> · ${n.viewCount} lượt xem</small>
+            </li>
+          </c:forEach>
+        </ul>
+      </c:when>
+      <c:otherwise><p>Chưa có bài được đặt Trang nhất.</p></c:otherwise>
+    </c:choose>
+  </section>
+
+  <!-- Top 5 hot -->
+  <section>
+    <h2>Top 5 hot</h2>
+    <ul>
+      <c:forEach var="n" items="${hotList}">
+        <li><a href="${pageContext.request.contextPath}/news/${n.id}">${n.title}</a></li>
+      </c:forEach>
+    </ul>
+  </section>
+
+  <!-- Top 5 mới -->
+  <section>
+    <h2>Top 5 mới</h2>
+    <ul>
+      <c:forEach var="n" items="${newList}">
+        <li><a href="${pageContext.request.contextPath}/news/${n.id}">${n.title}</a></li>
+      </c:forEach>
+    </ul>
+  </section>
+
+  <!-- Đã xem gần đây -->
+  <section>
+    <h2>Đã xem gần đây</h2>
+    <c:choose>
+      <c:when test="${not empty recentList}">
+        <ul>
+          <c:forEach var="n" items="${recentList}">
+            <li><a href="${pageContext.request.contextPath}/news/${n.id}">${n.title}</a></li>
+          </c:forEach>
+        </ul>
+      </c:when>
+      <c:otherwise><p>Chưa có lịch sử xem.</p></c:otherwise>
+    </c:choose>
+  </section>
+</main>
+
+<%@ include file="layout/footer.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">

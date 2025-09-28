@@ -1,0 +1,15 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Cấu hình hệ thống</h1>
+    <form class="form" action="${pageContext.request.contextPath}/admin/settings/save" method="post">
+      <label>Tên website</label><input name="siteName" value="NewsPortal">
+      <label>Email liên hệ</label><input type="email" name="contact" value="contact@np.com">
+      <button>Lưu cấu hình</button>
+    </form>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

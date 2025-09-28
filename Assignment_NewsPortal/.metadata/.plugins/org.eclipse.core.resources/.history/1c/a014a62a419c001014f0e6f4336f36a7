@@ -1,0 +1,108 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ include file="layout/header.jsp" %>
+
+
+<style>
+  .home-wrap{ width:min(1100px,92%); margin:18px auto 56px; }
+  .home-grid{ display:grid; grid-template-columns: 1fr 320px; gap:14px; }
+  .home-main{ background:#fff; border:1px solid #d9e0ea; min-height:340px; display:flex; align-items:center; justify-content:center; color:#6b7280; }
+  .panel{ border:1px solid #d9e0ea; background:#fff; margin-bottom:10px; }
+  .panel-h{ font-weight:700; padding:10px 12px; color:#1f2937; }
+  .panel-h.yellow{ background:#f9c23c; }
+  .panel-h.gray{ background:#c9cdd3; }
+  .panel-h.green{ background:#6ac17d; }
+  .panel-b{ padding:10px 12px; }
+  .panel-b ul{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+  .panel-b li a{ color:#111827; text-decoration:none; }
+  .panel-b li a:hover{ text-decoration:underline; }
+  .panel input[type="email"]{ width:100%; padding:10px 12px; border:1px solid #d9e0ea; }
+  .panel button{ margin-top:8px; width:100%; padding:10px 12px; background:#2563eb; color:#fff; border:0; cursor:pointer; }
+  
+</style>
+
+<div class="home-wrap">
+  
+  <div class="home-grid">
+
+    <!-- CỘT TRÁI: THAY ĐỔI THEO TRANG -->
+    <section class="home-main">
+      <!-- Nếu muốn hiển thị bài Trang Nhất, bạn thay nội dung bên dưới -->
+      <div>Thay đổi theo trang</div>
+    </section>
+
+    <!-- CỘT PHẢI: 3 KHỐI + NEWSLETTER -->
+    <aside>
+
+      <!-- 5 bản tin được xem nhiều -->
+      <div class="panel">
+        <div class="panel-h yellow">5 bản tin được xem nhiều</div>
+        <div class="panel-b">
+          <ul>
+            <c:forEach var="n" items="${hotList}" varStatus="st">
+              <li>
+                <a href="${pageContext.request.contextPath}/news/${n.id}">
+                  <c:out value="${st.index + 1}"/>. ${n.title}
+                </a>
+              </li>
+            </c:forEach>
+            <c:if test="${empty hotList}">
+              <li>Chưa có dữ liệu.</li>
+            </c:if>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5 bản tin mới nhất -->
+      <div class="panel">
+        <div class="panel-h gray">5 bản tin mới nhất</div>
+        <div class="panel-b">
+          <ul>
+            <c:forEach var="n" items="${newList}" varStatus="st">
+              <li>
+                <a href="${pageContext.request.contextPath}/news/${n.id}">
+                  <c:out value="${st.index + 1}"/>. ${n.title}
+                </a>
+              </li>
+            </c:forEach>
+            <c:if test="${empty newList}">
+              <li>Chưa có dữ liệu.</li>
+            </c:if>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5 bản tin bạn đã xem -->
+      <div class="panel">
+        <div class="panel-h green">5 bản tin bạn đã xem</div>
+        <div class="panel-b">
+          <ul>
+            <c:forEach var="n" items="${recentList}" varStatus="st">
+              <li>
+                <a href="${pageContext.request.contextPath}/news/${n.id}">
+                  <c:out value="${st.index + 1}"/>. ${n.title}
+                </a>
+              </li>
+            </c:forEach>
+            <c:if test="${empty recentList}">
+              <li>Chưa có lịch sử xem.</li>
+            </c:if>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="panel">
+        <div class="panel-b">
+          <form method="post" action="${pageContext.request.contextPath}/newsletter/subscribe">
+            <input type="email" name="email" placeholder="Nhập Email đăng ký" required>
+            <button type="submit">Đăng ký</button>
+          </form>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<%@ include file="layout/footer.jsp" %>

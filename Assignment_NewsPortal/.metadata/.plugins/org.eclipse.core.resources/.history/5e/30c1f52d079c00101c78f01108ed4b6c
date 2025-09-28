@@ -1,0 +1,20 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<main class="container">
+	<article class="post">
+		<h1>Tiêu đề bài viết mẫu</h1>
+		<p class="meta">Tác giả: Nguyễn A · 28/09/2025</p>
+		<p>Đây là nội dung chi tiết giả lập… Lorem ipsum dolor sit amet,
+			consectetur adipiscing elit.</p>
+		<p>…</p>
+	</article>
+	<section class="related">
+		<h3>Bài liên quan</h3>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/news/31">Bài
+					31</a></li>
+			<li><a href="${pageContext.request.contextPath}/news/32">Bài
+					32</a></li>
+		</ul>
+	</section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp"%>

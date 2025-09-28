@@ -1,0 +1,22 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Duyệt bài viết</h1>
+    <form class="form inline">
+      <select name="category"><option>Tất cả CM</option><option>Tin tức</option></select>
+      <select name="status"><option>Pending</option><option>Approved</option><option>Rejected</option></select>
+      <button>Lọc</button>
+    </form>
+    <table class="table">
+      <tr><th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Ngày gửi</th><th>Thao tác</th></tr>
+      <tr>
+        <td>501</td><td>Bài cần duyệt</td><td>Reporter A</td><td>28/09/2025</td>
+        <td><button>Duyệt</button> <button>Từ chối</button></td>
+      </tr>
+    </table>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

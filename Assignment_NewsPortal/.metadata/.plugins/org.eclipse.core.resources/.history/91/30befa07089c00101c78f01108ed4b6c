@@ -1,0 +1,17 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Quản lý chuyên mục</h1>
+    <form class="form inline" action="${pageContext.request.contextPath}/admin/categories/save" method="post">
+      <input name="id" placeholder="ID (nếu sửa)">
+      <input name="name" placeholder="Tên chuyên mục">
+      <button>Lưu</button>
+    </form>
+    <table class="table">
+      <tr><th>ID</th><th>Tên</th><th>Thao tác</th></tr>
+      <tr><td>1</td><td>Tin tức</td><td><a href="#">Sửa</a> | <a href="#">Xóa</a></td></tr>
+    </table>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

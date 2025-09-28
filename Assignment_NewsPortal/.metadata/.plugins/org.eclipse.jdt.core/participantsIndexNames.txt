@@ -1,0 +1,11 @@
+INDEX VERSION 1.134
+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4237620673.index
+\NewsPortal_PY00202\src\main\java
+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\904045222.index
+\NewsPortal_PY00202\src\main\java
+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1346272575.index
+\NewsPortal_PY00202\src\main\java
+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2013394523.index
+\NewsPortal_PY00202\src\main\java
+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\8068927.index
+\NewsPortal_PY00202\src\main\java

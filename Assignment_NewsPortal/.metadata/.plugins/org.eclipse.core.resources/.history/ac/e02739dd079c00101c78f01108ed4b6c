@@ -1,0 +1,12 @@
+<%@ include file="../layout/header.jsp" %>
+<main class="container">
+  <h1>Quản lý người dùng</h1>
+  <table border="1" width="100%">
+    <tr><th>ID</th><th>Tên đăng nhập</th><th>Email</th><th>Vai trò</th><th>Thao tác</th></tr>
+    <tr><td>1</td><td>user1</td><td>u1@gmail.com</td><td>Độc giả</td>
+        <td><button>Sửa</button><button>Xóa</button></td></tr>
+    <tr><td>2</td><td>reporterA</td><td>rA@gmail.com</td><td>Phóng viên</td>
+        <td><button>Sửa</button><button>Xóa</button></td></tr>
+  </table>
+</main>
+<%@ include file="../layout/footer.jsp" %>

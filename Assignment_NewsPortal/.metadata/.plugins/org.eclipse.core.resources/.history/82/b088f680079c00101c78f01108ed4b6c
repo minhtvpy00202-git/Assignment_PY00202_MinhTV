@@ -1,0 +1,13 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<main class="container narrow">
+	<h1>Đăng nhập</h1>
+	<form class="form" action="${pageContext.request.contextPath}/login"
+		method="post">
+		<label>Username</label><input name="username" required> <label>Password</label><input
+			type="password" name="password" required> <label
+			class="inline"><input type="checkbox" name="remember">
+			Ghi nhớ</label>
+		<button type="submit">Đăng nhập</button>
+	</form>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp"%>

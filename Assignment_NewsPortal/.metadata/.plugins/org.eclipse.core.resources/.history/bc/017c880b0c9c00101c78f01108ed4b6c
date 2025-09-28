@@ -1,0 +1,13 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Xem trước: Bài mẫu</h1>
+    <article class="post">
+      <p class="meta">Tác giả: Reporter A · Trạng thái: Draft</p>
+      <p>Nội dung hiển thị thử…</p>
+    </article>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

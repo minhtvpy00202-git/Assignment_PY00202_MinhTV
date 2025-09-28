@@ -1,0 +1,25 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<main class="container">
+	<h1>Kết quả tìm kiếm</h1>
+	<form class="form" action="${pageContext.request.contextPath}/search"
+		method="get">
+		<input name="q" placeholder="Từ khóa…">
+		<button>Tìm</button>
+	</form>
+	<hr>
+	<article>
+		<h2>
+			<a href="${pageContext.request.contextPath}/news/21">Bài liên
+				quan 1</a>
+		</h2>
+		<p>Mô tả…</p>
+	</article>
+	<article>
+		<h2>
+			<a href="${pageContext.request.contextPath}/news/22">Bài liên
+				quan 2</a>
+		</h2>
+		<p>Mô tả…</p>
+	</article>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp"%>

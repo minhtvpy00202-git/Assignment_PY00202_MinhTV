@@ -1,0 +1,5 @@
+package com.newsportal.dao;
+
+public class CategoryDAO {
+
+}

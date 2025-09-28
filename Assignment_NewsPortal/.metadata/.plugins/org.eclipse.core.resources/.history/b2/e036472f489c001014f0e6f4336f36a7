@@ -1,0 +1,55 @@
+package com.newsportal.controller;
+
+import com.newsportal.dao.CategoryDAO;
+import com.newsportal.dao.NewsDAO;
+import com.newsportal.model.Category;
+import com.newsportal.model.News;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+@WebServlet("/category")
+public class CategoryServlet extends HttpServlet {
+    private final CategoryDAO categoryDAO = new CategoryDAO();
+    private final NewsDAO newsDAO = new NewsDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String idStr = req.getParameter("id");
+        if (idStr == null) {
+            // Không có id -> về trang chủ hoặc chọn category đầu tiên
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(idStr);
+
+            Category current = categoryDAO.findById(id);
+            if (current == null) {
+                resp.sendError(404, "Category not found");
+                return;
+            }
+
+            // danh sách bài theo chuyên mục
+            List<News> news = newsDAO.findByCategory(id);
+
+            // danh mục để render menu/side
+            List<Category> categories = categoryDAO.findAll();
+
+            req.setAttribute("pageTitle", current.getName());
+            req.setAttribute("currentCategory", current);
+            req.setAttribute("news", news != null ? news : Collections.emptyList());
+            req.setAttribute("categories", categories);
+
+            req.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+}

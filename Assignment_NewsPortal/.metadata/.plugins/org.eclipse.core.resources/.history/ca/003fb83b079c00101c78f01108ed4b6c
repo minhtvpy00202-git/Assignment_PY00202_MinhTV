@@ -1,0 +1,18 @@
+<%@ include file="layout/header.jsp" %>
+<main class="container">
+  <h1>Đăng ký</h1>
+  <form action="register" method="post">
+    <label>Họ tên</label>
+    <input type="text" name="fullname" required><br>
+    <label>Email</label>
+    <input type="email" name="email" required><br>
+    <label>Tên đăng nhập</label>
+    <input type="text" name="username" required><br>
+    <label>Mật khẩu</label>
+    <input type="password" name="password" required><br>
+    <label>Nhập lại mật khẩu</label>
+    <input type="password" name="confirmPassword" required><br>
+    <button type="submit">Đăng ký</button>
+  </form>
+</main>
+<%@ include file="layout/footer.jsp" %>

@@ -1,0 +1,22 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<aside class="sidebar">
+	<h3>Chuyên mục</h3>
+	<ul class="list">
+		<li><a
+			href="${pageContext.request.contextPath}/category?c=tintuc">Tin
+				tức</a></li>
+		<li><a
+			href="${pageContext.request.contextPath}/category?c=thethao">Thể
+				thao</a></li>
+		<li><a
+			href="${pageContext.request.contextPath}/category?c=giaitri">Giải
+				trí</a></li>
+	</ul>
+	<h3>Bài nổi bật</h3>
+	<ul class="list">
+		<li><a href="${pageContext.request.contextPath}/news/1">Bài
+				viết mẫu #1</a></li>
+		<li><a href="${pageContext.request.contextPath}/news/2">Bài
+				viết mẫu #2</a></li>
+	</ul>
+</aside>

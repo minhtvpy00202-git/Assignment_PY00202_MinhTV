@@ -1,0 +1,10 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<aside>
+  <h3>Chuyên mục</h3>
+  <ul>
+    <li><a href="#">Thời sự</a></li>
+    <li><a href="#">Kinh tế</a></li>
+    <li><a href="#">Thể thao</a></li>
+    <li><a href="#">Công nghệ</a></li>
+  </ul>
+</aside>

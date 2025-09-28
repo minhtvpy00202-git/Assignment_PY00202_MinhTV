@@ -1,0 +1,14 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp" %>
+<main class="container with-aside">
+  <%@ include file="/WEB-INF/views/layout/admin-sidebar.jsp" %>
+  <section class="content">
+    <h1>Admin Dashboard</h1>
+    <ul>
+      <li>Tổng người dùng: 120</li>
+      <li>Tổng bài viết: 340</li>
+      <li>Chờ duyệt: 15</li>
+    </ul>
+  </section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+

@@ -1,0 +1,13 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<main class="container narrow">
+	<h1>Hồ sơ cá nhân</h1>
+	<form class="form"
+		action="${pageContext.request.contextPath}/profile/update"
+		method="post" enctype="multipart/form-data">
+		<label>Avatar</label><input type="file" name="avatar"> <label>Họ
+			tên</label><input name="fullname" value="Nguyễn Văn A"> <label>Email</label><input
+			type="email" name="email" value="a@gmail.com">
+		<button>Cập nhật</button>
+	</form>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp"%>

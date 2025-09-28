@@ -1,0 +1,33 @@
+package com.newsportal.util;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
+
+public class DB {
+    private static String url;
+    private static String user;
+    private static String pass;
+
+    static {
+        try {
+            Properties p = new Properties();
+            try (InputStream in = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
+                if (in == null) throw new RuntimeException("db.properties not found");
+                p.load(in);
+            }
+            url  = p.getProperty("db.url");
+            user = p.getProperty("db.user");
+            pass = p.getProperty("db.pass");
+            // Không cần Class.forName với JDBC 4+, nhưng thêm cũng không sao
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to init DB config", e);
+        }
+    }
+
+    public static Connection getConnection() throws Exception {
+        return DriverManager.getConnection(url, user, pass);
+    }
+}

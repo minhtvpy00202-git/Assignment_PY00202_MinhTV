@@ -1,0 +1,33 @@
+<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<main class="container grid">
+	<section class="content">
+		<h1>Tin mới</h1>
+
+		<article class="card">
+			<img src="${pageContext.request.contextPath}/assets/img/sample.jpg"
+				alt="">
+			<h2>
+				<a href="${pageContext.request.contextPath}/news/1">Tiêu đề bài
+					viết mẫu</a>
+			</h2>
+			<p class="meta">Tác giả: Nguyễn A · 28/09/2025</p>
+			<p class="excerpt">Mô tả ngắn...…</p>
+		</article>
+
+		<article class="card">
+			<img src="${pageContext.request.contextPath}/assets/img/sample.jpg"
+				alt="">
+			<h2>
+				<a href="${pageContext.request.contextPath}/news/2">Tiêu đề bài
+					viết 2</a>
+			</h2>
+			<p class="meta">Tác giả: Trần B · 28/09/2025</p>
+			<p class="excerpt">Mô tả ngắn…</p>
+		</article>
+	</section>
+
+	<section>
+		<%@ include file="/WEB-INF/views/layout/sidebar.jsp"%>
+	</section>
+</main>
+<%@ include file="/WEB-INF/views/layout/footer.jsp"%>

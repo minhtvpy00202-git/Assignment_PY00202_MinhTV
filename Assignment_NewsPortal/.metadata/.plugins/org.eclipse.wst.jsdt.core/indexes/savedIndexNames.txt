@@ -1,0 +1,9 @@
+INDEX VERSION 1.4+C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2530054295.index
+2347939794.index
+1346272575.index
+2626194594.index
+221083058.index
+470106397.index
+2798419544.index
+1831239526.index

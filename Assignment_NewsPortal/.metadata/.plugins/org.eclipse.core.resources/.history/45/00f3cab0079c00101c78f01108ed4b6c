@@ -1,0 +1,20 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="../layout/header.jsp" %>
+<main class="container">
+  <h1>Tạo bài viết mới</h1>
+  <form action="post-create" method="post">
+    <label>Tiêu đề</label>
+    <input type="text" name="title"><br>
+    <label>Chuyên mục</label>
+    <select name="category">
+      <option>Tin tức</option>
+      <option>Thể thao</option>
+      <option>Giải trí</option>
+    </select><br>
+    <label>Nội dung</label>
+    <textarea name="content" rows="10" cols="60"></textarea><br>
+    <button type="submit">Lưu nháp</button>
+    <button type="submit">Gửi duyệt</button>
+  </form>
+</main>
+<%@ include file="../layout/footer.jsp" %>
