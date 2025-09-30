@@ -1,0 +1,13 @@
+
+thg 9 29, 2025 09:22:09.15 NEW SESSION
+thg 9 29, 2025 09:22:09.16 [7592:14968:0929/092209.142:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 9 29, 2025 09:22:13.51 [7592:15324:0929/092213.514:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:22:13.83 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 9 29, 2025 09:22:35.10 [7592:15324:0929/092235.108:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:23:33.60 [7592:15324:0929/092333.606:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:25:22.14 [7592:15324:0929/092522.147:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:25:46.89 [7592:2924:0929/092546.889:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 9 29, 2025 09:25:47.28 [7592:15324:0929/092547.288:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:26:11.15 [7592:15324:0929/092611.150:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:26:59.11 [7592:15324:0929/092659.114:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 9 29, 2025 09:28:37.50 [7592:15324:0929/092837.509:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
