@@ -1,0 +1,52 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
+<%@ include file="../layout/header.jsp" %>
+<%@ include file="../layout/admin-header.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-users.css">
+
+<main class="container">
+  <h2>Quản lý Newsletter</h2>
+
+  <!-- Đăng ký email mới (subscribe) -->
+  <form method="post" action="${ctx}/admin/newsletter" class="form">
+    <input type="hidden" name="action" value="create"/>
+    <label>Email
+      <input type="email" name="email" required placeholder="email@domain.com"/>
+    </label>
+    <button type="submit">Thêm (Subscribe)</button>
+  </form>
+
+  <table class="table" style="margin-top:12px">
+    <thead><tr><th>Email</th><th>Trạng thái</th><th>Hành động</th></tr></thead>
+    <tbody>
+      <c:forEach var="n" items="${items}">
+        <tr>
+          <td>${n.email}</td>
+          <td><c:out value="${n.enabled ? 'Đang nhận' : 'Đã hủy'}"/></td>
+          <td class="actions">
+            <!-- Toggle bật/tắt -->
+            <form method="post" action="${ctx}/admin/newsletter" style="display:inline">
+              <input type="hidden" name="action" value="update"/>
+              <input type="hidden" name="email" value="${n.email}"/>
+              <input type="hidden" name="enabled" value="${!n.enabled}"/>
+              <button type="submit">
+                <c:out value="${n.enabled ? 'Tắt (Unsubscribe)' : 'Bật (Subscribe)'}"/>
+              </button>
+            </form>
+
+            <!-- Hủy đăng ký (delete) -->
+            <form method="post" action="${ctx}/admin/newsletter" style="display:inline" onsubmit="return confirm('Hủy nhận tin email này?');">
+              <input type="hidden" name="action" value="delete"/>
+              <input type="hidden" name="email" value="${n.email}"/>
+              <button type="submit">Xóa (Unsubscribe)</button>
+            </form>
+          </td>
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
+</main>
+
+<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>

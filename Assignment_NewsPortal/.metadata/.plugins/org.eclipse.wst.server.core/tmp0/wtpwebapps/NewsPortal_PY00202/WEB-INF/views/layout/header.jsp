@@ -8,6 +8,8 @@
 		value="${pageTitle != null ? pageTitle : 'NewsPortal'}" /></title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-users.css">
+
 </head>
 <body>
 	<header>
@@ -16,7 +18,7 @@
 				<span class="dot"></span> <span>NewsPortal</span>
 			</a>
 			<nav class="menu">
-				<a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+				
 				<c:forEach var="cata" items="${categories}">
 					<a href="${pageContext.request.contextPath}/category?id=${cata.id}">
 						${cata.name} </a>
@@ -32,11 +34,11 @@
 							<a href="${pageContext.request.contextPath}/reporter/dashboard">Bảng
 								điều khiển</a>
 						</c:if>
-						<a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+						<a href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath}/login">Đăng nhập</a>
-						<a href="${pageContext.request.contextPath}/register">Đăng ký</a>
+						<a href="${pageContext.request.contextPath}/auth/login">Đăng nhập</a>
+						<a href="${pageContext.request.contextPath}/auth/register">Đăng ký</a>
 					</c:otherwise>
 				</c:choose>
 			</nav>

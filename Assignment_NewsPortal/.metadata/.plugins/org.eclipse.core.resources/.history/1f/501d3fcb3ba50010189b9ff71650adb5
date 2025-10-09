@@ -1,0 +1,89 @@
+package com.newsportal.controller;
+
+import com.newsportal.dao.CategoryDAO;
+import com.newsportal.model.Category;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/admin/categories")
+public class CategoryCRUDServlet extends HttpServlet {
+    private final CategoryDAO dao = new CategoryDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String action = p(req, "action", "list");
+        if ("edit".equals(action)) {
+            int id = pInt(req, "id", -1);
+            if (id < 0) { resp.sendError(400, "Invalid id"); return; }
+            try {
+                req.setAttribute("item", dao.findById(id));
+                req.setAttribute("categories", new CategoryDAO().findAll());
+            } catch (Exception e) {
+                throw new ServletException("Không tải loại tin id=" + id, e);
+            }
+        }
+        list(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        String action = p(req, "action", "list");
+
+        try {
+            switch (action) {
+                case "create": {
+                    String name = p(req, "name", "");
+                    dao.create(name);
+                    break;
+                }
+                case "update": {
+                    int id = pInt(req, "id", -1);
+                    if (id < 0) throw new ServletException("Invalid id");
+                    String name = p(req, "name", "");
+                    dao.update(id, name);
+                    break;
+                }
+                case "delete": {
+                    int id = pInt(req, "id", -1);
+                    if (id < 0) throw new ServletException("Invalid id");
+                    dao.delete(id);
+                    break;
+                }
+                default: /* no-op */ ;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Lỗi xử lý CRUD loại tin", e);
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/admin/categories");
+    }
+
+    private void list(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        try {
+            List<Category> items = dao.findAll();
+            req.setAttribute("items", items);
+            req.getRequestDispatcher("/WEB-INF/views/admin/categories.jsp").forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException("Không tải danh sách loại tin", e);
+        }
+    }
+
+    private String p(HttpServletRequest r, String k, String d) {
+        String v = r.getParameter(k);
+        return (v == null) ? d : v.trim();
+    }
+
+    private int pInt(HttpServletRequest r, String k, int def) {
+        try { return Integer.parseInt(r.getParameter(k)); }
+        catch (Exception e) { return def; }
+    }
+}

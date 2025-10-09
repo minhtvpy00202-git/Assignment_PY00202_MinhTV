@@ -1,0 +1,14 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
+<nav class="subnav">
+  <a href="${ctx}/admin/dashboard">Trang chủ</a>
+  <a href="${ctx}/admin/news">Tin tức</a>
+
+  <c:if test="${sessionScope.authUser != null && sessionScope.authUser.role == 'ADMIN'}">
+    <a href="${ctx}/admin/categories">Loại tin</a>
+    <a href="${ctx}/admin/users">Người dùng</a>
+    <a href="${ctx}/admin/newsletter">Newsletter</a>
+  </c:if>
+</nav>

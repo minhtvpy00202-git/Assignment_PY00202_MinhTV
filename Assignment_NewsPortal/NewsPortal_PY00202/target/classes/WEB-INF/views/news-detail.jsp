@@ -11,10 +11,10 @@
     <c:if test="${not empty news.image}">
     <c:choose>
     <c:when test="${fn:startsWith(news.image, '/') || fn:startsWith(news.image, 'http')}">
-        <img class="mt-24" src="${news.image}" alt="${news.title}">
+        <img class="article-cover" src="${news.image}" alt="${news.title}">
     </c:when>
     <c:otherwise>
-        <img class="mt-24" src="${pageContext.request.contextPath}/${news.image}" alt="${news.title}">
+        <img class="article-cover" src="${pageContext.request.contextPath}/${news.image}" alt="${news.title}">
     </c:otherwise>
 </c:choose>
 </c:if>

@@ -1,8 +1,0 @@
-<%@ include file="layout/header.jsp" %>
-<main class="container">
-  <h1>Tiêu đề bài viết mẫu</h1>
-  <p><i>Tác giả: Nguyễn Văn A · 28/09/2025</i></p>
-  <p>Đây là nội dung chi tiết bài viết (hiện tại để giả văn bản tĩnh)...</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-</main>
-<%@ include file="layout/footer.jsp" %>

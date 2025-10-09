@@ -30,9 +30,8 @@ public class HomeServlet extends HttpServlet {
         try {
             // 1) Danh mục để render menu
         	List<Category> categories = safeList(() -> categoryDAO.findAll());
-            req.setAttribute("categories", categories);
 
-            // 2) Tin trang nhất (Home=true), ví dụ 10 bài
+            // 2) Tin trang nhất (Home=true)
             List<News> approvedNews = safeList(() -> newsDAO.findApproved(10));
             req.setAttribute("approvedNews", approvedNews);
 
@@ -50,6 +49,7 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("recentList", recentList);
 
             // Forward sang trang chủ
+            req.setAttribute("categories", new CategoryDAO().findAll());
             req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
 
         } catch (Exception e) {
@@ -76,23 +76,26 @@ public class HomeServlet extends HttpServlet {
 
     private List<Integer> readRecentIdsFromCookie(HttpServletRequest req, String name, int limit) {
         Cookie[] cookies = req.getCookies();
-        if (cookies == null) return Collections.emptyList();
+        if (cookies == null) return java.util.Collections.emptyList();
+
         for (Cookie c : cookies) {
             if (name.equals(c.getName())) {
-                String val = c.getValue(); // ví dụ: "31,22,10"
-                if (val == null || val.isBlank()) return Collections.emptyList();
-                List<Integer> ids = Arrays.stream(val.split(","))
+                String val = c.getValue();
+                if (val == null || val.isBlank()) return java.util.Collections.emptyList();
+
+                String decoded = java.net.URLDecoder.decode(val, java.nio.charset.StandardCharsets.UTF_8);
+                return java.util.Arrays.stream(decoded.split("\\|"))
                         .map(String::trim)
                         .filter(s -> s.matches("\\d+"))
                         .map(Integer::parseInt)
                         .distinct()
                         .limit(limit)
-                        .collect(Collectors.toList());
-                return ids;
+                        .collect(java.util.stream.Collectors.toList());
             }
         }
-        return Collections.emptyList();
+        return java.util.Collections.emptyList();
     }
+
 
     /** Lấy tin theo danh sách id và giữ nguyên thứ tự ids (DAO không có findByIds thì gọi findById từng cái). */
     private List<News> findNewsByIdsPreserveOrder(List<Integer> ids) {

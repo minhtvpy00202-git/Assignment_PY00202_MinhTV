@@ -1,0 +1,23 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<header class="admin-header">
+  <div class="container">
+    <h1 class="logo">Công cụ quản trị tin tức</h1>
+    <nav class="nav">
+      <!-- “Trang chủ” của độc giả -->
+      <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+
+      <!-- Khu quản lý tin của phóng viên -->
+      <a href="${pageContext.request.contextPath}/reporter/news">Tin tức</a>
+
+      <a href="${pageContext.request.contextPath}/auth/logout" class="logout">Đăng xuất</a>
+    </nav>
+  </div>
+</header>
+
+<footer class="admin-footer">
+  <div class="container center">
+    Welcome <c:out value="${sessionScope.user.fullname}"/>
+  </div>
+</footer>

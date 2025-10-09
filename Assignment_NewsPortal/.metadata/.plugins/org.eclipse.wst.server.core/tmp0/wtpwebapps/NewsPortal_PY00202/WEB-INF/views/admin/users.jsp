@@ -1,41 +1,87 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ include file="../layout/header.jsp" %>
-<jsp:include page="../layout/admin-sidebar.jsp"/>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<h2>Quản lý người dùng</h2>
+<%@ include file="../layout/header.jsp"%>
+<%@ include file="../layout/admin-header.jsp"%>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/admin-users.css">
 
-<c:forEach var="u" items="${users}">
-    <div class="card user-row">
-        <div>
-            <strong>${u.fullname}</strong> | ${u.email}
-            <span class="badge"><c:choose><c:when test="${u.role}">Admin</c:when><c:otherwise>Reporter</c:otherwise></c:choose></span>
-            <span class="badge ${u.activated ? 'active' : 'inactive'}">
-                ${u.activated ? 'Hoạt động' : 'Đã khoá'}
-            </span>
-        </div>
+<main class="container">
+	<h2>Quản lý Người dùng</h2>
 
-        <form method="post" action="${pageContext.request.contextPath}/admin/users" class="actions">
-            <input type="hidden" name="id" value="${u.id}">
-            <c:choose>
-                <c:when test="${u.activated}">
-                    <button class="btn ghost" name="action" value="deactivate">Khoá</button>
-                </c:when>
-                <c:otherwise>
-                    <button class="btn" name="action" value="activate">Mở khoá</button>
-                </c:otherwise>
-            </c:choose>
+	<form method="post" action="${ctx}/admin/users" class="form">
+		<input type="hidden" name="action"
+			value="${empty item ? 'create' : 'update'}" /> <input type="hidden"
+			name="id" value="${item.id}" /> <label>Họ tên <input
+			name="fullName" value="${item.fullname}" required />
+		</label> <label>Email <input type="email" name="email"
+			value="${item.email}" required />
+		</label> <label>Số điện thoại <input name="mobile"
+			value="${item.mobile}" />
+		</label>
 
-            <c:if test="${u.role}">
-                <button class="btn ghost" name="action" value="demote">Thành reporter</button>
-            </c:if>
-            <c:if test="${!u.role}">
-                <button class="btn" name="action" value="promote">Thành admin</button>
-            </c:if>
+		<%-- format yyyy-MM-dd cho input[type=date] --%>
+		<fmt:formatDate value="${item.birthday}" pattern="yyyy-MM-dd" var="bd" />
+		<label>Ngày sinh <input type="date" name="birthday"
+			value="${bd}" />
+		</label> <label>Giới tính <select name="gender">
+				<option value="true" ${item.gender ? 'selected' : ''}>Nam</option>
+				<option value="false" ${!item.gender ? 'selected' : ''}>Nữ</option>
+		</select>
+		</label> <label>Vai trò <select name="role" required>
+				<option value="ADMIN" ${item.role ? 'selected' : ''}>ADMIN</option>
+				<option value="REPORTER" ${!item.role ? 'selected' : ''}>REPORTER</option>
+		</select>
+		</label> <label>Mật khẩu (để trống nếu không đổi) <input
+			type="password" name="password" />
+		</label> <label> <input type="checkbox" name="activated"
+			${item.activated ? 'checked' : ''} /> Kích hoạt
+		</label>
 
-            <button class="btn danger" name="action" value="delete" onclick="return confirm('Xoá người dùng này?')">Xoá</button>
-        </form>
-    </div>
-</c:forEach>
+		<button type="submit">${empty item ? 'Thêm mới' : 'Cập nhật'}</button>
+		<c:if test="${not empty item}">
+			<a class="btn" href="${ctx}/admin/users">Hủy</a>
+		</c:if>
+	</form>
 
-<%@ include file="../layout/footer.jsp" %>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Họ tên</th>
+				<th>Email</th>
+				<th>Điện thoại</th>
+				<th>Giới tính</th>
+				<th>Vai trò</th>
+				<th>Kích hoạt</th>
+				<th>Hành động</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="u" items="${items}">
+				<tr>
+					<td>${u.id}</td>
+					<td>${u.fullname}</td>
+					<td>${u.email}</td>
+					<td>${u.mobile}</td>
+					<td><c:out value="${u.gender ? 'Nam' : 'Nữ'}" /></td>
+					<td><c:out value="${u.role ? 'ADMIN' : 'REPORTER'}" /></td>
+					<td><c:out value="${u.activated ? '✔' : '✘'}" /></td>
+					<td class="actions"><a
+						href="${ctx}/admin/users?action=edit&id=${u.id}">Sửa</a>
+						<form method="post" action="${ctx}/admin/users"
+							style="display: inline"
+							onsubmit="return confirm('Xóa người dùng này?');">
+							<input type="hidden" name="action" value="delete" /> <input
+								type="hidden" name="id" value="${u.id}" />
+							<button type="submit">Xóa</button>
+						</form></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</main>
+
+<jsp:include page="/WEB-INF/views/layout/footer.jsp" />

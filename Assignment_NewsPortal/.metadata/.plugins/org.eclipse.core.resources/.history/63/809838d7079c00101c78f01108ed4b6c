@@ -1,8 +1,0 @@
-<%@ include file="../layout/header.jsp" %>
-<main class="container">
-  <h1>Bảng điều khiển quản trị</h1>
-  <p>Tổng số người dùng: 120</p>
-  <p>Tổng số bài viết: 340</p>
-  <p>Bài chờ duyệt: 15</p>
-</main>
-<%@ include file="../layout/footer.jsp" %>

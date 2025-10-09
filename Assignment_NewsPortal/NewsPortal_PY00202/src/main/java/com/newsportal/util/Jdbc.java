@@ -1,0 +1,187 @@
+package com.newsportal.util;
+
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Jdbc helper for DAO layer.
+ */
+public final class Jdbc {
+
+    private Jdbc() {}
+
+    /* =======================
+       Transaction support
+       ======================= */
+    private static final ThreadLocal<Connection> TX_CONN = new ThreadLocal<>();
+
+    /** Bắt đầu transaction cho thread hiện tại */
+    public static void beginTx() throws SQLException {
+        if (TX_CONN.get() != null) return;
+        Connection c = DB.getConnection();
+        c.setAutoCommit(false);
+        TX_CONN.set(c);
+    }
+
+    /** Commit transaction hiện tại (nếu có) */
+    public static void commitTx() {
+        Connection c = TX_CONN.get();
+        if (c != null) {
+            try { c.commit(); } catch (SQLException ignored) {}
+            closeQuietly(c);
+            TX_CONN.remove();
+        }
+    }
+
+    /** Rollback transaction hiện tại (nếu có) */
+    public static void rollbackTx() {
+        Connection c = TX_CONN.get();
+        if (c != null) {
+            try { c.rollback(); } catch (SQLException ignored) {}
+            closeQuietly(c);
+            TX_CONN.remove();
+        }
+    }
+
+    /* =======================
+       Core helpers
+       ======================= */
+
+    /** Update/DELETE/INSERT không cần trả về id */
+    public static int update(String sql, Object... params) throws SQLException {
+        try (Connection c = conn();
+             PreparedStatement ps = prepare(c, sql, params)) {
+            return ps.executeUpdate();
+        }
+    }
+
+    /** INSERT trả về khóa tự sinh (identity) nếu có */
+    public static long insertAndReturnId(String sql, Object... params) throws SQLException {
+        try (Connection c = conn();
+             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            fill(ps, params);
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs != null && rs.next()) return rs.getLong(1);
+            }
+            // MSSQL fallback nếu driver không trả generatedKeys
+            try (Statement s = c.createStatement();
+                 ResultSet rs = s.executeQuery("SELECT CAST(SCOPE_IDENTITY() AS BIGINT)")) {
+                if (rs.next()) return rs.getLong(1);
+            }
+            return -1L;
+        }
+    }
+
+    /** Query nhiều dòng + mapper */
+    public static <T> List<T> query(String sql, RowMapper<T> mapper, Object... params) throws SQLException {
+        try (Connection c = conn();
+             PreparedStatement ps = prepare(c, sql, params);
+             ResultSet rs = ps.executeQuery()) {
+            List<T> list = new ArrayList<>();
+            while (rs.next()) list.add(mapper.map(rs));
+            return list;
+        }
+    }
+
+    /** Query 1 dòng + mapper (có thể trả null) */
+    public static <T> T queryOne(String sql, RowMapper<T> mapper, Object... params) throws SQLException {
+        try (Connection c = conn();
+             PreparedStatement ps = prepare(c, sql, params);
+             ResultSet rs = ps.executeQuery()) {
+            return rs.next() ? mapper.map(rs) : null;
+        }
+    }
+
+    /** Lấy 1 giá trị đơn (ví dụ COUNT(*), MAX(...)) */
+    @SuppressWarnings("unchecked")
+    public static <T> T queryForObject(String sql, Object... params) throws SQLException {
+        try (Connection c = conn();
+             PreparedStatement ps = prepare(c, sql, params);
+             ResultSet rs = ps.executeQuery()) {
+            if (!rs.next()) return null;
+            Object v = rs.getObject(1);
+            return (T) v;
+        }
+    }
+
+    /* =======================
+       Low-level: trả ResultSet
+       (dùng try-with-resources)
+       ======================= */
+
+    public static QueryResult queryRaw(String sql, Object... params) throws SQLException {
+        Connection c = conn();
+        PreparedStatement ps = prepare(c, sql, params);
+        ResultSet rs = ps.executeQuery();
+        return new QueryResult(c, ps, rs);
+    }
+
+    /** Gói 3 đối tượng để đóng gọn trong try-with-resources */
+    public static final class QueryResult implements AutoCloseable {
+        private final Connection c; private final PreparedStatement ps; private final ResultSet rs;
+        private QueryResult(Connection c, PreparedStatement ps, ResultSet rs) {
+            this.c = c; this.ps = ps; this.rs = rs;
+        }
+        public ResultSet rs() { return rs; }
+        @Override public void close() {
+            closeQuietly(rs); closeQuietly(ps);
+            // nếu đang ở trong TX thì không đóng connection
+            if (TX_CONN.get() != c) closeQuietly(c);
+        }
+    }
+
+    /* =======================
+       Internal utilities
+       ======================= */
+
+    private static Connection conn() throws SQLException {
+        Connection tx = TX_CONN.get();
+        return (tx != null) ? tx : DB.getConnection();
+    }
+
+    private static PreparedStatement prepare(Connection c, String sql, Object... params) throws SQLException {
+        PreparedStatement ps = c.prepareStatement(sql);
+        fill(ps, params);
+        return ps;
+    }
+
+    /** Set tham số theo kiểu dữ liệu phổ biến */
+    private static void fill(PreparedStatement ps, Object... params) throws SQLException {
+        if (params == null) return;
+        for (int i = 0; i < params.length; i++) {
+            Object p = params[i];
+            int idx = i + 1;
+
+            if (p == null) { ps.setObject(idx, null); continue; }
+            if (p instanceof String s)             ps.setString(idx, s);
+            else if (p instanceof Integer v)       ps.setInt(idx, v);
+            else if (p instanceof Long v)          ps.setLong(idx, v);
+            else if (p instanceof Boolean v)       ps.setBoolean(idx, v);
+            else if (p instanceof Double v)        ps.setDouble(idx, v);
+            else if (p instanceof Float v)         ps.setFloat(idx, v);
+            else if (p instanceof BigDecimal v)    ps.setBigDecimal(idx, v);
+            else if (p instanceof byte[] v)        ps.setBytes(idx, v);
+            else if (p instanceof java.sql.Date v) ps.setDate(idx, v);
+            else if (p instanceof java.sql.Time v) ps.setTime(idx, v);
+            else if (p instanceof java.sql.Timestamp v) ps.setTimestamp(idx, v);
+            else if (p instanceof java.util.Date v)      ps.setTimestamp(idx, new Timestamp(v.getTime()));
+            else if (p instanceof LocalDate v)     ps.setDate(idx, Date.valueOf(v));
+            else if (p instanceof LocalTime v)     ps.setTime(idx, Time.valueOf(v));
+            else if (p instanceof LocalDateTime v) ps.setTimestamp(idx, Timestamp.valueOf(v));
+            else if (p instanceof InputStream v)   ps.setBinaryStream(idx, v);
+            else                                    ps.setObject(idx, p);
+        }
+    }
+
+    public static void closeQuietly(AutoCloseable c) {
+        if (c == null) return;
+        try { c.close(); } catch (Exception ignored) {}
+    }
+}
+

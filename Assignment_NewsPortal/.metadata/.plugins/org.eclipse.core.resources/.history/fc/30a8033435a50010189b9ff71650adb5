@@ -1,0 +1,37 @@
+package com.newsportal.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet(urlPatterns = {"/", "/home", "/category", "/search", "/profile"})
+public class RouterServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String path = req.getServletPath(); // "/", "/home", ...
+        String view;
+        switch (path) {
+            case "/":
+            case "/home":
+                view = "/WEB-INF/views/home.jsp"; break;
+            case "/category":
+                view = "/WEB-INF/views/category.jsp"; break;
+            case "/search":
+                view = "/WEB-INF/views/search.jsp"; break;
+            case "/profile":
+                view = "/WEB-INF/views/profile.jsp"; break;
+            default:
+                resp.sendError(404); return;
+        }
+        req.getRequestDispatcher(view).forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}

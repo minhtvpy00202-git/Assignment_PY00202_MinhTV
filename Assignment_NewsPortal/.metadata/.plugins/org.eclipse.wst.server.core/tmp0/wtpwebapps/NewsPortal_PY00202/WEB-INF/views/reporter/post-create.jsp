@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="../layout/header.jsp" %>
+<jsp:include page="../layout/reporter-sidebar.jsp"/>
 
 <main class="container">
   <h1>Đăng bài mới</h1>
@@ -31,18 +32,36 @@
 </main>
 
 <!-- CKEditor5 classic build -->
+<style>
+  .ck-editor__editable[role="textbox"]{ min-height:560px; }
+</style>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.1/classic/ckeditor.js"></script>
 <script>
-  ClassicEditor.create(document.querySelector('#content'), {
-    simpleUpload: {
-      uploadUrl: '${pageContext.request.contextPath}/upload-image'
-      // Nếu cần headers auth thì thêm ở đây.
-    },
+ClassicEditor.create(document.querySelector('#content'), {
+  toolbar: [
+    'heading','|',
+    'bold','italic','underline','link',
+    'bulletedList','numberedList','blockQuote','insertTable','|',
+    'insertImage','imageUpload','mediaEmbed','|',
+    'undo','redo'
+  ],
+
+  /* DÙNG simpleUpload adapter */
+  simpleUpload: {
+    uploadUrl: '${pageContext.request.contextPath}/upload-image',
+    withCredentials: false
+    // headers: { 'X-Requested-With':'XMLHttpRequest' }  // nếu cần
+  },
+
+  image: {
     toolbar: [
-      'heading','|','bold','italic','underline','link','bulletedList','numberedList',
-      '|','blockQuote','insertTable','mediaEmbed','undo','redo','imageUpload'
+      'imageTextAlternative', '|',
+      'imageStyle:inline', 'imageStyle:block', 'imageStyle:side'
     ]
-  }).catch(console.error);
+  }
+}).catch(console.error);
 </script>
 
 <%@ include file="../layout/footer.jsp" %>
+

@@ -1,12 +1,17 @@
 package com.newsportal.dao;
 
-import com.newsportal.model.News;
-import com.newsportal.util.DB;
-
-import java.sql.*;
-import java.time.LocalDateTime;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.newsportal.model.News;
+import com.newsportal.util.DB;
 
 public class NewsDAO {
 
@@ -347,4 +352,105 @@ public class NewsDAO {
 		n.setReporterId(rs.wasNull() ? null : rep);
 		return n;
 	}
+	
+	
+	
+	
+	/** Lấy các bài cùng chuyên mục (đã duyệt), sắp xếp mới nhất. */
+    public List<News> findByCategoryId(int categoryId, int limit) throws Exception {
+        String sql = "SELECT TOP " + limit +
+                " Id, Title, Content, Image, PostedDate, Author, ViewCount, CategoryId, Home, Approved, ReporterId" +
+                " FROM News WHERE Approved = 1 AND CategoryId = ?" +
+                " ORDER BY PostedDate DESC";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+	
+	 
+    public List<News> findRelated(int categoryId, int excludeNewsId, int limit) throws Exception {
+        String sql = "SELECT TOP " + limit +
+                " Id, Title, Content, Image, PostedDate, Author, ViewCount, CategoryId, Home, Approved, ReporterId" +
+                " FROM News WHERE Approved = 1 AND CategoryId = ? AND Id <> ?" +
+                " ORDER BY PostedDate DESC";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, excludeNewsId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+    
+    public List<News> listByReporter(int reporterId) throws Exception {
+    	  String sql = """
+    	      SELECT Id,Title,Content,Image,PostedDate,Author,ViewCount,CategoryId,Home,Approved,ReporterId
+    	      FROM News WHERE ReporterId=? ORDER BY PostedDate DESC
+    	      """;
+    	  try (var c = DB.getConnection();
+    	       var ps = c.prepareStatement(sql)) {
+    	    ps.setInt(1, reporterId);
+    	    try (var rs = ps.executeQuery()) {
+    	      var list = new ArrayList<News>();
+    	      while (rs.next()) list.add(map(rs));
+    	      return list;
+    	    }
+    	  }
+    	}
+
+    	// Lấy bài theo id + thuộc về phóng viên
+    	public News findByIdAndReporter(int id, int reporterId) throws Exception {
+    	  String sql = """
+    	      SELECT Id,Title,Content,Image,PostedDate,Author,ViewCount,CategoryId,Home,Approved,ReporterId
+    	      FROM News WHERE Id=? AND ReporterId=?
+    	      """;
+    	  try (var c = DB.getConnection();
+    	       var ps = c.prepareStatement(sql)) {
+    	    ps.setInt(1, id);
+    	    ps.setInt(2, reporterId);
+    	    try (var rs = ps.executeQuery()) {
+    	      return rs.next() ? map(rs) : null;
+    	    }
+    	  }
+    	}
+
+    	// Cập nhật bài; nếu includeImage=true thì cập nhật cột Image, ngược lại giữ nguyên
+    	public int update(News n, boolean includeImage) throws Exception {
+    	  String sql = includeImage
+    	      ? """
+    	         UPDATE News SET Title=?, Content=?, Image=?, CategoryId=?, Home=?, Approved=?, Author=?, PostedDate=GETDATE()
+    	         WHERE Id=?
+    	        """
+    	      : """
+    	         UPDATE News SET Title=?, Content=?, CategoryId=?, Home=?, Approved=?, Author=?, PostedDate=GETDATE()
+    	         WHERE Id=?
+    	        """;
+    	  try (var c = DB.getConnection();
+    	       var ps = c.prepareStatement(sql)) {
+    	    int i=1;
+    	    ps.setString(i++, n.getTitle());
+    	    ps.setString(i++, n.getContent());
+    	    if (includeImage) ps.setString(i++, n.getImage());
+    	    ps.setInt(i++, n.getCategoryId());
+    	    ps.setBoolean(i++, n.isHome());
+    	    ps.setBoolean(i++, n.isApproved());
+    	    ps.setString(i++, n.getAuthor());
+    	    ps.setInt(i++, n.getId());
+    	    return ps.executeUpdate();
+    	  }
+    	}
+
+    	
+	
 }

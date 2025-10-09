@@ -18,7 +18,7 @@
         <input name="mobile" value="${sessionScope.user.mobile}">
         <div class="actions">
           <button class="btn" type="submit">Cập nhật</button>
-          <a class="btn ghost" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+          <a class="btn ghost" href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
         </div>
       </form>
     </c:if>

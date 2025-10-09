@@ -8,14 +8,14 @@
     <c:if test="${not empty error}">
       <div class="alert error">${error}</div>
     </c:if>
-    <form class="form" method="post" action="${pageContext.request.contextPath}/login">
+    <form class="form" method="post" action="${pageContext.request.contextPath}/auth/login">
       <label>Email</label>
       <input type="email" name="email" required>
       <label>Mật khẩu</label>
       <input type="password" name="password" required>
       <div class="actions">
         <button class="btn" type="submit">Đăng nhập</button>
-        <a class="btn ghost" href="${pageContext.request.contextPath}/register">Tạo tài khoản</a>
+        <a class="btn ghost" href="${pageContext.request.contextPath}/auth/register">Tạo tài khoản</a>
       </div>
     </form>
   </section>

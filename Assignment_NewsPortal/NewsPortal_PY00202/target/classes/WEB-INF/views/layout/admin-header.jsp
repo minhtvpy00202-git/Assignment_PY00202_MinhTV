@@ -1,24 +1,61 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Quản trị - NewsPortal</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
-</head>
-<body>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="uri" value="${pageContext.request.requestURI}"/>
+
 <header class="admin-header">
-    <div class="container">
-        <h1 class="logo">NewsPortal <span class="small">Admin</span></h1>
-        <nav class="nav">
-            <a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
-            <a href="${pageContext.request.contextPath}/admin/news-approve">Duyệt bài</a>
-            <a href="${pageContext.request.contextPath}/admin/users">Người dùng</a>
-            <a href="${pageContext.request.contextPath}/admin/categories">Chuyên mục</a>
-            <a href="${pageContext.request.contextPath}/admin/settings">Cài đặt</a>
-            <a href="${pageContext.request.contextPath}/logout" class="logout">Đăng xuất</a>
-        </nav>
-    </div>
+  <div class="container">
+    <h1 class="logo">
+      <a href="${ctx}/admin/dashboard" style="text-decoration:none;color:inherit;">
+        CÔNG CỤ QUẢN TRỊ TIN TỨC
+      </a>
+    </h1>
+
+    <nav class="nav">
+      <a href="${ctx}/admin/dashboard"
+         class="${fn:contains(uri, '/admin/dashboard') ? 'active' : ''}"
+         aria-current="${fn:contains(uri, '/admin/dashboard') ? 'page' : ''}">
+        Trang chủ
+      </a>
+
+      <!-- Tin tức: luôn có -->
+      <a href="${ctx}/admin/news"
+         class="${fn:contains(uri, '/admin/news') ? 'active' : ''}"
+         aria-current="${fn:contains(uri, '/admin/news') ? 'page' : ''}">
+        Tin tức
+      </a>
+
+      <!-- CHỈ ADMIN (role = true/1) -->
+      
+      <c:if test="${sessionScope.authUser != null && sessionScope.authUser.role}">
+      	
+      	<a href="${ctx}/admin/news-approve"
+     class="${fn:contains(uri, '/admin/news-approve') ? 'active' : ''}"
+     aria-current="${fn:contains(uri, '/admin/news-approve') ? 'page' : ''}">
+    Duyệt bài
+  </a>
+      	
+      
+      
+        <a href="${ctx}/admin/categories"
+           class="${fn:contains(uri, '/admin/categories') ? 'active' : ''}"
+           aria-current="${fn:contains(uri, '/admin/categories') ? 'page' : ''}">
+          Loại tin
+        </a>
+        <a href="${ctx}/admin/users"
+           class="${fn:contains(uri, '/admin/users') ? 'active' : ''}"
+           aria-current="${fn:contains(uri, '/admin/users') ? 'page' : ''}">
+          Người dùng
+        </a>
+        <a href="${ctx}/admin/newsletter"
+           class="${fn:contains(uri, '/admin/newsletter') ? 'active' : ''}"
+           aria-current="${fn:contains(uri, '/admin/newsletter') ? 'page' : ''}">
+          Newsletter
+        </a>
+      </c:if>
+
+      <a href="${ctx}/auth/logout" class="logout">Đăng xuất</a>
+    </nav>
+  </div>
 </header>
-<main class="container admin-main">

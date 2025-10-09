@@ -1,0 +1,189 @@
+package com.newsportal.controller;
+
+import com.newsportal.dao.CategoryDAO;
+import com.newsportal.dao.NewsDAO;
+import com.newsportal.model.News;
+import com.newsportal.model.User;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/admin/news")
+@MultipartConfig(maxFileSize = 10 * 1024 * 1024, maxRequestSize = 50 * 1024 * 1024)
+public class AdminNewsCRUDServlet extends HttpServlet {
+    private final NewsDAO newsDAO = new NewsDAO();
+    private final CategoryDAO categoryDAO = new CategoryDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String action = p(req, "action", "list");
+        if ("edit".equals(action)) {
+            int id = pInt(req, "id", -1);
+            if (id < 0) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid id");
+                return;
+            }
+            try {
+                req.setAttribute("item", newsDAO.findById(id));
+            } catch (Exception e) {
+                throw new ServletException("Không tải được bản ghi id=" + id, e);
+            }
+        }
+        list(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        String action = p(req, "action", "list");
+
+        try {
+            switch (action) {
+                case "create": {
+                    News n = bind(req, new News(), true);
+                    newsDAO.create(n);              // int newId = ...
+                    break;
+                }
+                case "update": {
+                    int id = Integer.parseInt(p(req, "id", "0"));
+                    News n = newsDAO.findById(id);
+                    if (n == null) throw new ServletException("Không tìm thấy tin id=" + id);
+                    n = bind(req, n, false);        // cập nhật, không bắt buộc ảnh
+                    // nếu bind() đã set image mới thì update(true), ngược lại update(false)
+                    boolean updateImage = (n.getImage() != null && !n.getImage().isBlank());
+                    newsDAO.update(n, updateImage);
+                    break;
+                }
+                case "delete": {
+                    int id = Integer.parseInt(p(req, "id", "0"));
+                    newsDAO.delete(id);
+                    break;
+                }
+                default: /* no-op */ ;
+            }
+            resp.sendRedirect(req.getContextPath() + "/admin/news");
+            return;
+        } catch (Exception ex) {
+            // In log sẽ thấy root-cause (SQL, parse…)
+            ex.printStackTrace();
+            throw new ServletException("Lỗi xử lý CRUD tin tức", ex);
+        }
+    }
+    
+    /** 
+     * Bind dữ liệu từ form vào News.
+     * whenCreate = true: set mặc định các cột NOT NULL (postedDate/viewCount/approved…)
+     * Đồng thời xử lý upload ảnh (nếu chọn).
+     */
+    private News bind(HttpServletRequest req, News n, boolean whenCreate) throws IOException, ServletException {
+        String title = p(req, "title", "");
+        if (title.isBlank()) throw new ServletException("Thiếu tiêu đề");
+        n.setTitle(title);
+
+        // categoryId
+        String catStr = p(req, "categoryId", "0");
+        try {
+            n.setCategoryId(Integer.parseInt(catStr));
+        } catch (NumberFormatException e) {
+            throw new ServletException("categoryId không hợp lệ: " + catStr);
+        }
+
+        n.setContent(p(req, "content", ""));
+
+        // home checkbox/select (nếu bạn có)
+        boolean home = "1".equals(req.getParameter("home")) || "true".equalsIgnoreCase(req.getParameter("home"));
+        n.setHome(home);
+
+        // reporter/author từ session
+        User u = (User) req.getSession().getAttribute("authUser");
+        if (u != null) {
+            // tuỳ bảng News, đặt cả tên và id phóng viên
+            n.setReporterId(u.getId());                   // nếu có cột ReporterId
+            n.setAuthor(u.getFullname());                 // nếu có cột Author (string)
+        }
+
+        if (whenCreate) {
+            // Mặc định các cột NOT NULL
+            n.setApproved(true);                          // Admin tạo thì cho duyệt luôn
+            n.setViewCount(0);
+            n.setPostedDate(java.time.LocalDateTime.now());
+        } else {
+            // Khi update có thể đưa về chờ duyệt nếu bạn muốn:
+            // n.setApproved(false);
+        }
+
+        // ảnh thumbnail (tùy chọn)
+        Part thumb = null;
+        try { thumb = req.getPart("thumbnail"); } catch (Exception ignore) {}
+        if (thumb != null && thumb.getSize() > 0) {
+            String path = saveThumbnailIfAny(thumb);      // trả về "assets/uploads/xxx.jpg"
+            if (path != null) n.setImage(path);           // set image mới; update() sẽ biết có cập nhật ảnh hay không
+        }
+
+        return n;
+    }
+
+
+    private void list(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        try {
+            List<News> items = newsDAO.findAll();
+            req.setAttribute("items", items);
+            req.setAttribute("categories", categoryDAO.findAll());
+            req.getRequestDispatcher("/WEB-INF/views/admin/news.jsp")
+               .forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException("Không tải được danh sách tin tức", e);
+        }
+    }
+
+    /** Gán dữ liệu form vào entity News (không đụng tới id). */
+    private News bind(HttpServletRequest req, News n)
+            throws IOException, ServletException {
+
+        n.setTitle(p(req, "title", ""));
+        n.setContent(p(req, "content", ""));
+
+        // setCategoryId nhận int -> parseInt
+        int categoryId = pInt(req, "categoryId", -1);
+        if (categoryId >= 0) {
+            n.setCategoryId(categoryId);
+        }
+
+        // Lấy tác giả từ session nếu model bạn có cột/settter tương ứng
+        User u = (User) req.getSession().getAttribute("authUser");
+        if (u != null) {
+            // Ví dụ nếu News có setAuthor(String):
+            // n.setAuthor(u.getFullName());
+            // Nếu bạn có field khác thì thay cho phù hợp. Không có thì bỏ qua.
+        }
+
+        // Upload thumbnail nếu có cột tương ứng trong News
+        Part thumb = null;
+        try { thumb = req.getPart("thumbnail"); } catch (IllegalStateException ignore) {}
+        if (thumb != null && thumb.getSize() > 0) {
+            // TODO: lưu file vào /uploads và gán vào model nếu bạn có thuộc tính:
+            // String path = saveFile(thumb);
+            // n.setThumbnailPath(path);
+        }
+        return n;
+    }
+
+    /* Helpers */
+    private String p(HttpServletRequest r, String k, String d) {
+        String v = r.getParameter(k);
+        return (v == null || v.isBlank()) ? d : v.trim();
+    }
+
+    private int pInt(HttpServletRequest req, String name, int def) {
+        try { return Integer.parseInt(req.getParameter(name)); }
+        catch (Exception e) { return def; }
+    }
+}

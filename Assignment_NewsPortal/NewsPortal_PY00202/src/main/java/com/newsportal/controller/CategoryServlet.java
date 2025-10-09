@@ -34,7 +34,7 @@ public class CategoryServlet extends HttpServlet {
                 return;
             }
 
-            List<News> news = newsDAO.findByCategory(id); // code ở bước 2
+            List<News> news = newsDAO.findByCategory(id); 
             req.setAttribute("currentCategory", current);
             req.setAttribute("news", news != null ? news : Collections.emptyList());
 

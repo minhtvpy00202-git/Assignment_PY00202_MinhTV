@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<footer>
+<footer class="admin-footer">
   <div class="container">
-    © <script>document.write(new Date().getFullYear())</script> NewsPortal — All rights reserved.
+    Welcome
+    <strong>
+      <c:out value="${sessionScope.authUser != null ? sessionScope.authUser.fullname : 'Guest'}"/>
+    </strong>
   </div>
 </footer>
-</body>
-</html>

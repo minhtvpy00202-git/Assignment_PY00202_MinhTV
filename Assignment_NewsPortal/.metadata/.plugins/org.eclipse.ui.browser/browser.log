@@ -11,3 +11,27 @@ thg 9 29, 2025 09:25:47.28 [7592:15324:0929/092547.288:ERROR:google_apis\gcm\eng
 thg 9 29, 2025 09:26:11.15 [7592:15324:0929/092611.150:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 9 29, 2025 09:26:59.11 [7592:15324:0929/092659.114:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 9 29, 2025 09:28:37.50 [7592:15324:0929/092837.509:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+
+thg 10 09, 2025 18:19:07.72 NEW SESSION
+thg 10 09, 2025 18:19:07.74 [13888:18184:1009/181907.713:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 09, 2025 18:19:12.83 [13888:772:1009/181912.836:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 09, 2025 18:19:13.18 [13888:772:1009/181913.180:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 09, 2025 18:19:13.80 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 09, 2025 18:19:34.04 [13888:772:1009/181934.048:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 09, 2025 18:20:17.76 [13888:772:1009/182017.760:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 09, 2025 21:06:19.99 [1009/210619.995:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\ae487cb8-d83e-4cef-b235-d9211d8a09a7: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:06:20.00 [1009/210619.999:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\29fc1cf6-d04a-4503-9e86-9d391bd8367b: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:06:20.00 [1009/210620.000:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\7bace08d-2b85-41bc-bdc6-263c70c056cc: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:06:20.00 [1009/210620.000:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\ae487cb8-d83e-4cef-b235-d9211d8a09a7: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:06:20.00 [1009/210620.000:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\29fc1cf6-d04a-4503-9e86-9d391bd8367b: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:06:20.00 [1009/210620.001:ERROR:third_party\crashpad\crashpad\util\file\filesystem_win.cc:128] GetFileAttributes C:\Users\Admin\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\7bace08d-2b85-41bc-bdc6-263c70c056cc: The system cannot find the file specified. (0x2)
+thg 10 09, 2025 21:36:18.97 [13888:20064:1009/213618.979:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 1 rejected by interface blink.mojom.WidgetHost
+thg 10 10, 2025 24:19:24.66 [22344:25396:1010/001924.664:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 10, 2025 24:19:30.10 [22344:23464:1010/001930.101:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 10, 2025 24:19:31.47 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 10, 2025 01:31:12.20 [22344:20252:1010/013112.197:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 2 rejected by interface blink.mojom.Widget
+thg 10 10, 2025 01:31:12.35 [22344:20252:1010/013112.356:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 2 rejected by interface blink.mojom.Widget
+thg 10 10, 2025 01:46:24.72 [22344:20252:1010/014624.720:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
+thg 10 10, 2025 01:46:24.82 [22344:20252:1010/014624.825:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
+thg 10 10, 2025 01:46:25.23 [22344:20252:1010/014625.231:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
+thg 10 10, 2025 01:46:25.36 [22344:20252:1010/014625.363:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s

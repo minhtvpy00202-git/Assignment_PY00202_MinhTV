@@ -1,6 +1,0 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="layout/header.jsp" %>
-
-<h2>Tin theo chuyên mục</h2>
-<ul>
-  <li><a href="news-detail.jsp">Bài viết A</a></

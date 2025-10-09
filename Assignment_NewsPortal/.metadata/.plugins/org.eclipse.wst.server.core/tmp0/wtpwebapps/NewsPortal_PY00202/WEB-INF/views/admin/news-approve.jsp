@@ -1,7 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="../layout/header.jsp" %>
 <%@ include file="../layout/admin-header.jsp" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-users.css">
+
+
+<main class="container admin-main">
 <h2>Duyệt bài viết</h2>
 
 <c:if test="${empty pendingList}">
@@ -22,5 +27,5 @@
         </form>
     </div>
 </c:forEach>
-
+</main>
 <%@ include file="../layout/footer.jsp" %>
