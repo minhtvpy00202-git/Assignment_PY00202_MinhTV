@@ -191,5 +191,46 @@ public class UserDAO {
             ps.setBoolean(1, admin); ps.setInt(2, id); ps.executeUpdate();
         }
     }
+    
+ // 
+    public int create(User u, boolean activated) throws Exception {
+        String sql = "INSERT INTO Users(Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, u.getFullname());
+            ps.setString(2, u.getEmail());
+            ps.setString(3, u.getPassword());
+            ps.setString(4, u.getMobile());
+
+            if (u.getBirthday() != null) {
+                ps.setDate(5, new java.sql.Date(u.getBirthday().getTime()));
+            } else {
+                ps.setNull(5, Types.DATE);
+            }
+            ps.setBoolean(6, u.isGender());
+            ps.setBoolean(7, u.isRole());
+            ps.setBoolean(8, activated); // <--- khác biệt
+
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
+    /** Lấy danh sách tài khoản chờ duyệt (Activated=0) */
+    public List<User> findPending() throws Exception {
+        String sql = "SELECT * FROM Users WHERE Activated=0 ORDER BY Id DESC";
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<User> list = new ArrayList<>();
+            while (rs.next()) list.add(map(rs));
+            return list;
+        }
+    }
+
 
 }

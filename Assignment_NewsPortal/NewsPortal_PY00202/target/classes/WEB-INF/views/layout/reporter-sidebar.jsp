@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<h1 class="logo">Công cụ quản trị tin tức</h1>
 <header class="admin-header">
   <div class="container">
-    <h1 class="logo">Công cụ quản trị tin tức</h1>
+    
     <nav class="nav">
       <!-- “Trang chủ” của độc giả -->
       <a href="${pageContext.request.contextPath}/home">Trang chủ</a>

@@ -451,6 +451,103 @@ public class NewsDAO {
     	  }
     	}
 
-    	
+	/**
+	 * Tìm kiếm nâng cao với nhiều tùy chọn
+	 * @param keyword từ khóa tìm kiếm
+	 * @param categoryId ID chuyên mục (0 = tất cả)
+	 * @param limit số lượng kết quả tối đa
+	 * @return danh sách bài viết phù hợp
+	 */
+	public List<News> searchAdvanced(String keyword, int categoryId, int limit) throws Exception {
+		String kw = (keyword == null ? "" : keyword.trim());
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT Id, Title, [Content], [Image], PostedDate, Author, ViewCount, ");
+		sql.append("       CategoryId, [Home], Approved, ReporterId ");
+		sql.append("FROM News WHERE Approved = 1 ");
+		
+		// Thêm điều kiện tìm kiếm
+		if (!kw.isEmpty()) {
+			sql.append("AND (Title LIKE ? OR [Content] LIKE ?) ");
+		}
+		
+		// Thêm điều kiện chuyên mục
+		if (categoryId > 0) {
+			sql.append("AND CategoryId = ? ");
+		}
+		
+		sql.append("ORDER BY PostedDate DESC ");
+		sql.append("OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY");
+		
+		try (Connection cn = DB.getConnection(); 
+			 PreparedStatement ps = cn.prepareStatement(sql.toString())) {
+			
+			int paramIndex = 1;
+			
+			// Set parameters cho keyword
+			if (!kw.isEmpty()) {
+				String like = "%" + kw + "%";
+				ps.setString(paramIndex++, like);
+				ps.setString(paramIndex++, like);
+			}
+			
+			// Set parameter cho category
+			if (categoryId > 0) {
+				ps.setInt(paramIndex++, categoryId);
+			}
+			
+			// Set limit
+			ps.setInt(paramIndex++, Math.max(0, limit));
+			
+			try (ResultSet rs = ps.executeQuery()) {
+				List<News> list = new ArrayList<>();
+				while (rs.next()) {
+					list.add(map(rs));
+				}
+				return list;
+			}
+		}
+	}
 	
-}
+	/**
+	 * Đếm số lượng kết quả tìm kiếm
+	 * @param keyword từ khóa tìm kiếm
+	 * @param categoryId ID chuyên mục (0 = tất cả)
+	 * @return số lượng bài viết phù hợp
+	 */
+	public int countSearchResults(String keyword, int categoryId) throws Exception {
+		String kw = (keyword == null ? "" : keyword.trim());
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT COUNT(*) FROM News WHERE Approved = 1 ");
+		
+		// Thêm điều kiện tìm kiếm
+		if (!kw.isEmpty()) {
+			sql.append("AND (Title LIKE ? OR [Content] LIKE ?) ");
+		}
+		
+		// Thêm điều kiện chuyên mục
+		if (categoryId > 0) {
+			sql.append("AND CategoryId = ? ");
+		}
+		
+		try (Connection cn = DB.getConnection(); 
+			 PreparedStatement ps = cn.prepareStatement(sql.toString())) {
+			
+			int paramIndex = 1;
+			
+			// Set parameters cho keyword
+			if (!kw.isEmpty()) {
+				String like = "%" + kw + "%";
+				ps.setString(paramIndex++, like);
+				ps.setString(paramIndex++, like);
+			}
+			
+			// Set parameter cho category
+			if (categoryId > 0) {
+				ps.setInt(paramIndex++, categoryId);
+			}
+			
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? rs.getInt(1) : 0;
+			}
+		}
+	}}

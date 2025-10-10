@@ -5,6 +5,7 @@ encoding//src/main/webapp/WEB-INF/views/admin/news-approve.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/users.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/category.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/layout/admin-header.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/login.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/news-detail.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/profile.jsp=UTF-8

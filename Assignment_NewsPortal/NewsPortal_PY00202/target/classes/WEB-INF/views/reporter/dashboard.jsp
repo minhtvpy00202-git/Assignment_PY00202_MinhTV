@@ -1,18 +1,32 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ include file="../layout/header.jsp" %>
-<jsp:include page="../layout/reporter-sidebar.jsp"/>
 
+<%@ include file="../layout/admin-header.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 
-<main class="container">
-  <section class="content">
-    <h1>Dashboard Phóng viên</h1>
-    <div class="grid" style="grid-template-columns:repeat(3,1fr); gap:18px">
-      <div class="content"><h3>Tổng bài viết</h3><div class="h2">${stats.total}</div></div>
-      <div class="content"><h3>Chờ duyệt</h3><div class="h2">${stats.pending}</div></div>
-      <div class="content"><h3>Đã duyệt</h3><div class="h2">${stats.approved}</div></div>
-      <a class="btn" href="${pageContext.request.contextPath}/reporter/post-create" style="text-align: center;">Đăng bài mới</a>
-      
+<main class="container admin-page">
+  <h2>Dashboard Phóng viên</h2>
+
+  <div class="grid-3 stats">
+    <div class="card">
+      <h3>${stats.total}</h3>
+      <p>Tổng bài viết</p>
+    </div>
+    <div class="card">
+      <h3>${stats.pending}</h3>
+      <p>Bài chờ duyệt</p>
+    </div>
+    <div class="card">
+      <h3>${stats.approved}</h3>
+      <p>Đã duyệt</p>
+    </div>
+  </div>
+
+  <section class="card">
+    <h3>Hành động nhanh</h3>
+    <div class="actions">
+      <a class="btn" href="${pageContext.request.contextPath}/reporter/post-create">Đăng bài mới</a>
+      <a class="btn ghost" href="${pageContext.request.contextPath}/reporter/posts">Quản lý bài viết</a>
     </div>
   </section>
 </main>

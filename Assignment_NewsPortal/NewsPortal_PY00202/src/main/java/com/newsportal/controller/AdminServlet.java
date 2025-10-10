@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet({
     "/admin/dashboard",
@@ -46,6 +47,9 @@ public class AdminServlet extends HttpServlet {
                     req.setAttribute("usersTotal",   userDAO.countAll());
                     req.setAttribute("categories",   categoryDAO.findAll());
                     req.setAttribute("pendingList",  newsDAO.findPending());
+                    Map<Integer, String> catMap = categoryDAO.toIdNameMap();
+                    req.setAttribute("catMap", catMap);
+
                     req.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp").forward(req, resp);
                     return;
                 }

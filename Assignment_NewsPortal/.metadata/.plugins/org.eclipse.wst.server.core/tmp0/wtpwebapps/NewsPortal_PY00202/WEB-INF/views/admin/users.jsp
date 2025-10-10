@@ -3,12 +3,10 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<%@ include file="../layout/header.jsp"%>
 <%@ include file="../layout/admin-header.jsp"%>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/admin-users.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 
-<main class="container">
+<main class="container admin-page">
 	<h2>Quản lý Người dùng</h2>
 
 	<form method="post" action="${ctx}/admin/users" class="form">
@@ -46,7 +44,8 @@
 		</c:if>
 	</form>
 
-	<table class="table">
+	<div class="table-wrapper">
+		<table class="table">
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -69,19 +68,21 @@
 					<td><c:out value="${u.gender ? 'Nam' : 'Nữ'}" /></td>
 					<td><c:out value="${u.role ? 'ADMIN' : 'REPORTER'}" /></td>
 					<td><c:out value="${u.activated ? '✔' : '✘'}" /></td>
-					<td class="actions"><a
-						href="${ctx}/admin/users?action=edit&id=${u.id}">Sửa</a>
+					<td class="actions">
+						<a class="btn ghost" href="${ctx}/admin/users?action=edit&id=${u.id}">Sửa</a>
 						<form method="post" action="${ctx}/admin/users"
 							style="display: inline"
 							onsubmit="return confirm('Xóa người dùng này?');">
-							<input type="hidden" name="action" value="delete" /> <input
-								type="hidden" name="id" value="${u.id}" />
-							<button type="submit">Xóa</button>
-						</form></td>
+							<input type="hidden" name="action" value="delete" /> 
+							<input type="hidden" name="id" value="${u.id}" />
+							<button type="submit" class="btn danger">Xóa</button>
+						</form>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
+		</table>
+	</div>
 </main>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />

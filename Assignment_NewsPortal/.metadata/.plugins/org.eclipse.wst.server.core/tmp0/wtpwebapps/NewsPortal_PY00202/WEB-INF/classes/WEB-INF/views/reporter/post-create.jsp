@@ -1,33 +1,40 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ include file="../layout/header.jsp" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 <jsp:include page="../layout/reporter-sidebar.jsp"/>
 
-<main class="container">
-  <h1>Đăng bài mới</h1>
+<main class="container admin-page">
+  <h2>Đăng bài mới</h2>
 
-  <form method="post" action="${pageContext.request.contextPath}/reporter/post-create" enctype="multipart/form-data" class="card">
-    <label>Tiêu đề</label>
-    <input type="text" name="title" required class="input">
-
-    <label>Chuyên mục</label>
-    <select name="categoryId" class="input" required>
-      <c:forEach var="c" items="${categories}">
-        <option value="${c.id}">${c.name}</option>
-      </c:forEach>
-    </select>
-
-    <label>Ảnh đại diện (thumbnail) (tùy chọn)</label>
-    <input type="file" name="thumbnail" accept="image/*" class="input">
-
-    <label>Nội dung</label>
-    <textarea id="content" name="content" rows="15" class="input"></textarea>
-
-    <label class="row mt-12">
-      <input type="checkbox" name="home" value="1"> Đưa lên mục Trang chủ
+  <form method="post" action="${pageContext.request.contextPath}/reporter/post-create" enctype="multipart/form-data" class="form">
+    <label>Tiêu đề
+      <input type="text" name="title" required>
     </label>
 
-    <button class="btn mt-12">Đăng bài</button>
+    <label>Chuyên mục
+      <select name="categoryId" required>
+        <c:forEach var="c" items="${categories}">
+          <option value="${c.id}">${c.name}</option>
+        </c:forEach>
+      </select>
+    </label>
+
+    <label>Ảnh đại diện (tùy chọn)
+      <input type="file" name="thumbnail" accept="image/*">
+    </label>
+
+    <label>Nội dung
+      <textarea id="content" name="content" rows="15"></textarea>
+    </label>
+
+    <label style="display: flex; align-items: center; gap: 8px;">
+      <input type="checkbox" name="home" value="1" style="width: auto;"> 
+      Đưa lên mục Trang chủ
+    </label>
+
+    <button type="submit" class="btn">Đăng bài</button>
+    <a class="btn ghost" href="${pageContext.request.contextPath}/reporter/posts">Hủy</a>
   </form>
 </main>
 

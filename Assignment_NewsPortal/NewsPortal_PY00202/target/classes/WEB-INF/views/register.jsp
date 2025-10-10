@@ -8,20 +8,35 @@
     <c:if test="${not empty error}">
       <div class="alert error">${error}</div>
     </c:if>
+
     <form class="form" method="post" action="${pageContext.request.contextPath}/auth/register">
       <label>Họ tên</label>
       <input type="text" name="fullname" required>
+
       <label>Email</label>
       <input type="email" name="email" required>
+
       <label>Mật khẩu</label>
       <input type="password" name="password" required>
+
+      <label>Số điện thoại</label>
+      <input type="text" name="mobile" placeholder="090..." />
+
       <label>Ngày sinh</label>
       <input type="date" name="birthday">
+
       <label>Giới tính</label>
       <div class="inline">
         <label class="inline"><input type="radio" name="gender" value="true"> Nam</label>
         <label class="inline"><input type="radio" name="gender" value="false"> Nữ</label>
       </div>
+
+      <label>Vai trò</label>
+      <div class="inline">
+        <label class="inline"><input type="radio" name="role" value="false" checked> Phóng viên (Reporter)</label>
+        <label class="inline"><input type="radio" name="role" value="true"> Quản trị (Admin)</label>
+      </div>
+
       <div class="actions">
         <button class="btn" type="submit">Tạo tài khoản</button>
         <a class="btn ghost" href="${pageContext.request.contextPath}/auth/login">Đã có tài khoản</a>

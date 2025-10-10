@@ -35,3 +35,26 @@ thg 10 10, 2025 01:46:24.72 [22344:20252:1010/014624.720:ERROR:components\page_l
 thg 10 10, 2025 01:46:24.82 [22344:20252:1010/014624.825:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
 thg 10 10, 2025 01:46:25.23 [22344:20252:1010/014625.231:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
 thg 10 10, 2025 01:46:25.36 [22344:20252:1010/014625.363:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:179] Invalid first_paint 0.312 s for first_image_paint 0.3 s
+
+thg 10 10, 2025 07:27:23.72 NEW SESSION
+thg 10 10, 2025 07:27:23.76 [10828:14684:1010/072723.710:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 10, 2025 07:27:28.36 [10828:6644:1010/072728.367:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 07:27:28.70 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 10, 2025 07:27:54.72 [10828:6644:1010/072754.726:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 07:28:53.75 [10828:6644:1010/072853.759:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 07:30:17.63 [10828:6644:1010/073017.632:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 07:33:01.37 [10828:6644:1010/073301.374:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 07:38:31.20 [10828:6644:1010/073831.209:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:06:33.55 [19664:16964:1010/080633.553:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 10, 2025 08:06:36.63 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 10, 2025 08:06:36.72 [19664:14216:1010/080636.724:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:06:58.90 [19664:14216:1010/080658.902:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:07:53.06 [19664:14216:1010/080753.061:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:09:33.86 [19664:14216:1010/080933.866:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:13:33.20 [19664:14216:1010/081333.200:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 10, 2025 08:20:16.06 [19664:14216:1010/082016.067:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+
+thg 10 10, 2025 09:57:36.04 NEW SESSION
+thg 10 10, 2025 09:57:36.05 [3192:4968:1010/095736.035:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 10, 2025 09:57:41.32 [3192:20868:1010/095741.323:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 10, 2025 09:57:42.03 Created TensorFlow Lite XNNPACK delegate for CPU.

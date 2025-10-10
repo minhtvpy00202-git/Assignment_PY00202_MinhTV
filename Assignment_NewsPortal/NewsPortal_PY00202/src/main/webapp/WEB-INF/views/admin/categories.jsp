@@ -2,11 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<%@ include file="../layout/header.jsp" %>
 <%@ include file="../layout/admin-header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-users.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 
-<main class="container">
+<main class="container admin-page">
   <h2>Quản lý Loại tin</h2>
 
   <form method="post" action="${ctx}/admin/categories" class="form">
@@ -23,7 +22,8 @@
     </c:if>
   </form>
 
-  <table class="table">
+  <div class="table-wrapper">
+    <table class="table">
     <thead><tr><th>ID</th><th>Tên</th><th>Hành động</th></tr></thead>
     <tbody>
       <c:forEach var="c" items="${items}">
@@ -31,18 +31,19 @@
           <td>${c.id}</td>
           <td>${c.name}</td>
           <td class="actions">
-            <a href="${ctx}/admin/categories?action=edit&id=${c.id}">Sửa</a>
+            <a class="btn ghost" href="${ctx}/admin/categories?action=edit&id=${c.id}">Sửa</a>
             <form method="post" action="${ctx}/admin/categories" style="display:inline"
                   onsubmit="return confirm('Xóa loại này?');">
               <input type="hidden" name="action" value="delete"/>
               <input type="hidden" name="id" value="${c.id}"/>
-              <button type="submit">Xóa</button>
+              <button type="submit" class="btn danger">Xóa</button>
             </form>
           </td>
         </tr>
       </c:forEach>
     </tbody>
-  </table>
+    </table>
+  </div>
 </main>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>

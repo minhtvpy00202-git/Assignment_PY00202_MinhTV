@@ -59,14 +59,61 @@ public class AuthServlet extends HttpServlet {
             }
 
             if ("/auth/register".equals(path)) {
-                resp.sendError(501); // TODO
+                String fullname = nvl(req.getParameter("fullname"));
+                String email    = nvl(req.getParameter("email"));
+                String password = req.getParameter("password");
+                String mobile   = nvl(req.getParameter("mobile"));
+                String birthday = nvl(req.getParameter("birthday")); // yyyy-MM-dd
+                String gender   = req.getParameter("gender");        // "true"/"false"
+                String role     = req.getParameter("role");          // "true" (Admin) / "false" (Reporter)
+
+                if (fullname.isEmpty() || email.isEmpty() || password == null || password.isEmpty()) {
+                    req.setAttribute("error", "Vui lòng nhập đủ Họ tên, Email và Mật khẩu.");
+                    req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                    return;
+                }
+
+                if (userDAO.existsEmail(email)) {
+                    req.setAttribute("error", "Email đã được đăng ký.");
+                    req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                    return;
+                }
+
+                java.util.Date dob = null;
+                if (!birthday.isBlank()) {
+                    java.time.LocalDate ld = java.time.LocalDate.parse(birthday);
+                    dob = java.util.Date.from(ld.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+                }
+
+                User u = new User();
+                u.setFullname(fullname);
+                u.setEmail(email);
+                u.setPassword(password);     // (sau này thay bằng hash)
+                u.setMobile(mobile);
+                u.setBirthday(dob);
+                u.setGender("true".equalsIgnoreCase(gender));
+                u.setRole("true".equalsIgnoreCase(role)); // chọn từ form
+                u.setActivated(false); // lưu trạng thái KHÓA
+
+                int id = userDAO.create(u, false); // <--- Activated=0
+                u.setId(id);
+
+                // Không tự đăng nhập. Thông báo chờ duyệt
+                req.setAttribute("error", "Đăng ký thành công. Tài khoản đang chờ quản trị viên duyệt.");
+                req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
                 return;
             }
+
+
 
             resp.sendError(404);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+    
+    private String nvl(String s) { return s == null ? "" : s.trim(); }
+
+    
 }
 

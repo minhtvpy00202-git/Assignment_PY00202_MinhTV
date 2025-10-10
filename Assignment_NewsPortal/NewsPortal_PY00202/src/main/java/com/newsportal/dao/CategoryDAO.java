@@ -1,11 +1,15 @@
 package com.newsportal.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.newsportal.model.Category;
 import com.newsportal.util.DB;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CategoryDAO {
     public List<Category> findAll() throws Exception {
@@ -56,6 +60,13 @@ public class CategoryDAO {
         return c;
     }
     
+    public Map<Integer, String> toIdNameMap() throws Exception {
+        Map<Integer,String> map = new HashMap<>();
+        for (Category c : findAll()) {
+            map.put(c.getId(), c.getName());
+        }
+        return map;
+    }
     
 
 }
