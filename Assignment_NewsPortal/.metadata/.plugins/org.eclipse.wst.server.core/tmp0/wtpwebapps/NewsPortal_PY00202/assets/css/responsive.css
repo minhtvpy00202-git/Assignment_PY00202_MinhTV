@@ -1,0 +1,511 @@
+/* ========================================
+   RESPONSIVE DESIGN SYSTEM
+   Mobile-First Approach
+======================================== */
+
+/* Base Mobile Styles (320px+) */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container System */
+.container, .content-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Grid System */
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+/* Flexbox Utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+
+/* Typography - Mobile First */
+h1, .page-title {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+}
+
+h2, .section-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin: 0 0 0.75rem 0;
+    font-weight: 600;
+}
+
+p, .page-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+/* Button System - Mobile Optimized */
+.btn, .btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px; /* Touch target size */
+    min-width: 44px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-small {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+    min-width: 36px;
+}
+
+/* Card System */
+.card, .dashboard-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+/* Stats Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    color: #718096;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Table System - Mobile First */
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin: 1rem 0;
+}
+
+.table {
+    width: 100%;
+    min-width: 600px; /* Minimum width for horizontal scroll */
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.85rem;
+}
+
+.table th {
+    background: #f8fafc;
+    padding: 0.75rem 0.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #2d3748;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+.table td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.table tr:hover {
+    background: #f8fafc;
+}
+
+/* Form Elements */
+input, textarea, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    min-height: 44px; /* Touch target */
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Navigation Improvements */
+.nav-item {
+    min-height: 44px; /* Touch target */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Spacing System */
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+
+/* Hide/Show Utilities */
+.hidden { display: none !important; }
+.block { display: block !important; }
+.inline-block { display: inline-block !important; }
+
+/* Text Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+
+/* ========================================
+   TABLET STYLES (768px+)
+======================================== */
+@media (min-width: 768px) {
+    .container, .content-container {
+        padding: 0 2rem;
+    }
+    
+    /* Grid System - Tablet */
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* Typography */
+    h1, .page-title {
+        font-size: 2.25rem;
+    }
+    
+    h2, .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+    
+    /* Cards */
+    .card, .dashboard-section {
+        padding: 2rem;
+    }
+    
+    .stat-card {
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+    
+    /* Table */
+    .table {
+        font-size: 0.9rem;
+        min-width: 700px;
+    }
+    
+    .table th {
+        padding: 1rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .table td {
+        padding: 1rem 0.75rem;
+    }
+}
+
+/* ========================================
+   DESKTOP STYLES (1024px+)
+======================================== */
+@media (min-width: 1024px) {
+    /* Grid System - Desktop */
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    /* Typography */
+    h1, .page-title {
+        font-size: 2.5rem;
+    }
+    
+    h2, .section-title {
+        font-size: 2rem;
+    }
+    
+    /* Table */
+    .table {
+        font-size: 1rem;
+        min-width: 800px;
+    }
+    
+    .table th {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .table td {
+        padding: 1rem;
+    }
+    
+    /* Hover Effects (Desktop Only) */
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* ========================================
+   LARGE DESKTOP STYLES (1200px+)
+======================================== */
+@media (min-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    /* Typography */
+    h1, .page-title {
+        font-size: 2.75rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+    }
+    
+    .stat-icon {
+        font-size: 3rem;
+    }
+}
+
+/* ========================================
+   MOBILE SPECIFIC IMPROVEMENTS
+======================================== */
+@media (max-width: 767px) {
+    /* Touch-friendly spacing */
+    .page-header {
+        padding: 1.5rem 1rem;
+        text-align: center;
+    }
+    
+    .page-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    /* Mobile table improvements */
+    .table-wrapper {
+        margin: 0 -1rem;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    /* Mobile navigation */
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .btn-small {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Mobile forms */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Mobile cards */
+    .card, .dashboard-section {
+        margin: 0 -1rem 1rem -1rem;
+        border-radius: 0;
+    }
+    
+    /* Mobile stats */
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 1rem;
+    }
+    
+    .stat-content {
+        text-align: center;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .card, .dashboard-section {
+        border: 2px solid #000;
+    }
+    
+    .btn-primary {
+        background: #000;
+        color: #fff;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+    
+    .card, .dashboard-section {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .table {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .table th {
+        background: #4a5568;
+    }
+}

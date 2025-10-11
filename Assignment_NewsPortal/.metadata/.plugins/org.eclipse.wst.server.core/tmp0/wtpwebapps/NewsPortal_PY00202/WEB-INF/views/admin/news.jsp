@@ -43,6 +43,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th>STT</th>
                   <th>ID</th>
                   <th>Tiêu đề</th>
                   <th>Loại</th>
@@ -50,8 +51,9 @@
                 </tr>
               </thead>
               <tbody>
-                <c:forEach var="n" items="${items}">
+                <c:forEach var="n" items="${items}" varStatus="status">
                   <tr>
+                    <td class="text-center">${status.index + 1}</td>
                     <td>${n.id}</td>
                     <td>
                       <c:out value="${n.title}" />

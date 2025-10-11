@@ -24,10 +24,11 @@
 
   <div class="table-wrapper">
     <table class="table">
-    <thead><tr><th>ID</th><th>Tên</th><th>Hành động</th></tr></thead>
+    <thead><tr><th>STT</th><th>ID</th><th>Tên</th><th>Hành động</th></tr></thead>
     <tbody>
-      <c:forEach var="c" items="${items}">
+      <c:forEach var="c" items="${items}" varStatus="status">
         <tr>
+          <td class="text-center">${status.index + 1}</td>
           <td>${c.id}</td>
           <td>${c.name}</td>
           <td class="actions">

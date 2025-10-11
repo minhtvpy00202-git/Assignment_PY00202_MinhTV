@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+  <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<jsp:include page="../layout/reporter-sidebar.jsp"/>
+    <%@ include file="../layout/admin-header.jsp" %>
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 
 <main class="container admin-main">
   <section class="content">

@@ -126,7 +126,7 @@ public class NewsCRUDServlet extends HttpServlet {
             n.setReporterId(me.getId());
 
             int newId = newsDAO.create(n);
-            resp.sendRedirect(req.getContextPath() + "/reporter/news?created=" + newId);
+            resp.sendRedirect(req.getContextPath() + "/reporter/posts?created=" + newId);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -186,7 +186,7 @@ public class NewsCRUDServlet extends HttpServlet {
             if (newImage != null) n.setImage(newImage);
 
             newsDAO.update(n, newImage != null);
-            resp.sendRedirect(req.getContextPath()+"/reporter/news?updated="+id);
+            resp.sendRedirect(req.getContextPath()+"/reporter/posts?updated="+id);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -207,7 +207,7 @@ public class NewsCRUDServlet extends HttpServlet {
             if (n == null) { resp.sendError(403, "Không có quyền"); return; }
 
             newsDAO.delete(n.getId());
-            resp.sendRedirect(req.getContextPath()+"/reporter/news?deleted=1");
+            resp.sendRedirect(req.getContextPath()+"/reporter/posts?deleted=1");
         } catch (Exception e) {
             throw new ServletException(e);
         }

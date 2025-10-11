@@ -21,14 +21,16 @@
           <table class="table">
             <thead>
               <tr>
+                <th>STT</th>
                 <th>Email</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
-              <c:forEach var="n" items="${items}">
+              <c:forEach var="n" items="${items}" varStatus="status">
                 <tr>
+                  <td class="text-center">${status.index + 1}</td>
                   <td>${n.email}</td>
                   <td>
                     <c:out value="${n.enabled ? 'Đang nhận' : 'Đã hủy'}" />

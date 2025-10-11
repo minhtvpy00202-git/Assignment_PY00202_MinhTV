@@ -1,0 +1,42 @@
+package com.newsportal.controller;
+
+import com.newsportal.model.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/debug-session")
+public class DebugSessionServlet extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        resp.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = resp.getWriter();
+        
+        out.println("<html><body>");
+        out.println("<h2>Debug Session Info</h2>");
+        
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            out.println("<p style='color:red'>No session found</p>");
+        } else {
+            out.println("<p>Session ID: " + session.getId() + "</p>");
+            
+            User user = (User) session.getAttribute("authUser");
+            if (user == null) {
+                out.println("<p style='color:red'>No authUser in session</p>");
+            } else {
+                out.println("<p>User ID: " + user.getId() + "</p>");
+                out.println("<p>Username: " + user.getUsername() + "</p>");
+                out.println("<p>Email: " + user.getEmail() + "</p>");
+                out.println("<p>Role (admin): " + user.isRole() + "</p>");
+            }
+        }
+        
+        out.println("</body></html>");
+    }
+}

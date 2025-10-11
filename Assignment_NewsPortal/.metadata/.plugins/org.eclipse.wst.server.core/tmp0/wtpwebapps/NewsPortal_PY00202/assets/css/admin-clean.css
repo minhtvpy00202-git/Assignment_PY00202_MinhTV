@@ -378,4 +378,187 @@ footer strong {
     footer p:last-child {
         font-size: 0.9rem;
     }
+}/* ====== TABLE STYLES ====== */
+
+.table-wrapper {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: white;
+}
+
+.table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Specific column widths for categories table */
+.table th:nth-child(1), /* ID column */
+.table td:nth-child(1) {
+    width: 80px;
+    text-align: center;
+}
+
+.table th:nth-child(2), /* Name column */
+.table td:nth-child(2) {
+    width: auto; /* Takes remaining space */
+    min-width: 200px;
+}
+
+.table th:nth-child(3), /* Actions column */
+.table td:nth-child(3) {
+    width: 200px;
+    text-align: center;
+}
+
+/* Actions column styling */
+.table .actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.table .actions .btn {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    min-width: 60px;
+}
+
+.table .actions form {
+    display: inline-block;
+    margin: 0;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    
+    .table {
+        min-width: 600px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .table .actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .table .actions .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .table th:nth-child(1),
+    .table td:nth-child(1) {
+        width: 60px;
+    }
+    
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 150px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.85rem;
+    }
+}
+
+
+/* Cột ID (cột 2) – hẹp lại vì chỉ 4–5 ký tự */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 72px;           /* ~ 70–80px là hợp lý */
+  max-width: 80px;
+  text-align: center;     /* ID nhìn gọn hơn */
+  white-space: nowrap;
+}
+
+/* Cột THAO TÁC (cột 9) – rộng hơn và căn giữa */
+.table th:nth-child(9),
+.table td:nth-child(9) {
+  width: 200px;           /* tăng từ 16% lên ~200px */
+  min-width: 180px;
+  text-align: center;     /* căn giữa nội dung */
+}
+
+/* Bên trong cell THAO TÁC là flex – đảm bảo căn giữa ngang */
+.table td.actions,
+.action-buttons-compact {
+  justify-content: center !important;
+  text-align: center;
+}
+
+/* Giữ nút gọn, không bể hàng (khi đủ chỗ vẫn căn giữa) */
+.action-buttons-compact {
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .table th:nth-child(2), .table td:nth-child(2) {
+    width: 60px;
+    max-width: 60px;
+  }
+  .table th:nth-child(9), .table td:nth-child(9) {
+    width: 170px;
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table th:nth-child(2), .table td:nth-child(2) {
+    width: 56px;
+    max-width: 56px;
+  }
+  .table th:nth-child(9), .table td:nth-child(9) {
+    width: 150px;
+    min-width: 140px;
+  }
 }

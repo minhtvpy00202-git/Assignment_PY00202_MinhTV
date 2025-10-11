@@ -550,4 +550,43 @@ public class NewsDAO {
 				return rs.next() ? rs.getInt(1) : 0;
 			}
 		}
+	}
+	
+	/**
+	 * Đếm tổng số bài viết của một reporter
+	 */
+	public int countByReporter(int reporterId) throws Exception {
+		try (Connection c = DB.getConnection();
+			 PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM News WHERE ReporterId = ?")) {
+			ps.setInt(1, reporterId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? rs.getInt(1) : 0;
+			}
+		}
+	}
+	
+	/**
+	 * Đếm số bài chờ duyệt của một reporter
+	 */
+	public int countPendingByReporter(int reporterId) throws Exception {
+		try (Connection c = DB.getConnection();
+			 PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM News WHERE ReporterId = ? AND Approved = 0")) {
+			ps.setInt(1, reporterId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? rs.getInt(1) : 0;
+			}
+		}
+	}
+	
+	/**
+	 * Đếm số bài đã duyệt của một reporter
+	 */
+	public int countApprovedByReporter(int reporterId) throws Exception {
+		try (Connection c = DB.getConnection();
+			 PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM News WHERE ReporterId = ? AND Approved = 1")) {
+			ps.setInt(1, reporterId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? rs.getInt(1) : 0;
+			}
+		}
 	}}

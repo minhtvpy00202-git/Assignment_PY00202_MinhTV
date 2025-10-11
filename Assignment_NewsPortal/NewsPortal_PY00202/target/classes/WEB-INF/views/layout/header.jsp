@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title><c:out
-		value="${pageTitle != null ? pageTitle : 'NewsPortal'}" /></title>
+		value="${pageTitle != null ? pageTitle : '🗞️ NewsPortal'}" /></title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/style.css">
 
@@ -15,7 +15,7 @@
 	<div class="logo-section">
 		<h1 class="main-logo">
 			<a href="${pageContext.request.contextPath}/home">
-				NewsPortal
+				🗞️ NewsPortal
 			</a>
 		</h1>
 	</div>

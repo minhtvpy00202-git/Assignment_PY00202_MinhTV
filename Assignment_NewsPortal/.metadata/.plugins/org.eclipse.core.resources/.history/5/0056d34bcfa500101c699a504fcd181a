@@ -1,0 +1,6 @@
+package com.newsportal.controller;
+
+@WebServlet("/user-profile")
+public class UserProfileServlet {
+
+}
