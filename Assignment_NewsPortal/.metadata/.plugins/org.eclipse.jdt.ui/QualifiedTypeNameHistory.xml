@@ -3,4 +3,5 @@
     <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="com.newsportal.model.User"/>
     <fullyQualifiedTypeName name="com.newsportal.dao.CategoryDAO"/>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
 </qualifiedTypeNameHistroy>
