@@ -589,4 +589,67 @@ public class NewsDAO {
 				return rs.next() ? rs.getInt(1) : 0;
 			}
 		}
-	}}
+	}
+
+	
+	public List<News> findByReporterPending(int reporterId, int limit) {
+	    String sql = """
+	        SELECT Id, Title, Content, Image, PostedDate, Author, ViewCount,
+	               CategoryId, Home, Approved, ReporterId
+	        FROM News
+	        WHERE ReporterId = ?
+	          AND (Approved = 0 OR Approved IS NULL)
+	        ORDER BY PostedDate DESC            
+	        OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY
+	    """;
+
+	    List<News> list = new ArrayList<>();
+	    try (Connection con = DB.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setInt(1, reporterId);
+	        ps.setInt(2, limit);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) list.add(mapRow(rs));
+	        }
+	    } catch (SQLException e) {
+	        throw new RuntimeException(e);
+	    }
+	    return list;
+	}
+
+
+
+	public List<News> findByReporterPending(int reporterId) {
+	    return findByReporterPending(reporterId, 5); // mặc định show 5 bài
+	}
+
+	private News mapRow(ResultSet rs) throws SQLException {
+	    News n = new News();
+
+	    n.setId(rs.getInt("Id"));
+	    n.setTitle(rs.getString("Title"));
+	    n.setContent(rs.getString("Content"));
+	    n.setImage(rs.getString("Image"));
+
+	    // datetime2(7) -> LocalDateTime
+	    Timestamp ts = rs.getTimestamp("PostedDate");
+	    n.setPostedDate(ts != null ? ts.toLocalDateTime() : null);
+
+	    n.setAuthor(rs.getString("Author"));
+	    n.setViewCount(rs.getInt("ViewCount"));       // NOT NULL -> getInt OK
+	    n.setCategoryId(rs.getInt("CategoryId"));     // NOT NULL
+
+	    // bit NOT NULL -> getBoolean OK
+	    n.setHome(rs.getBoolean("Home"));
+	    n.setApproved(rs.getBoolean("Approved"));
+
+	    // FK có thể NULL -> dùng getObject để giữ null
+	    Integer reporterId = rs.getObject("ReporterId", Integer.class);
+	    n.setReporterId(reporterId);
+
+	    return n;
+	}
+
+
+
+}

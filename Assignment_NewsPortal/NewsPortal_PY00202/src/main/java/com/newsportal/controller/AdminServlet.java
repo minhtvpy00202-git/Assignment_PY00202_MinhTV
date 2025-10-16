@@ -1,16 +1,22 @@
 package com.newsportal.controller;
 
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.newsportal.dao.CategoryDAO;
 import com.newsportal.dao.NewsDAO;
 import com.newsportal.dao.UserDAO;
+import com.newsportal.model.News;
 import com.newsportal.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
-import java.io.IOException;
-import java.util.Map;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet({
     "/admin/dashboard",
@@ -54,8 +60,29 @@ public class AdminServlet extends HttpServlet {
                     return;
                 }
                 case "/admin/news-approve": {
-                    req.setAttribute("pendingList", newsDAO.findPending());
-                    req.setAttribute("categories", new CategoryDAO().findAll());
+                	// Danh sách bài chờ
+                    var pending = newsDAO.findPending();
+                    req.setAttribute("pendingList", pending);
+                    req.setAttribute("categories", categoryDAO.findAll());
+
+                    // Lấy tất cả reporterId xuất hiện
+                    Set<Integer> ids = pending.stream()
+                                              .map(News::getReporterId)
+                                              .filter(Objects::nonNull)
+                                              .collect(Collectors.toSet());
+                    // Map<id, User>
+                    Map<Integer, User> reporters = userDAO.findByIds(ids);
+                    req.setAttribute("reporters", reporters);
+
+                    // Nếu có id cụ thể (ví dụ xem chi tiết 1 bài), thì mới load author riêng
+                    String idParam = req.getParameter("id");
+                    if (idParam != null && !idParam.isBlank()) {
+                        int newsId = Integer.parseInt(idParam);
+                        News news = newsDAO.findById(newsId);
+                        req.setAttribute("news", news);
+                        req.setAttribute("newsAuthor", reporters.get(news.getReporterId()));
+                    }
+
                     req.getRequestDispatcher("/WEB-INF/views/admin/news-approve.jsp").forward(req, resp);
                     return;
                 }

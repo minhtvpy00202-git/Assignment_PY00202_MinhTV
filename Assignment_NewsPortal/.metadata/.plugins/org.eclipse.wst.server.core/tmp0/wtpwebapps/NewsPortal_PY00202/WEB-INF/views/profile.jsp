@@ -3,7 +3,7 @@
     <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
       <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
         <%@ include file="layout/admin-header.jsp" %>
-          <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/profile.css">
+
 
           <main class="container profile-page">
             <c:choose>

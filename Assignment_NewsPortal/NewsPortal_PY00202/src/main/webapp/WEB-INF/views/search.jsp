@@ -3,17 +3,21 @@
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ include file="layout/header.jsp" %>
 
-<main class="container grid">
-  <section class="content">
-    <h1>Tìm kiếm</h1>
-    
-    <!-- Search Form -->
-    <form class="searchbar" action="${pageContext.request.contextPath}/search" method="get">
-      <input type="text" name="q" value="<c:out value='${q}'/>" placeholder="Nhập từ khóa tìm kiếm..." autofocus>
-      <button class="btn" type="submit">
-        <i class="icon-search"></i> Tìm kiếm
-      </button>
-    </form>
+<main class="container">
+  <div class="main-content">
+    <section class="content-area">
+      <div class="search-header">
+        <h1>Tìm kiếm</h1>
+        <p>Tìm kiếm bài viết theo từ khóa</p>
+      </div>
+      
+      <!-- Search Form -->
+      <form class="search-form-main" action="${pageContext.request.contextPath}/search" method="get">
+        <div class="search-input-group">
+          <input class="form-control" type="text" name="q" value="<c:out value='${q}'/>" placeholder="Nhập từ khóa tìm kiếm..." autofocus>
+          <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+        </div>
+      </form>
 
     <!-- Search Results -->
     <c:if test="${not empty q}">
@@ -38,7 +42,7 @@
         <c:choose>
           <c:when test="${not empty results}">
             <c:forEach var="news" items="${results}">
-              <article class="search-result-item">
+              <article class="search-result">
                 <h3 class="result-title">
                   <a href="${pageContext.request.contextPath}/news/${news.id}">
                     <c:out value="${news.title}"/>
@@ -46,9 +50,9 @@
                 </h3>
                 
                 <div class="result-meta">
-                  <span class="result-date">${news.postedDate}</span>
-                  <span class="result-author">Tác giả: ${news.author}</span>
-                  <span class="result-views">${news.viewCount} lượt xem</span>
+                  <span>${news.postedDate}</span>
+                  <span>Tác giả: ${news.author}</span>
+                  <span>${news.viewCount} lượt xem</span>
                 </div>
                 
                 <div class="result-excerpt">
@@ -61,12 +65,6 @@
                       <c:out value="${content}"/>
                     </c:otherwise>
                   </c:choose>
-                </div>
-                
-                <div class="result-link">
-                  <a href="${pageContext.request.contextPath}/news/${news.id}" class="read-more">
-                    Đọc tiếp →
-                  </a>
                 </div>
               </article>
             </c:forEach>
@@ -113,9 +111,12 @@
         <c:out value="${error}"/>
       </div>
     </c:if>
-  </section>
+    </section>
 
-  <aside><jsp:include page="layout/sidebar.jsp"/></aside>
+    <aside class="sidebar-area">
+      <jsp:include page="layout/sidebar.jsp"/>
+    </aside>
+  </div>
 </main>
 
 <%@ include file="layout/footer.jsp" %>

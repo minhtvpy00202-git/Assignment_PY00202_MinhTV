@@ -22,7 +22,8 @@ public class AdminUserApprovalServlet extends HttpServlet {
     private void deny(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
-
+    
+  //================GET===================================
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         if (!isAdmin(req)) { deny(req, resp); return; }
@@ -35,33 +36,73 @@ public class AdminUserApprovalServlet extends HttpServlet {
         }
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    //================POST===================================
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         if (!isAdmin(req)) { deny(req, resp); return; }
+        req.setCharacterEncoding("UTF-8");
 
         String action = req.getParameter("action");
-        int id = Integer.parseInt(req.getParameter("id"));
+        String idRaw  = req.getParameter("id");
+
+        String msg = "Hành động không hợp lệ.";
+        String type = "danger";
+
         try {
-            switch (action == null ? "" : action) {
+            int id = Integer.parseInt(idRaw);
+            String a = (action == null ? "" : action.trim().toLowerCase());
+
+            switch (a) {
                 case "approve": {
-                    userDAO.setActivated(id, true);     // bật Activated=1
+                    userDAO.setActivated(id, true);
+                    User u = userDAO.findById(id);
+                    msg = "Đã duyệt tài khoản " + "#" +id +". " + (u!=null? u.getFullname() : ("#" + id)) + ".";
+                    type = "success";
                     break;
                 }
                 case "reject": {
-                    userDAO.delete(id);                 // xóa tài khoản
+                    // Nếu muốn soft-delete: userDAO.setActivated(id, false);
+                    userDAO.delete(id);
+                    User u = userDAO.findById(id);
+                    msg = "Đã từ chối tài khoản "+ "#" +id +". " + (u!=null? u.getFullname() : ("#" + id)) + ".";
+                    type = "warning";
                     break;
                 }
                 case "toggle-role": {
-                    // lấy hiện trạng rồi đảo
                     User u = userDAO.findById(id);
-                    if (u != null) userDAO.setRole(id, !u.isRole());
+                    if (u != null) {
+                        boolean newRole = !u.isRole();
+                        userDAO.setRole(id, newRole);
+                        msg = "Đã đổi vai trò cho tài khoản #" + id  +" "+ (u!=null? u.getFullname(): ("#" + id)) +" "+ " thành " + (newRole ? "Admin" : "Reporter") + ".";
+                        type = "info";
+                    } else {
+                        msg = "Không tìm thấy tài khoản #" + id + ".";
+                        type = "danger";
+                    }
                     break;
                 }
-                default: /* no-op */ ;
+                default: {
+                    msg = "Hành động không hợp lệ.";
+                    type = "danger";
+                }
             }
-            resp.sendRedirect(req.getContextPath() + "/admin/users-pending");
+        } catch (NumberFormatException nfe) {
+            msg = "ID không hợp lệ.";
+            type = "danger";
         } catch (Exception e) {
-            throw new ServletException(e);
+            msg = "Có lỗi xảy ra: " + e.getMessage();
+            type = "danger";
         }
+
+        // Flash message
+        HttpSession session = req.getSession();
+        session.setAttribute("flashMsg", msg);
+        session.setAttribute("flashType", type);
+
+        // PRG
+        resp.sendRedirect(req.getContextPath() + "/admin/users-pending");
     }
+ 
+
 }

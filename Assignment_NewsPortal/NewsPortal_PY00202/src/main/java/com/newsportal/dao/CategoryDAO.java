@@ -3,6 +3,7 @@ package com.newsportal.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,13 +61,22 @@ public class CategoryDAO {
         return c;
     }
     
-    public Map<Integer, String> toIdNameMap() throws Exception {
-        Map<Integer,String> map = new HashMap<>();
-        for (Category c : findAll()) {
-            map.put(c.getId(), c.getName());
+    public Map<Integer, String> toIdNameMap() {
+        Map<Integer, String> map = new HashMap<>();
+        String sql = "SELECT Id, Name FROM Categories";
+        try (Connection con = DB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                map.put(rs.getInt("Id"), rs.getString("Name"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);  // không bắt buộc caller phải try/catch
         }
         return map;
     }
+
     
 
 }

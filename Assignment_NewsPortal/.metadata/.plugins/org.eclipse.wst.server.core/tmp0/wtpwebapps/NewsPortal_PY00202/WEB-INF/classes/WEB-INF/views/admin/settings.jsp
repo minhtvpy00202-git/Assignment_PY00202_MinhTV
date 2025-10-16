@@ -2,11 +2,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="../layout/admin-header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
+
 
 <main class="container admin-page">
   <section class="content">
-    <h1>Cài đặt hệ thống</h1>
+    <h1>CÀI ĐẶT HỆ THỐNG</h1>
     <form class="form" method="post" action="${pageContext.request.contextPath}/admin/settings/save">
       <label>Tiêu đề site</label>
       <input name="siteTitle" value="${settings.siteTitle}">

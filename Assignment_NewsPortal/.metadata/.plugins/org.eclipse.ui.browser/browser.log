@@ -102,3 +102,92 @@ thg 10 10, 2025 22:03:06.81 [15196:10960:1010/220306.816:ERROR:google_apis\gcm\e
 thg 10 10, 2025 22:03:47.91 [15196:10960:1010/220347.915:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 10, 2025 22:05:15.23 [15196:10960:1010/220515.232:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 10, 2025 22:08:35.86 [15196:10960:1010/220835.865:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+
+thg 10 15, 2025 10:09:11.72 NEW SESSION
+thg 10 15, 2025 10:09:11.73 [11300:14880:1015/100911.721:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 10:09:17.00 [11300:7332:1015/100917.004:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 10:09:17.25 [11300:7332:1015/100917.253:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 10:09:17.42 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 12:07:52.65 [13488:5852:1015/120752.650:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 12:07:58.00 [13488:9520:1015/120758.001:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 12:07:58.73 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 12:08:21.91 [13488:9520:1015/120821.910:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 12:09:09.40 [13488:9520:1015/120909.408:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 12:20:42.97 [18444:4932:1015/122042.970:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 12:20:59.73 [6060:17792:1015/122059.735:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 12:21:04.31 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 12:21:04.40 [6060:8972:1015/122104.403:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 12:21:33.45 [6060:8972:1015/122133.456:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 12:28:23.39 [6060:13132:1015/122823.396:ERROR:CONSOLE:233] "Uncaught (in promise) Error: Node cannot be found in the current page.", source: devtools://devtools/bundled/panels/elements/elements.js (233)
+thg 10 15, 2025 12:28:23.60 [6060:13132:1015/122823.603:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:24.06 [6060:13132:1015/122824.057:ERROR:CONSOLE:1] "Request Emulation.setEmitTouchEventsForMouse failed. {"code":-32601,"message":"'Emulation.setEmitTouchEventsForMouse' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:24.64 [6060:13132:1015/122824.639:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:24.64 [6060:13132:1015/122824.645:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:39.90 [6060:13132:1015/122839.903:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:39.90 [6060:13132:1015/122839.903:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:40.51 [6060:13132:1015/122840.515:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:40.51 [6060:13132:1015/122840.516:ERROR:CONSOLE:1] "Request Storage.getStorageKeyForFrame failed. {"code":-32602,"message":"Frame tree node for given frame not found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:28:43.16 [6060:13132:1015/122843.166:ERROR:CONSOLE:1] "Request Emulation.setEmitTouchEventsForMouse failed. {"code":-32601,"message":"'Emulation.setEmitTouchEventsForMouse' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:32:58.93 [6060:13132:1015/123258.931:ERROR:CONSOLE:1] "Request Emulation.setEmitTouchEventsForMouse failed. {"code":-32601,"message":"'Emulation.setEmitTouchEventsForMouse' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:32:59.96 [6060:13132:1015/123259.969:ERROR:CONSOLE:1] "Request Emulation.setEmitTouchEventsForMouse failed. {"code":-32601,"message":"'Emulation.setEmitTouchEventsForMouse' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+thg 10 15, 2025 12:58:32.41 [19404:15596:1015/125832.414:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 12:58:37.14 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 12:58:37.36 [19404:11480:1015/125837.369:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 12:59:06.90 [19404:11480:1015/125906.907:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 13:06:00.75 [10936:18268:1015/130600.749:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 13:06:05.38 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 13:06:05.51 [10936:3788:1015/130605.516:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 13:09:35.76 [13832:18856:1015/130935.768:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 13:09:41.17 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 13:09:41.23 [13832:19100:1015/130941.238:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:10:08.56 [13832:19100:1015/131008.567:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:10:53.91 [13832:19100:1015/131053.914:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:15:58.49 [12244:12988:1015/131558.496:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 13:16:03.93 [12244:8828:1015/131603.934:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:16:04.07 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 13:16:32.79 [12244:8828:1015/131632.795:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:17:23.71 [12244:8828:1015/131723.719:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:19:20.05 [12244:8828:1015/131920.056:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 13:27:25.23 [10528:11152:1015/132725.230:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 13:27:30.00 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 13:27:30.07 [10528:17660:1015/132730.076:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:27:56.10 [10528:17660:1015/132756.101:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 13:28:38.10 [10528:17660:1015/132838.101:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 13:47:37.14 [4088:8512:1015/134737.148:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 13:47:44.20 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 15, 2025 13:47:44.27 [4088:6808:1015/134744.270:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 16:33:54.76 [4088:16496:1015/163354.759:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 915120310 rejected by interface blink.mojom.FrameWidgetHost
+thg 10 15, 2025 16:33:54.76 [4088:16496:1015/163354.760:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 915120310 rejected by interface blink.mojom.FrameWidgetHost
+thg 10 15, 2025 19:10:22.86 [4088:6808:1015/191022.865:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 19:10:25.66 [4088:10020:1015/191025.669:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 19:10:25.76 [4088:16496:1015/191025.760:ERROR:components\signin\internal\identity_manager\account_info_fetcher.cc:65] OnGetTokenFailure: Request canceled.
+thg 10 15, 2025 19:10:26.14 [4088:6808:1015/191026.141:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 19:10:31.55 [4088:6808:1015/191031.552:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 19:10:49.21 [4088:6808:1015/191049.209:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 15, 2025 19:11:48.28 [4088:6808:1015/191148.281:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 15, 2025 19:35:45.85 [4088:12836:1015/193545.855:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 15, 2025 19:35:45.91 [4088:16496:1015/193545.914:ERROR:chrome\browser\ui\views\user_education\impl\browser_user_education_interface_impl.cc:154] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+thg 10 15, 2025 19:35:46.24 [4088:6808:1015/193546.246:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 16, 2025 02:00:21.91 [4088:6808:1016/020021.914:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:483] ConnectionHandler failed with net error: -2
+
+thg 10 16, 2025 08:19:22.13 NEW SESSION
+thg 10 16, 2025 08:19:22.15 [6544:17792:1016/081922.129:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 16, 2025 08:19:26.45 [6544:9572:1016/081926.456:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 16, 2025 08:19:26.89 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 16, 2025 08:19:48.04 [6544:9572:1016/081948.049:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 16, 2025 10:57:29.77 [6544:18204:1016/105729.770:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 0 rejected by interface blink.mojom.WidgetHost
+thg 10 16, 2025 11:22:20.17 [6544:18204:1016/112220.174:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 5 rejected by interface blink.mojom.WidgetHost
+thg 10 16, 2025 11:23:08.64 [6544:18204:1016/112308.645:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 0 rejected by interface blink.mojom.WidgetHost
+thg 10 16, 2025 11:27:01.21 [6544:18204:1016/112701.215:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 5 rejected by interface blink.mojom.WidgetHost
+thg 10 16, 2025 13:52:29.62 [23464:21820:1016/135229.622:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 16, 2025 13:52:32.13 [23464:22604:1016/135232.131:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 16, 2025 13:52:32.51 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 16, 2025 13:53:01.42 [23464:22604:1016/135301.420:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 16, 2025 14:59:58.13 [23464:19700:1016/145958.129:ERROR:CONSOLE:0] "[Report Only] Refused to frame 'https://ogs.google.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'self'".
+thg 10 16, 2025 14:59:58.13 ", source:  (0)
+thg 10 16, 2025 14:59:58.13 [23464:19700:1016/145958.129:ERROR:CONSOLE:0] "[Report Only] Refused to frame 'https://ogs.google.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'self'".
+thg 10 16, 2025 14:59:58.13 ", source:  (0)
+thg 10 16, 2025 19:34:17.78 [23464:19700:1016/193417.786:ERROR:components\device_event_log\device_event_log_impl.cc:198] [19:34:17.773] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+thg 10 16, 2025 20:19:26.77 [23464:22604:1016/201926.769:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 16, 2025 20:19:54.15 [23464:22604:1016/201954.149:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 16, 2025 21:54:18.13 [23464:19700:1016/215418.136:ERROR:components\device_event_log\device_event_log_impl.cc:198] [21:54:18.136] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)

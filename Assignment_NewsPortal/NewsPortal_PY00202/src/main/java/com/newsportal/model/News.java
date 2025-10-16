@@ -1,6 +1,11 @@
 package com.newsportal.model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.jsoup.Jsoup;
 
 public class News {
     private int id;
@@ -66,4 +71,24 @@ public class News {
 
     public Integer getReporterId() { return reporterId; }
     public void setReporterId(Integer reporterId) { this.reporterId = reporterId; }
+    
+    public String getPostedDateFormatted() {
+        if (postedDate == null) return "";
+
+        // Định dạng ngày giờ kèm giờ phút và múi giờ
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm '(GMT+7)'");
+
+        // Nếu muốn chính xác theo múi giờ Việt Nam
+        ZonedDateTime vnTime = postedDate.atZone(ZoneId.of("Asia/Ho_Chi_Minh"));
+        
+        return vnTime.format(formatter);
+    }
+    
+    public String getExcerpt() {
+        if (content == null) return "";
+        String text = Jsoup.parse(content).text();   // bỏ toàn bộ thẻ HTML
+        text = text.trim().replaceAll("\\s+", " ");
+        return text.length() > 300 ? text.substring(0, 300) + "..." : text;
+    }
+
 }

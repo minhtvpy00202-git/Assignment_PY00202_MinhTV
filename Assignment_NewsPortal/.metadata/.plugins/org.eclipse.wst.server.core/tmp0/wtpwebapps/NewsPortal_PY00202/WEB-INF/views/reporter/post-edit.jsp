@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
-<jsp:include page="../layout/reporter-sidebar.jsp"/>
+
+<jsp:include page="../layout/admin-header.jsp"/>
 
 <main class="container admin-page">
   <h2>Sửa bài viết</h2>
@@ -25,7 +25,7 @@
     <label>Ảnh đại diện (để trống nếu không đổi)
       <input type="file" name="thumbnail" accept="image/*">
       <c:if test="${not empty news.image}">
-        <small style="color: #6b7280; font-size: 0.8rem; display: block; margin-top: 0.25rem;">Ảnh hiện tại: ${news.image}</small>
+        <small>Ảnh hiện tại: ${news.image}</small>
       </c:if>
     </label>
 
@@ -33,8 +33,8 @@
       <textarea id="content" name="content" rows="15"><c:out value="${news.content}" escapeXml="false"/></textarea>
     </label>
 
-    <label style="display: flex; align-items: center; gap: 8px;">
-      <input type="checkbox" name="home" value="1" ${news.home ? 'checked' : ''} style="width: auto;"> 
+    <label>
+      <input type="checkbox" name="home" value="1" ${news.home ? 'checked' : ''}> 
       Hiển thị Trang chủ
     </label>
 

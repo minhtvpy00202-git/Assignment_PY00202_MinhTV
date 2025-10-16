@@ -8,9 +8,7 @@ import com.newsportal.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import jakarta.servlet.http.Part;
 
 import java.io.IOException;
@@ -21,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@WebServlet("/admin/news")
+@WebServlet({"/admin/news", "/admin/news-edit"})
 @MultipartConfig(maxFileSize = 10 * 1024 * 1024, maxRequestSize = 50 * 1024 * 1024)
 public class AdminNewsCRUDServlet extends HttpServlet {
 
@@ -33,18 +31,27 @@ public class AdminNewsCRUDServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String action = p(req, "action", "list");
+        String servletPath = req.getServletPath();
 
-        if ("edit".equals(action)) {
+        // --- Trang sửa riêng ---
+        if ("/admin/news-edit".equals(servletPath)) {
             int id = pInt(req, "id", -1);
-            if (id < 0) { resp.sendError(400, "Invalid id"); return; }
+            if (id < 0) { resp.sendError(400, "Thiếu hoặc sai id"); return; }
+
             try {
-                req.setAttribute("item", newsDAO.findById(id));
+                News n = newsDAO.findById(id);
+                if (n == null) { resp.sendError(404, "Không tìm thấy tin id=" + id); return; }
+
+                req.setAttribute("news", n);                       // <-- JSP news-edit.jsp đang dùng biến 'news'
+                req.setAttribute("categories", categoryDAO.findAll());
+                req.getRequestDispatcher("/WEB-INF/views/admin/news-edit.jsp").forward(req, resp);
+                return;
             } catch (Exception e) {
-                throw new ServletException("Không tải bản ghi id=" + id, e);
+                throw new ServletException("Không tải tin id=" + id, e);
             }
         }
 
+        // --- Trang danh sách /admin/news (mặc định) ---
         list(req, resp);
     }
 
@@ -53,36 +60,43 @@ public class AdminNewsCRUDServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        String action = p(req, "action", "list");
+        String servletPath = req.getServletPath();
 
         try {
+            if ("/admin/news-edit".equals(servletPath)) {
+                // Cập nhật từ form news-edit.jsp
+                int id = pInt(req, "id", -1);
+                if (id < 0) throw new ServletException("Invalid id");
+                News n = newsDAO.findById(id);
+                if (n == null) throw new ServletException("Không tìm thấy tin id=" + id);
+
+                News after = bind(req, n, /* whenCreate = */ false);
+                boolean updateImage = (after.getImage() != null && !after.getImage().isBlank());
+                newsDAO.update(after, updateImage);
+
+                resp.sendRedirect(req.getContextPath() + "/admin/news?updated=1");
+                return;
+            }
+
+            // Các thao tác trên /admin/news (create/delete)
+            String action = p(req, "action", "list");
             switch (action) {
                 case "create": {
                     News n = bind(req, new News(), true);
                     newsDAO.create(n);
-                    break;
-                }
-                case "update": {
-                    int id = pInt(req, "id", -1);
-                    if (id < 0) throw new ServletException("Invalid id");
-                    News n = newsDAO.findById(id);
-                    if (n == null) throw new ServletException("Không tìm thấy tin id=" + id);
-
-                    News after = bind(req, n, false);
-                    boolean updateImage = (after.getImage() != null && !after.getImage().isBlank());
-                    newsDAO.update(after, updateImage);
-                    break;
+                    resp.sendRedirect(req.getContextPath() + "/admin/news?created=1");
+                    return;
                 }
                 case "delete": {
                     int id = pInt(req, "id", -1);
                     if (id < 0) throw new ServletException("Invalid id");
                     newsDAO.delete(id);
-                    break;
+                    resp.sendRedirect(req.getContextPath() + "/admin/news?deleted=1");
+                    return;
                 }
                 default:
-                    /* no-op */
+                    resp.sendRedirect(req.getContextPath() + "/admin/news");
             }
-            resp.sendRedirect(req.getContextPath() + "/admin/news");
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServletException("Lỗi xử lý CRUD tin tức", e);
@@ -93,9 +107,18 @@ public class AdminNewsCRUDServlet extends HttpServlet {
     private void list(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            List<News> items = newsDAO.findAll();
+            String q = p(req, "q", "");      // tiêu đề cần tìm
+            int cat = pInt(req, "cat", 0);   // 0 = tất cả
+
+            List<News> items = ( (q == null || q.isBlank()) && cat <= 0 )
+                    ? newsDAO.findAll()
+                    : newsDAO.searchAdvanced(q, cat, 500);
+
             req.setAttribute("items", items);
             req.setAttribute("categories", categoryDAO.findAll());
+            req.setAttribute("q", q);
+            req.setAttribute("cat", cat);
+
             req.getRequestDispatcher("/WEB-INF/views/admin/news.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Không tải danh sách tin tức", e);
@@ -106,42 +129,42 @@ public class AdminNewsCRUDServlet extends HttpServlet {
 
     /**
      * Gán dữ liệu từ form vào News.
-     * @param whenCreate true nếu thao tác tạo mới (set mặc định postedDate/viewCount/approved)
+     * @param whenCreate true nếu thao tác tạo mới (set postedDate/viewCount/approved)
      */
     private News bind(HttpServletRequest req, News n, boolean whenCreate)
             throws IOException, ServletException {
 
-        // tiêu đề
+        // Tiêu đề
         String title = p(req, "title", "");
         if (title.isBlank()) throw new ServletException("Thiếu tiêu đề");
         n.setTitle(title);
 
-        // nội dung
+        // Nội dung (HTML)
         n.setContent(p(req, "content", ""));
 
-        // category
+        // Chuyên mục
         int catId = pInt(req, "categoryId", 0);
         if (catId <= 0) throw new ServletException("categoryId không hợp lệ");
         n.setCategoryId(catId);
 
-        // home (nếu có)
+        // Cờ Trang chủ
         boolean home = "1".equals(req.getParameter("home")) || "true".equalsIgnoreCase(req.getParameter("home"));
         n.setHome(home);
 
-        // reporter/author từ session
+        // Gán thông tin tác giả (nếu có)
         User u = (User) req.getSession().getAttribute("authUser");
         if (u != null) {
-            n.setReporterId(u.getId());      // nếu bảng News có cột này
-            n.setAuthor(u.getFullname());    // nếu News lưu tên tác giả
+            n.setReporterId(u.getId());
+            n.setAuthor(u.getFullname());
         }
 
         if (whenCreate) {
             n.setPostedDate(LocalDateTime.now());
             n.setViewCount(0);
-            n.setApproved(true);             // admin tạo => duyệt luôn
+            n.setApproved(true);
         }
 
-        // upload ảnh (tùy chọn)
+        // Ảnh đại diện (tùy chọn)
         Part thumb = null;
         try { thumb = req.getPart("thumbnail"); } catch (Exception ignore) {}
         if (thumb != null && thumb.getSize() > 0) {
@@ -154,7 +177,7 @@ public class AdminNewsCRUDServlet extends HttpServlet {
 
     /* ====== Upload helper ====== */
 
-    private static final Set<String> ALLOW_EXT = Set.of("jpg", "jpeg", "png", "gif", "webp");
+    private static final Set<String> ALLOW_EXT = Set.of("jpg","jpeg","png","gif","webp");
 
     /** Lưu ảnh nếu có và trả về đường dẫn tương đối để lưu DB; null nếu không lưu. */
     private String saveThumbnailIfAny(HttpServletRequest req, Part part) throws IOException {
@@ -177,7 +200,7 @@ public class AdminNewsCRUDServlet extends HttpServlet {
             Files.copy(in, dir.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
         }
 
-        // lưu DB/hiển thị: dùng đường dẫn tương đối
+        // Lưu DB: đường dẫn tương đối để public
         return "assets/uploads/" + newName;
     }
 

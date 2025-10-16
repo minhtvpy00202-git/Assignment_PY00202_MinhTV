@@ -3,10 +3,10 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <%@ include file="../layout/admin-header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
+
 
 <main class="container admin-page">
-  <h2>Quản lý Newsletter</h2>
+  <h2>DANH SÁCH ĐĂNG KÝ NEWSLETTER</h2>
 
         <!-- Đăng ký email mới (subscribe) -->
         <form method="post" action="${ctx}/admin/newsletter" class="form">
@@ -37,7 +37,7 @@
                   </td>
                   <td class="actions">
                     <!-- Toggle bật/tắt -->
-                    <form method="post" action="${ctx}/admin/newsletter" style="display:inline">
+                    <form method="post" action="${ctx}/admin/newsletter">
                       <input type="hidden" name="action" value="update" />
                       <input type="hidden" name="email" value="${n.email}" />
                       <input type="hidden" name="enabled" value="${!n.enabled}" />
@@ -47,7 +47,7 @@
                     </form>
 
                     <!-- Hủy đăng ký (delete) -->
-                    <form method="post" action="${ctx}/admin/newsletter" style="display:inline"
+                    <form method="post" action="${ctx}/admin/newsletter"
                       onsubmit="return confirm('Hủy nhận tin email này?');">
                       <input type="hidden" name="action" value="delete" />
                       <input type="hidden" name="email" value="${n.email}" />

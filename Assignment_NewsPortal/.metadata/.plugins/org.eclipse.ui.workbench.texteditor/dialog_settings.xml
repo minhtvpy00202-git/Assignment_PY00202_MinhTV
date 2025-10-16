@@ -4,21 +4,21 @@
 	<section name="java.lang.Class">
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
-			<item value="h1"/>
-			<item value="nav"/>
-			<item value="đăng ký"/>
-			<item value="hot"/>
-			<item value="category"/>
-			<item value="safeList"/>
-			<item value="getsession().set"/>
-			<item value="p class=&quot;excer"/>
-			<item value="p class"/>
-			<item value="log"/>
-			<item value="reg"/>
-			<item value="header"/>
-			<item value="newsdao."/>
-			<item value="upload"/>
-			<item value="login"/>
+			<item value="main"/>
+			<item value="vui lòng khớp"/>
+			<item value="findById"/>
+			<item value="số"/>
+			<item value="focus"/>
+			<item value="vui lòng"/>
+			<item value="tạo"/>
+			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?deleted=1&quot;);"/>
+			<item value="#list"/>
+			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?updated=1&quot;);resp.sendRedirect(req.getContextPath() + &quot;/admin/users?updated=1#list&quot;);"/>
+			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?created=1&quot;);resp.sendRedirect(req.getContextPath() + &quot;/admin/users?created=1#list&quot;);"/>
+			<item value="số điẹnn"/>
+			<item value="thêm mới"/>
+			<item value="cập nhật"/>
+			<item value="error}"/>
 		</list>
 	</section>
 </section>

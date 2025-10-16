@@ -4,37 +4,38 @@
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 
-<main class="container grid">
-  <section class="content">
-    <h1>${news.title}</h1>
-    <div class="meta">Đăng bởi: <c:out value="${news.author}"/> · ${news.viewCount} lượt xem</div>
-    <c:if test="${not empty news.image}">
-    <c:choose>
-    <c:when test="${fn:startsWith(news.image, '/') || fn:startsWith(news.image, 'http')}">
-        <img class="article-cover" src="${news.image}" alt="${news.title}">
-    </c:when>
-    <c:otherwise>
-        <img class="article-cover" src="${pageContext.request.contextPath}/${news.image}" alt="${news.title}">
-    </c:otherwise>
-</c:choose>
-</c:if>
+<main class="container">
+  <div class="main-content">
+    <article class="content-area">
+      <header class="article-header">
+        <h1 class="article-title">${news.title}</h1>
+        <div class="article-meta">
+          <span>Tác giả: <c:out value="${news.author}"/></span>
+          <span>${news.viewCount} lượt xem</span>
+          <span>Ngày đăng: ${news.postedDate}</span>
+        </div>
+      </header>
+      
+      
 
-    <div class="mt-24 article-body">
-  <c:out value="${news.content}" escapeXml="false"/>
-</div>
+      <div class="article-content">
+        <c:out value="${news.content}" escapeXml="false"/>
+      </div>
 
-    <hr/>
-    <h2>Bài cùng loại</h2>
-    <ul class="list">
-      <c:forEach var="rel" items="${related}">
-        <li><a href="${pageContext.request.contextPath}/news/${rel.id}">${rel.title}</a></li>
-      </c:forEach>
-    </ul>
-  </section>
+      <div class="related-articles">
+        <h2>Bài viết liên quan</h2>
+        <ul class="related-list">
+          <c:forEach var="rel" items="${related}">
+            <li><a href="${pageContext.request.contextPath}/news/${rel.id}">${rel.title}</a></li>
+          </c:forEach>
+        </ul>
+      </div>
+    </article>
 
-  <aside>
-    <jsp:include page="layout/sidebar.jsp"/>
-  </aside>
+    <aside class="sidebar-area">
+      <jsp:include page="layout/sidebar.jsp"/>
+    </aside>
+  </div>
 </main>
 
 <%@ include file="layout/footer.jsp" %>

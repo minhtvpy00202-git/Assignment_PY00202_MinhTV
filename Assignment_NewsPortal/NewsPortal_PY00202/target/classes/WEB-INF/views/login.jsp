@@ -3,22 +3,33 @@
 <%@ include file="layout/header.jsp" %>
 
 <main class="container">
-  <section class="content" style="max-width:560px; margin:0 auto;">
-    <h1>Đăng nhập</h1>
-    <c:if test="${not empty error}">
-      <div class="alert error">${error}</div>
-    </c:if>
-    <form class="form" method="post" action="${pageContext.request.contextPath}/auth/login">
-      <label>Email</label>
-      <input type="email" name="email" required>
-      <label>Mật khẩu</label>
-      <input type="password" name="password" required>
-      <div class="actions">
-        <button class="btn" type="submit">Đăng nhập</button>
-        <a class="btn ghost" href="${pageContext.request.contextPath}/auth/register">Tạo tài khoản</a>
-      </div>
-    </form>
-  </section>
+  <div class="auth-container">
+    <div class="auth-form">
+      <h1>Đăng nhập</h1>
+      <p>Đăng nhập vào tài khoản NewsPortal của bạn</p>
+      
+      <c:if test="${not empty error}">
+        <div class="alert alert-danger">${error}</div>
+      </c:if>
+      
+      <form method="post" action="${pageContext.request.contextPath}/auth/login">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Mật khẩu</label>
+          <input class="form-control" type="password" name="password" required>
+        </div>
+        
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Đăng nhập</button>
+          <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/auth/register">Tạo tài khoản</a>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
 
 <%@ include file="layout/footer.jsp" %>

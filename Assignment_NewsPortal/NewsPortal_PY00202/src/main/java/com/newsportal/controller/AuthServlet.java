@@ -72,11 +72,37 @@ public class AuthServlet extends HttpServlet {
                     req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
                     return;
                 }
+                
+               
 
                 if (userDAO.existsEmail(email)) {
                     req.setAttribute("error", "Email đã được đăng ký.");
                     req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
                     return;
+                }
+                
+                if(birthday.isEmpty()) {
+                	req.setAttribute("error", "Vui lòng nhập ngày sinh");
+                	req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                	return;
+                }
+                
+                if (mobile.isEmpty()) {
+                	req.setAttribute("error", "Vui lòng nhập số điện thoại");
+                	req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                	return;
+                }
+                
+                if (userDAO.existsMobile(mobile)) {
+                	req.setAttribute("error", "Số điện thoại đã được sử dụng.");
+                	req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                	return;
+                }
+                
+                if (gender.isEmpty() || role.isEmpty()) {
+                	req.setAttribute("error", "Vui lòng chọn giới tính và Vai trò");
+                	req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+                	return;
                 }
 
                 java.util.Date dob = null;

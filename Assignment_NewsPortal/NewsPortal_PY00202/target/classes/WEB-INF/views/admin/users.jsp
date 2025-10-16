@@ -2,239 +2,328 @@
 	<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 		<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 			<c:set var="ctx" value="${pageContext.request.contextPath}" />
-
+			<c:set var="isCreate" value="${empty item}" />
 			<%@ include file="../layout/admin-header.jsp" %>
-				<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-clean.css">
 
-				<main class="container admin-page">
-					<h2>Quản lý Người dùng</h2>
+				<main class="admin-main">
+					<div class="container">
+						<div class="page-header">
+							<h1>QUẢN LÝ NGƯỜI DÙNG</h1>
+							<p>Thêm, sửa, xóa và quản lý tài khoản người dùng</p>
+						</div>
 
-					<form method="post" action="${ctx}/admin/users" class="form">
-						<input type="hidden" name="action" value="${empty item ? 'create' : 'update'}" /> <input
-							type="hidden" name="id" value="${item.id}" /> <label>Họ tên <input name="fullName"
-								value="${item.fullname}" required />
-						</label> <label>Email <input type="email" name="email" value="${item.email}" required />
-						</label> <label>Số điện thoại <input name="mobile" value="${item.mobile}" />
-						</label>
+						<c:if test="${not empty error}">
+						  <div class="alert alert-danger" style="border: 1px solid red">${error}</div>
+						</c:if>
+						
 
-						<%-- format yyyy-MM-dd cho input[type=date] --%>
-							<fmt:formatDate value="${item.birthday}" pattern="yyyy-MM-dd" var="bd" />
-							<label>Ngày sinh <input type="date" name="birthday" value="${bd}" />
-							</label> <label>Giới tính <select name="gender">
-									<option value="true" ${item.gender ? 'selected' : '' }>Nam</option>
-									<option value="false" ${!item.gender ? 'selected' : '' }>Nữ</option>
-								</select>
-							</label> <label>Vai trò <select name="role" required>
-									<option value="ADMIN" ${item.role ? 'selected' : '' }>ADMIN</option>
-									<option value="REPORTER" ${!item.role ? 'selected' : '' }>REPORTER</option>
-								</select>
-							</label> <label>Mật khẩu (để trống nếu không đổi) <input type="password" name="password" />
-							</label>
 
-							<div class="checkbox-wrapper">
-								<input type="checkbox" id="activated" name="activated" ${item.activated ? 'checked' : ''
-									} />
-								<label for="activated" class="checkbox-label">Kích hoạt</label>
+						<form method="post" action="${ctx}/admin/users" class="admin-form">
+							<input type="hidden" name="action" value="${empty item ? 'create' : 'update'}" />
+							<input type="hidden" name="id" value="${item.id}" />
+
+							<div class="form-grid">
+								<!-- Họ tên -->
+								<div class="form-group">
+									<label class="form-label">Họ tên</label>
+									<input class="form-control" name="fullName"
+									       value="${not empty param.fullName ? param.fullName : (not empty item ? item.fullname : '')}"
+									       required>
+								</div>
+								<!-- Email -->
+								<div class="form-group">
+									<label class="form-label">Email</label>
+									<input class="form-control" name="email" type="email"
+										       value="${not empty param.email ? param.email : (not empty item ? item.email : '')}"
+										       required>
+								</div>
+								<!-- Số điện thoại -->
+								<div class="form-group">
+									<label class="form-label">Số điện thoại</label>
+									<input placeholder="Nhập số điện thoại có 10 số" class="form-control" name="mobile" type="tel"
+								       inputmode="numeric"
+								       value="${not empty param.mobile ? param.mobile : (not empty item ? item.mobile : '')}"
+								       pattern="[0-9]{10}"
+								       title="Số điện thoại phải gồm đúng 10 chữ số"
+								       required>
+								</div>
+								<!-- Ngày sinh -->
+								<fmt:formatDate value="${item.birthday}" pattern="yyyy-MM-dd" var="bd" />
+								<div class="form-group">
+									<label class="form-label">Ngày sinh</label>
+									<input class="form-control" name="birthday" type="date"
+														       value="${not empty param.birthday ? param.birthday : (not empty item && item.birthday != null ? item.birthday : '')}"
+														       required>
+								</div>
+								<!-- Giới tính -->
+								<div class="form-group">
+									<label class="form-label">Giới tính</label>
+									
+										<select class="form-control" name="gender" required>
+											  <option value="true"
+											    ${not empty param.gender ? (param.gender == 'true' ? 'selected' : '') :
+											      (not empty item && item.gender ? 'selected' : '')}>
+											    Nam
+											  </option>
+											  <option value="false"
+											    ${not empty param.gender ? (param.gender == 'false' ? 'selected' : '') :
+											      (not empty item && !item.gender ? 'selected' : '')}>
+											    Nữ
+											  </option>
+											</select>
+									
+								</div>
+								<!-- Vai trò -->
+								<div class="form-group">
+									<label class="form-label">Vai trò</label>
+									<select class="form-control" name="role">
+									  <option value="ADMIN"
+									    ${not empty param.role ? (param.role == 'ADMIN' ? 'selected' : '') : (not empty item && item.role ? 'selected' : '')}>Admin</option>
+									  <option value="REPORTER"
+									    ${not empty param.role ? (param.role == 'REPORTER' ? 'selected' : '') : (not empty item && !item.role ? 'selected' : '')}>Reporter</option>
+									</select>
+								</div>
+
+								<!-- Mật khẩu -->
+								<div class="form-group">
+									<label class="form-label" for="password">Mật khẩu</label>
+									<input class="form-control" name="password" type="password" autocomplete="new-password"
+										<c:if test="${empty item}">required</c:if>
+	  									<c:if test="${not empty item}">placeholder="Để trống nếu không đổi"</c:if> >
+										</div>
+ 
+								<!-- Nhập lại mật khẩu -->
+								<div class="form-group">
+									<label class="form-label" for="confirmPassword">Nhập lại mật khẩu</label>
+									<input class="form-control" name="confirmPassword" type="password" autocomplete="new-password"
+										  <c:if test="${empty item}">required</c:if>
+										  <c:if test="${not empty item}">placeholder="Nhập lại mật khẩu (nếu đổi)"</c:if> >
+								</div>
+
+								<div class="form-group full-width">
+									<div class="checkbox-group">
+										<input type="checkbox" name="activated"
+  											${not empty param.activated ? 'checked' : (not empty item && item.activated ? 'checked' : '')}>
+										<label for="activated">Kích hoạt tài khoản</label>
+									</div>
+								</div>
 							</div>
 
-							<button type="submit">${empty item ? 'Thêm mới' : 'Cập nhật'}</button>
-							<c:if test="${not empty item}">
-								<a class="btn" href="${ctx}/admin/users">Hủy</a>
-							</c:if>
-					</form>
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">${empty item ?
+									'Thêm mới' : 'Cập
+									nhật'}</button>
+								<c:if test="${not empty item}">
+									<a class="btn btn-outline-primary" href="${ctx}/admin/users">Hủy</a>
+								</c:if>
+							</div>
+						</form>
 
-					<div class="table-wrapper">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>STT</th>
-									<th>ID</th>
-									<th>Họ tên</th>
-									<th>Email</th>
-									<th>Điện thoại</th>
-									<th>Giới tính</th>
-									<th>Vai trò</th>
-									<th>Kích hoạt</th>
-									<th>Hành động</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="u" items="${items}" varStatus="status">
-									<tr>
-										<td class="text-center">${status.index + 1}</td>
-										<td>${u.id}</td>
-										<td>${u.fullname}</td>
-										<td>${u.email}</td>
-										<td>${u.mobile}</td>
-										<td>
-											<c:out value="${u.gender ? 'Nam' : 'Nữ'}" />
-										</td>
-										<td>
-											<c:out value="${u.role ? 'ADMIN' : 'REPORTER'}" />
-										</td>
-										<td>
-											<c:out value="${u.activated ? '✔' : '✘'}" />
-										</td>
-										<td class="actions">
-											<a class="btn ghost" href="${ctx}/admin/users?action=edit&id=${u.id}">Sửa</a>
-											<form method="post" action="${ctx}/admin/users" style="display: inline"
-												onsubmit="return confirm('Xóa người dùng này?');">
-												<input type="hidden" name="action" value="delete" />
-												<input type="hidden" name="id" value="${u.id}" />
-												<button type="submit" class="btn danger">Xóa</button>
-											</form>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+							
+							
+
+						<div id="list" class="table-section">
+							<h2>Danh sách người dùng</h2>
+
+							<!-- Thanh tìm kiếm có tiêu chí -->
+							<form method="get" action="${ctx}/admin/users#list" class="admin-search">
+								<div class="search-row">
+									<select name="by" id="bySelect" class="form-select">
+										<option value="all" ${param.by=='all' ? 'selected' : '' }>Tất cả</option>
+										<option value="fullname" ${param.by=='fullname' ? 'selected' : '' }>Họ tên
+										</option>
+										<option value="email" ${param.by=='email' ? 'selected' : '' }>Email</option>
+										<option value="mobile" ${param.by=='mobile' ? 'selected' : '' }>Điện thoại
+										</option>
+										<option value="role" ${param.by=='role' ? 'selected' : '' }>Vai trò</option>
+										<option value="activated" ${param.by=='activated' ? 'selected' : '' }>Trạng thái
+											tài khoản</option>
+									</select>
+
+									<!-- Ô tìm kiếm text (mặc định) -->
+									<div id="qTextWrap" class="q-wrap">
+										<input type="text" name="q" id="qText" class="form-control"
+											value="${fn:escapeXml(param.q)}" placeholder="Tìm kiếm..." />
+									</div>
+
+									<!-- Dropdown vai trò -->
+									<div id="qRoleWrap" class="q-wrap">
+										<select name="q" id="qRole" class="form-select">
+											<option value="ADMIN" ${param.q=='ADMIN' ? 'selected' : '' }>ADMIN</option>
+											<option value="REPORTER" ${param.q=='REPORTER' ? 'selected' : '' }>REPORTER
+											</option>
+										</select>
+									</div>
+
+									<!-- Dropdown kích hoạt -->
+									<div id="qActWrap" class="q-wrap">
+										<select name="q" id="qAct" class="form-select">
+											<option value="true" ${param.q=='true' ? 'selected' : '' }>ACTIVATED
+											</option>
+											<option value="false" ${param.q=='false' ? 'selected' : '' }>INACTIVE
+											</option>
+										</select>
+									</div>
+
+									<button type="submit" class="btn btn-primary btn-search">TÌM</button>
+								</div>
+							</form>
+							
+							<c:if test="${param.created == '1'}">
+							  <div class="alert alert-success" style="border: 1px solid blue;">Tạo tài khoản thành công!</div>
+							</c:if>
+							
+							<c:if test="${param.updated == '1'}">
+							  <div class="alert alert-success" style="border: 1px solid blue;">Cập nhật tài khoản thành công!</div>
+							</c:if>
+							
+							
+							
+							<c:if test="${not empty info}">
+							  <div class="alert alert-info" style="border: 1px solid red;">${info}</div>
+							</c:if>
+							
+							<c:if test="${param.deleted == '1'}">
+							  <div class="alert alert-success" style="border: 1px solid red;">Xóa tài khoản thành công!</div>
+							</c:if>
+							
+							<script>
+							  (function() {
+							    var f = '${focusField}';
+							    if (f && f !== '') {
+							      var el = document.querySelector('[name="'+ f +'"]');
+							      if (el) {
+							        // Nếu là tabbed form thì bạn có thể mở tab chứa el (nếu cần)
+							        el.focus();
+							        try { el.select && el.select(); } catch(e){}
+							      }
+							    }
+							  })();
+							</script>
+
+							<script>
+								(function () {
+								  const bySel = document.getElementById('bySelect');
+								  const qTextW = document.getElementById('qTextWrap');
+								  const qRoleW = document.getElementById('qRoleWrap');
+								  const qActW  = document.getElementById('qActWrap');
+								
+								  const qText = document.getElementById('qText');
+								  const qRole = document.getElementById('qRole');
+								  const qAct  = document.getElementById('qAct');
+								
+								  const wraps = [qTextW, qRoleW, qActW];
+								  const inputs = [qText, qRole, qAct];
+								
+								  function toggleInputs() {
+								    const by = bySel.value;
+								
+								    // 1) Ẩn tất cả, bỏ active, disable inputs
+								    wraps.forEach(w => w.classList.remove('active'));
+								    inputs.forEach(el => el.disabled = true);
+								
+								    // 2) Bật đúng ô theo tiêu chí
+								    if (by === 'role') {
+								      qRoleW.classList.add('active');
+								      qRole.disabled = false;
+								    } else if (by === 'activated') {
+								      qActW.classList.add('active');
+								      qAct.disabled = false;
+								    } else {
+								      qTextW.classList.add('active');
+								      qText.disabled = false;
+								    }
+								  }
+								
+								  bySel.addEventListener('change', toggleInputs);
+								  // Khởi tạo theo giá trị hiện có (từ URL)
+								  toggleInputs();
+								})();
+								</script>
+
+
+							<script>
+								(function () {
+									const pwd = document.querySelector('input[name="password"]');
+									const cf = document.querySelector('input[name="confirmPassword"]');
+									if (!pwd || !cf) return;
+									function v() {
+										if (cf.value && pwd.value !== cf.value) cf.setCustomValidity("Mật khẩu nhập lại không khớp");
+										else cf.setCustomValidity("");
+									}
+									pwd.addEventListener('input', v);
+									cf.addEventListener('input', v);
+								})();
+							</script>
+
+
+
+							<!----------------------------------------------------------------------- TABLE ----------------------------------------->
+
+							<div class="table-wrapper">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>STT</th>
+											<th>Họ tên</th>
+											<th>Email</th>
+											<th>Điện thoại</th>
+											<th>Giới tính</th>
+											<th>Vai trò</th>
+											<th>Kích hoạt</th>
+											<th>Hành động</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="u" items="${items}" varStatus="status">
+											<tr>
+												<td>${status.index + 1}</td>
+												<td>${u.fullname}</td>
+												<td>${u.email}</td>
+												<td>${u.mobile}</td>
+												<td>
+													<c:out value="${u.gender ? 'Nam' : 'Nữ'}" />
+												</td>
+												<td>
+													<c:out value="${u.role ? 'ADMIN' : 'REPORTER'}" />
+												</td>
+												<td>
+													<c:out value="${u.activated ? '✔' : '✘'}" />
+												</td>
+												<td class="actions">
+													<a class="btn btn-outline-primary"
+														href="${ctx}/admin/users?action=edit&id=${u.id}">Sửa</a>
+
+													<form method="post" action="${ctx}/admin/users"
+														onsubmit="return confirm('Xóa người dùng này?');">
+														<input type="hidden" name="action" value="delete" />
+														<input type="hidden" name="id" value="${u.id}" />
+
+														<c:choose>
+															<c:when test="${u.id eq sessionScope.authUser.id}">
+																<button type="button" class="btn btn-disabled" disabled
+																	aria-disabled="true"
+																	title="Không thể xóa tài khoản đang đăng nhập">
+																	Xóa
+																</button>
+															</c:when>
+															<c:otherwise>
+																<button type="submit"
+																	class="btn btn-danger">Xóa</button>
+															</c:otherwise>
+														</c:choose>
+													</form>
+												</td>
+
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</main>
 
-				<style>
-					/* Checkbox styling */
-					.checkbox-wrapper {
-						display: flex;
-						align-items: center;
-						gap: 0.5rem;
-						margin: 1rem 0;
-					}
 
-					.checkbox-wrapper input[type="checkbox"] {
-						width: 18px;
-						height: 18px;
-						margin: 0;
-						cursor: pointer;
-						accent-color: #667eea;
-					}
-
-					.checkbox-wrapper .checkbox-label {
-						margin: 0;
-						cursor: pointer;
-						font-weight: 500;
-						color: #2d3748;
-						user-select: none;
-					}
-
-					.checkbox-wrapper .checkbox-label:hover {
-						color: #667eea;
-					}
-
-					/* Override default form label styles for checkbox */
-					.form .checkbox-wrapper .checkbox-label {
-						display: inline;
-						font-size: 1rem;
-						line-height: 1;
-					}
-
-					/* Table header styling fix */
-					.table thead th {
-						background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-						color: white !important;
-						font-weight: 600 !important;
-						text-align: center !important;
-						padding: 1rem 0.75rem !important;
-						font-size: 0.9rem !important;
-						letter-spacing: 0.5px !important;
-						text-transform: uppercase !important;
-						border-bottom: 2px solid #5a67d8 !important;
-					}
-
-					.table th {
-						background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-						color: white !important;
-					}
-
-					/* Table body styling */
-					.table tbody tr:nth-child(even) {
-						background: #f8fafc !important;
-					}
-
-					.table tbody tr:hover {
-						background: #e2e8f0 !important;
-						transform: scale(1.01);
-						transition: all 0.2s ease;
-					}
-
-					.table td {
-						padding: 0.875rem 0.75rem !important;
-						vertical-align: middle !important;
-						border-bottom: 1px solid #e2e8f0 !important;
-					}
-
-					/* Action buttons styling */
-					.table .actions {
-						display: flex;
-						gap: 0.25rem;
-						justify-content: center;
-						align-items: center;
-						white-space: nowrap;
-					}
-
-					.table .actions .btn {
-						padding: 0.25rem 0.5rem;
-						font-size: 0.75rem;
-						border-radius: 4px;
-						font-weight: 500;
-						min-width: 40px;
-						text-align: center;
-						height: 24px;
-					}
-
-					.table .actions .btn.ghost {
-						background: #f1f5f9 !important;
-						color: #475569 !important;
-						border: 1px solid #cbd5e1 !important;
-					}
-
-					.table .actions .btn.ghost:hover {
-						background: #e2e8f0 !important;
-						color: #334155 !important;
-					}
-
-					.table .actions .btn.danger {
-						background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-						color: white !important;
-						border: 1px solid #b91c1c !important;
-					}
-
-					.table .actions .btn.danger:hover {
-						background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
-						transform: translateY(-1px);
-					}
-
-					/* Responsive */
-					@media (max-width: 768px) {
-						.checkbox-wrapper {
-							gap: 0.75rem;
-						}
-
-						.checkbox-wrapper input[type="checkbox"] {
-							width: 20px;
-							height: 20px;
-						}
-
-						.table thead th {
-							padding: 0.75rem 0.5rem !important;
-							font-size: 0.8rem !important;
-						}
-
-						.table td {
-							padding: 0.75rem 0.5rem !important;
-							font-size: 0.9rem;
-						}
-
-						.table .actions {
-							flex-direction: column;
-							gap: 0.25rem;
-						}
-
-						.table .actions .btn {
-							width: 100%;
-							padding: 0.375rem 0.75rem;
-							font-size: 0.8rem;
-						}
-					}
-				</style>
 
 				<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
