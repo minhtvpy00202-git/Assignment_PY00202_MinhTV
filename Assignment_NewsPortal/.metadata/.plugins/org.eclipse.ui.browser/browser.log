@@ -191,3 +191,13 @@ thg 10 16, 2025 19:34:17.78 [23464:19700:1016/193417.786:ERROR:components\device
 thg 10 16, 2025 20:19:26.77 [23464:22604:1016/201926.769:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 16, 2025 20:19:54.15 [23464:22604:1016/201954.149:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
 thg 10 16, 2025 21:54:18.13 [23464:19700:1016/215418.136:ERROR:components\device_event_log\device_event_log_impl.cc:198] [21:54:18.136] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+
+thg 10 18, 2025 08:31:33.38 NEW SESSION
+thg 10 18, 2025 08:31:33.44 [18544:2076:1018/083133.381:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 18, 2025 08:31:36.24 [18544:3536:1018/083136.238:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 18, 2025 08:31:36.49 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 18, 2025 08:32:05.85 [18544:3536:1018/083205.853:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 18, 2025 08:33:01.76 [18544:3536:1018/083301.765:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 18, 2025 08:34:46.14 [18544:3536:1018/083446.144:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 18, 2025 08:38:28.18 [18544:3536:1018/083828.182:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 18, 2025 08:45:39.26 [18544:3536:1018/084539.260:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED

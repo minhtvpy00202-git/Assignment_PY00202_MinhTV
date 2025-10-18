@@ -42,6 +42,10 @@ public class NewsCRUDServlet extends HttpServlet {
     private final CategoryDAO categoryDAO = new CategoryDAO();
 
     private static final Set<String> ALLOW_EXT = Set.of("jpg","jpeg","png","gif","webp");
+    private static final Path UPLOAD_DIR = Paths.get(
+    	    "C:/FPOLY/JAVA3/Assignment_PY00202_MinhTV/Assignment_NewsPortal/newsportal-uploads"
+    	);
+    private static final String PUBLIC_URL_PREFIX = "/uploads/";
 
     // ---------------- entry points ----------------
 
@@ -243,14 +247,21 @@ public class NewsCRUDServlet extends HttpServlet {
         String submitted = Paths.get(part.getSubmittedFileName()).getFileName().toString();
         String ext = submitted.contains(".") ? submitted.substring(submitted.lastIndexOf('.')+1).toLowerCase() : "";
         String mime = part.getContentType() == null ? "" : part.getContentType().toLowerCase();
-        if (!mime.startsWith("image/") || !ALLOW_EXT.contains(ext)) return null;
 
-        String newName = System.currentTimeMillis()+"_"+ UUID.randomUUID().toString().substring(0,8)+"."+ext;
-        Path dir = Path.of(getServletContext().getRealPath("/assets/uploads"));
-        Files.createDirectories(dir);
+        if (!mime.startsWith("image/") || !ALLOW_EXT.contains(ext)) return null;
+        if (part.getSize() > 10 * 1024 * 1024) throw new IOException("File quá lớn (>10MB)");
+
+        Files.createDirectories(UPLOAD_DIR); // tạo nếu chưa có
+
+        String newName = System.currentTimeMillis()+"_"+UUID.randomUUID().toString().substring(0,8)+"."+ext;
+        Path dest = UPLOAD_DIR.resolve(newName);
+
         try (InputStream in = part.getInputStream()) {
-            Files.copy(in, dir.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(in, dest, StandardCopyOption.REPLACE_EXISTING);
         }
-        return "assets/uploads/" + newName;
+
+        // Lưu vào DB đường dẫn URL công khai, KHÔNG phải path ổ đĩa Windows
+        return PUBLIC_URL_PREFIX + newName; // ví dụ: /uploads/1739812345_ab12cd34.jpg
     }
+
 }

@@ -21,29 +21,36 @@
             <c:forEach var="n" items="${news}">
               <!-- Biến tiện ích -->
               <c:set var="ctx" value="${pageContext.request.contextPath}" />
-              <c:set var="ctxSlash" value="${ctx}/" />
+
+              <!-- Chuẩn hoá URL ảnh theo Cách A -->
               <c:set var="img" value="${n.image}" />
 
-              <!-- Build URL ảnh an toàn -->
+              <!-- 1) Ảnh mặc định nếu rỗng -->
+              <c:if test="${empty img}">
+                <c:set var="img" value="/assets/img/sample.jpg" />
+              </c:if>
+
+              <!-- 2) Nếu là URL tuyệt đối (http/https) thì dùng luôn, KHÔNG qua c:url -->
               <c:choose>
-                <c:when test="${empty img}">
-                  <c:set var="imgUrl" value="${ctx}/assets/img/sample.jpg" />
-                </c:when>
-                <c:when test="${fn:startsWith(img,'http')}">
+                <c:when test="${fn:startsWith(img,'http://') || fn:startsWith(img,'https://')}">
                   <c:set var="imgUrl" value="${img}" />
-                </c:when>
-                <c:when test="${fn:startsWith(img, ctxSlash)}">
-                  <c:set var="imgUrl" value="${img}" />
-                </c:when>
-                <c:when test="${fn:startsWith(img,'/')}">
-                  <c:set var="imgUrl" value="${ctx}${img}" />
                 </c:when>
                 <c:otherwise>
-                  <c:set var="imgUrl" value="${ctx}/${img}" />
+                  <!-- 3) Chuẩn hoá để chắc chắn bắt đầu bằng '/' -->
+                  <c:choose>
+                    <c:when test="${fn:startsWith(img,'/')}">
+                      <c:set var="imgPath" value="${img}" />
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="imgPath" value="/${img}" />
+                    </c:otherwise>
+                  </c:choose>
+                  <!-- 4) Dùng c:url để tự prepend context path -->
+                  <c:url var="imgUrl" value="${imgPath}" />
                 </c:otherwise>
               </c:choose>
 
-              <!-- Rút gọn nội dung -->
+              <!-- Rút gọn nội dung hiển thị nhanh -->
               <c:set var="excerpt" value="${n.content}" />
               <c:if test="${fn:length(excerpt) > 160}">
                 <c:set var="excerpt" value="${fn:substring(excerpt,0,160)}..." />
@@ -54,7 +61,7 @@
                 <div class="post-content">
                   <div class="post-image">
                     <a href="${ctx}/news/${n.id}">
-                      <img src="${imgUrl}" alt="${fn:escapeXml(n.title)}">
+                      <img src="${imgUrl}" alt="<c:out value='${n.title}'/>">
                     </a>
                   </div>
                   <div class="post-text">
@@ -66,9 +73,9 @@
                     <p class="card-text small">
                       <span>${n.viewCount} lượt xem</span>
                       <c:if test="${n.postedDate != null}">
-						  <fmt:parseDate value="${n.postedDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="pd"/>
-						  <span> | Đăng ngày: <fmt:formatDate value="${pd}" pattern="dd/MM/yyyy"/></span>
-						</c:if>
+                        <fmt:parseDate value="${n.postedDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="pd"/>
+                        <span> | Đăng ngày: <fmt:formatDate value="${pd}" pattern="dd/MM/yyyy"/></span>
+                      </c:if>
                     </p>
                     <p class="card-text"><c:out value="${n.excerpt}" /></p>
                   </div>
