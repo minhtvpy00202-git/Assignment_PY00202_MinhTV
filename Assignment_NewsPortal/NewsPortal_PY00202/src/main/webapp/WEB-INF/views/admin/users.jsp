@@ -52,7 +52,7 @@
 								<div class="form-group">
 									<label class="form-label">Ngày sinh</label>
 									<input class="form-control" name="birthday" type="date"
-														       value="${not empty param.birthday ? param.birthday : (not empty item && item.birthday != null ? item.birthday : '')}"
+														       value="${not empty param.birthday ? param.birthday : (not empty item && item.birthday != null ? bd : '')}"
 														       required>
 								</div>
 								<!-- Giới tính -->

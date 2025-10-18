@@ -52,13 +52,7 @@
                               placeholder="Nhập nội dung bài viết..."></textarea>
                 </div>
 
-                <div class="form-group">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="home" name="home" value="1">
-                        <label for="home" class="checkbox-label">Đưa lên mục Trang chủ</label>
-                    </div>
-                </div>
-
+                
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">
                         <span class="btn-icon">📝</span>

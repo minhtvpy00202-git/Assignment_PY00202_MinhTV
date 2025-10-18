@@ -33,6 +33,8 @@ C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core
 \NewsPortal_PY00202\src\main\java
 C:\FPOLY\JAVA3\Assignment_PY00202_MinhTV\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4237620673.index
 \NewsPortal_PY00202\src\main\java
+C:\FPOLY\JAVA3\Assignment_PY00202_MinhTV\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3621323027.index
+\NewsPortal_PY00202\src\main\java
 C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\904045222.index
 \NewsPortal_PY00202\src\main\java
 C:\FPOLY\JAVA3\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4237620673.index

@@ -94,6 +94,22 @@ public class AdminNewsCRUDServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/admin/news?deleted=1");
                     return;
                 }
+                case "home-on": {
+                    int id = pInt(req, "id", -1);
+                    if (id < 0) throw new ServletException("Invalid id");
+                    newsDAO.setHome(id, true);
+                    String page = p(req, "page", "1");  // giữ nguyên trang hiện tại
+                    resp.sendRedirect(req.getContextPath() + "/admin/news?page=" + page);
+                    return;
+                }
+                case "home-off": {
+                    int id = pInt(req, "id", -1);
+                    if (id < 0) throw new ServletException("Invalid id");
+                    newsDAO.setHome(id, false);
+                    String page = p(req, "page", "1");
+                    resp.sendRedirect(req.getContextPath() + "/admin/news?page=" + page);
+                    return;
+                }
                 default:
                     resp.sendRedirect(req.getContextPath() + "/admin/news");
             }
@@ -107,17 +123,42 @@ public class AdminNewsCRUDServlet extends HttpServlet {
     private void list(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            String q = p(req, "q", "");      // tiêu đề cần tìm
-            int cat = pInt(req, "cat", 0);   // 0 = tất cả
+            String q   = p(req, "q", "");          // tiêu đề/nội dung
+            int cat    = pInt(req, "cat", 0);      // 0 = tất cả
+            int page   = pInt(req, "page", 1);
+            int size   = pInt(req, "size", 10);    // mặc định 10 dòng/trang
+            if (page < 1) page = 1;
+            if (size <= 0) size = 10;
 
-            List<News> items = ( (q == null || q.isBlank()) && cat <= 0 )
-                    ? newsDAO.findAll()
-                    : newsDAO.searchAdvanced(q, cat, 500);
+            List<News> items;
+            int total;
+
+            if ((q == null || q.isBlank()) && cat <= 0) {
+                total = newsDAO.countAll();
+                int totalPages = (int)Math.ceil(total / (double)size);
+                if (totalPages == 0) totalPages = 1;
+                if (page > totalPages) page = totalPages;
+
+                items = newsDAO.findAll(page, size);
+                req.setAttribute("total", total);
+                req.setAttribute("totalPages", totalPages);
+            } else {
+                total = newsDAO.countSearchResults(q, cat);
+                int totalPages = (int)Math.ceil(total / (double)size);
+                if (totalPages == 0) totalPages = 1;
+                if (page > totalPages) page = totalPages;
+
+                items = newsDAO.searchAdvancedPaged(q, cat, page, size);
+                req.setAttribute("total", total);
+                req.setAttribute("totalPages", totalPages);
+            }
 
             req.setAttribute("items", items);
             req.setAttribute("categories", categoryDAO.findAll());
             req.setAttribute("q", q);
             req.setAttribute("cat", cat);
+            req.setAttribute("page", page);
+            req.setAttribute("size", size);
 
             req.getRequestDispatcher("/WEB-INF/views/admin/news.jsp").forward(req, resp);
         } catch (Exception e) {

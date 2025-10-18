@@ -44,41 +44,42 @@ public class NewsDetailServlet extends HttpServlet {
                 return;
             }
 
-            // tăng view + ghi cookie recent (giữ nguyên logic cũ)
+            // Xác định ngữ cảnh: public hay approve (admin)
+            // - /news/*  => servletPath = "/news"  => public
+            // - /news-detail => servletPath = "/news-detail" => admin xem/duyệt
+            String sp = req.getServletPath();
+            boolean isPublic = "/news".equals(sp);
+            req.setAttribute("isPublic", isPublic);
+
+            // tăng view + cookie (vẫn giữ như cũ)
             newsDAO.increaseViewCount(id);
             pushRecentCookie(req, resp, id);
 
-         // ===== nạp danh mục cho header =====
+            // Danh mục cho header
             try {
                 req.setAttribute("categories", categoryDAO.findAll());
             } catch (Exception ignore) {
                 req.setAttribute("categories", java.util.Collections.emptyList());
             }
 
-            // ===== bài cùng loại =====
-            try {
-                // Nếu findRelated đã loại trừ sẵn bài đang xem, chỉ cần dòng dưới:
-                List<News> related = newsDAO.findRelated(news.getCategoryId(), news.getId(), 5);
-
-                // Trường hợp DAO CHƯA loại trừ: tự loại ở đây (Java 7, không dùng lambda)
-                if (related != null) {
-                    for (int i = 0; i < related.size(); i++) {
-                        if (related.get(i).getId() == news.getId()) {
-                            related.remove(i);
-                            break;
-                        }
-                    }
-                } else {
-                    related = java.util.Collections.emptyList();
+            // Chỉ public mới cần “tin cùng chuyên mục”
+            if (isPublic) {
+                try {
+                    List<News> related = newsDAO.findRelated(news.getCategoryId(), news.getId(), 5);
+                    if (related == null) related = java.util.Collections.emptyList();
+                    req.setAttribute("related", related);
+                } catch (Exception ignore) {
+                    req.setAttribute("related", java.util.Collections.emptyList());
                 }
-
-                req.setAttribute("related", related);
-            } catch (Exception ignore) {
+            } else {
+                // chế độ approve: không hiển thị list liên quan
                 req.setAttribute("related", java.util.Collections.emptyList());
             }
 
-
             req.setAttribute("news", news);
+            // truyền param ref (nếu có) để JSP hiện nút duyệt/từ chối
+            req.setAttribute("ref", req.getParameter("ref"));
+
             req.getRequestDispatcher("/WEB-INF/views/news-detail.jsp").forward(req, resp);
 
         } catch (Exception e) {
@@ -86,6 +87,7 @@ public class NewsDetailServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
 
     // ---------- Helpers giữ nguyên ----------
     private int parseId(HttpServletRequest req) {

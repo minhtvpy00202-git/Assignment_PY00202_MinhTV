@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -276,39 +277,11 @@ public class NewsDAO {
 		}
 	}
 
-	public List<News> findPending() throws Exception {
-		String sql = """
-				SELECT Id, Title, Content, Image, PostedDate, Author, ViewCount,
-				       CategoryId, Home, Approved, ReporterId
-				FROM News WHERE Approved=0 ORDER BY PostedDate DESC
-				""";
-		try (Connection cn = DB.getConnection();
-				PreparedStatement ps = cn.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
-			List<News> list = new ArrayList<>();
-			while (rs.next())
-				list.add(map(rs));
-			return list;
-		}
-	}
+	
 
-	public void setApproved(int id, boolean ok) throws Exception {
-		try (Connection c = DB.getConnection();
-				PreparedStatement ps = c.prepareStatement("UPDATE News SET Approved=? WHERE Id=?")) {
-			ps.setBoolean(1, ok);
-			ps.setInt(2, id);
-			ps.executeUpdate();
-		}
-	}
+	
 
-	public void setHome(int id, boolean on) throws Exception {
-		try (Connection c = DB.getConnection();
-				PreparedStatement ps = c.prepareStatement("UPDATE News SET Home=? WHERE Id=?")) {
-			ps.setBoolean(1, on);
-			ps.setInt(2, id);
-			ps.executeUpdate();
-		}
-	}
+	
 
 	// tìm tin đã được duyệt
 	public List<News> findApproved(int limit) throws Exception {
@@ -323,6 +296,27 @@ public class NewsDAO {
 			return list;
 		}
 	}
+	
+	//Tin bài trang chủ
+	public List<News> findHomeApproved(int limit) throws SQLException {
+	    String sql = """
+	        SELECT TOP (?) Id, Title, [Content], Image, PostedDate, Author, ViewCount,
+	                      CategoryId, Home, Approved, ReporterId
+	        FROM News
+	        WHERE Approved = 1 AND Home = 1
+	        ORDER BY PostedDate DESC
+	    """;
+	    try (var con = DB.getConnection();
+	         var ps  = con.prepareStatement(sql)) {
+	        ps.setInt(1, limit);
+	        try (var rs = ps.executeQuery()) {
+	            List<News> list = new ArrayList<>();
+	            while (rs.next()) list.add(mapRow(rs));
+	            return list;
+	        }
+	    }
+	}
+
 
 	public void increaseViewCount(int id) throws Exception {
 		String sql = "UPDATE News SET ViewCount = ViewCount + 1 WHERE Id = ?";
@@ -623,33 +617,178 @@ public class NewsDAO {
 	    return findByReporterPending(reporterId, 5); // mặc định show 5 bài
 	}
 
-	private News mapRow(ResultSet rs) throws SQLException {
-	    News n = new News();
+	
+	
+	 // CHÚ Ý: phương thức này CHỈ set Approved, KHÔNG đụng cột Home
+    public void setApproved(int id, boolean approved) throws SQLException {
+        String sql = "UPDATE News SET Approved=? WHERE Id=?";
+        try (var con = DB.getConnection();
+             var ps  = con.prepareStatement(sql)) {
+            ps.setBoolean(1, approved);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        }
+    }
 
-	    n.setId(rs.getInt("Id"));
-	    n.setTitle(rs.getString("Title"));
-	    n.setContent(rs.getString("Content"));
-	    n.setImage(rs.getString("Image"));
+    public void setHome(int id, boolean home) throws SQLException {
+        String sql = "UPDATE News SET Home=? WHERE Id=?";
+        try (var con = DB.getConnection();
+             var ps  = con.prepareStatement(sql)) {
+            ps.setBoolean(1, home);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        }
+    }
 
-	    // datetime2(7) -> LocalDateTime
-	    Timestamp ts = rs.getTimestamp("PostedDate");
-	    n.setPostedDate(ts != null ? ts.toLocalDateTime() : null);
+    // Đếm bài CHỜ DUYỆT theo bộ lọc
+    public int countPending(String q, Integer catId, Integer reporterId,
+                            LocalDate from, LocalDate to) throws SQLException {
+        StringBuilder sb = new StringBuilder(
+            "SELECT COUNT(*) FROM News WHERE Approved = 0"
+        );
+        List<Object> args = new ArrayList<>();
 
-	    n.setAuthor(rs.getString("Author"));
-	    n.setViewCount(rs.getInt("ViewCount"));       // NOT NULL -> getInt OK
-	    n.setCategoryId(rs.getInt("CategoryId"));     // NOT NULL
+        if (catId != null) { sb.append(" AND CategoryId=?"); args.add(catId); }
+        if (reporterId != null) { sb.append(" AND ReporterId=?"); args.add(reporterId); }
 
-	    // bit NOT NULL -> getBoolean OK
-	    n.setHome(rs.getBoolean("Home"));
-	    n.setApproved(rs.getBoolean("Approved"));
+        if (from != null) { sb.append(" AND PostedDate >= ?"); args.add(Timestamp.valueOf(from.atStartOfDay())); }
+        if (to   != null) { sb.append(" AND PostedDate < ?");  args.add(Timestamp.valueOf(to.plusDays(1).atStartOfDay())); }
 
-	    // FK có thể NULL -> dùng getObject để giữ null
-	    Integer reporterId = rs.getObject("ReporterId", Integer.class);
-	    n.setReporterId(reporterId);
+        // Tìm kiếm: ưu tiên FULLTEXT nếu bạn đã tạo; nếu chưa có thì dùng LIKE
+        if (q != null && !q.isBlank()) {
+            sb.append(" AND (Title LIKE ? OR [Content] LIKE ?)");
+            String like = "%" + q.trim() + "%";
+            args.add(like); args.add(like);
+        }
 
-	    return n;
-	}
+        try (var con = DB.getConnection();
+             var ps  = con.prepareStatement(sb.toString())) {
+            for (int i = 0; i < args.size(); i++) ps.setObject(i+1, args.get(i));
+            try (var rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
+        }
+    }
 
+    // Lấy danh sách CHỜ DUYỆT theo bộ lọc + phân trang
+    public List<News> findPendingPaged(String q, Integer catId, Integer reporterId,
+                                       LocalDate from, LocalDate to,
+                                       int offset, int limit) throws SQLException {
+        StringBuilder sb = new StringBuilder(
+            "SELECT Id, Title, [Content], Image, PostedDate, Author, ViewCount, " +
+            "CategoryId, Home, Approved, ReporterId " +
+            "FROM News WHERE Approved = 0"
+        );
+        List<Object> args = new ArrayList<>();
 
+        if (catId != null) { sb.append(" AND CategoryId=?"); args.add(catId); }
+        if (reporterId != null) { sb.append(" AND ReporterId=?"); args.add(reporterId); }
+        if (from != null) { sb.append(" AND PostedDate >= ?"); args.add(Timestamp.valueOf(from.atStartOfDay())); }
+        if (to   != null) { sb.append(" AND PostedDate < ?");  args.add(Timestamp.valueOf(to.plusDays(1).atStartOfDay())); }
+
+        if (q != null && !q.isBlank()) {
+            sb.append(" AND (Title LIKE ? OR [Content] LIKE ?)");
+            String like = "%" + q.trim() + "%";
+            args.add(like); args.add(like);
+        }
+
+        sb.append(" ORDER BY PostedDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        args.add(offset);
+        args.add(limit);
+
+        try (var con = DB.getConnection();
+             var ps  = con.prepareStatement(sb.toString())) {
+            for (int i = 0; i < args.size(); i++) ps.setObject(i+1, args.get(i));
+            try (var rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) {
+                    News n = mapRow(rs);
+                    list.add(n);
+                }
+                return list;
+            }
+        }
+    }
+
+    private News mapRow(ResultSet rs) throws SQLException {
+        News n = new News();
+        n.setId(rs.getInt("Id"));
+        n.setTitle(rs.getString("Title"));
+        n.setContent(rs.getString("Content"));
+        n.setImage(rs.getString("Image"));
+        n.setPostedDate(rs.getTimestamp("PostedDate").toLocalDateTime());
+        n.setAuthor(rs.getString("Author"));
+        n.setViewCount(rs.getInt("ViewCount"));
+        n.setCategoryId(rs.getInt("CategoryId"));
+        n.setHome(rs.getBoolean("Home"));
+        n.setApproved(rs.getBoolean("Approved"));
+        int rid = rs.getInt("ReporterId");
+        n.setReporterId(rs.wasNull() ? null : rid);
+        return n;
+    }
+
+    // Tiện ích lấy tập bài chờ duyệt (không phân trang) – nếu còn dùng nơi khác
+    public List<News> findPending() throws SQLException {
+        return findPendingPaged(null, null, null, null, null, 0, 50);
+    }
+    
+    //Tìm kiếm có phân trang
+    public List<News> searchAdvancedPaged(String keyword, int categoryId, int page, int size) throws Exception {
+        String kw = (keyword == null ? "" : keyword.trim());
+        StringBuilder sql = new StringBuilder();
+        sql.append("""
+            SELECT Id, Title, [Content], [Image], PostedDate, Author, ViewCount,
+                   CategoryId, [Home], Approved, ReporterId
+            FROM News
+            WHERE 1=1
+            """);
+
+        List<Object> params = new ArrayList<>();
+
+        if (!kw.isEmpty()) {
+            sql.append(" AND (Title LIKE ? OR [Content] LIKE ?) ");
+            String like = "%" + kw + "%";
+            params.add(like); params.add(like);
+        }
+        if (categoryId > 0) {
+            sql.append(" AND CategoryId = ? ");
+            params.add(categoryId);
+        }
+        sql.append(" ORDER BY PostedDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ");
+
+        int offset = (Math.max(1, page) - 1) * Math.max(1, size);
+        params.add(offset);
+        params.add(size);
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql.toString())) {
+            for (int i=0;i<params.size();i++) ps.setObject(i+1, params.get(i));
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
+    
+ // Lấy ngẫu nhiên N bài đã duyệt cùng chuyên mục, loại trừ bài hiện tại
+    public List<News> findRelatedRandom(int categoryId, int excludeNewsId, int limit) throws Exception {
+        String sql = "SELECT TOP " + limit +
+                " Id, Title, Content, Image, PostedDate, Author, ViewCount, CategoryId, Home, Approved, ReporterId" +
+                " FROM News WHERE Approved = 1 AND CategoryId = ? AND Id <> ?" +
+                " ORDER BY NEWID()"; // ngẫu nhiên
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, excludeNewsId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<News> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        }
+    }
 
 }

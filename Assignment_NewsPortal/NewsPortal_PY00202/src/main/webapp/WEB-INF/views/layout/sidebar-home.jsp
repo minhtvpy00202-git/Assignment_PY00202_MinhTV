@@ -6,7 +6,7 @@
 <aside class="sidebar" aria-label="Tin phụ">
   <!-- 5 bản tin được xem nhiều -->
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">5 bản tin được xem nhiều</h3>
+    <h3 class="sidebar-card__title">Most Viewed</h3>
     <c:choose>
       <c:when test="${not empty hotList}">
         <ol class="sidebar-list">
@@ -27,7 +27,7 @@
 
   <!-- 5 bản tin mới nhất -->
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">5 bản tin mới nhất</h3>
+    <h3 class="sidebar-card__title">Latest News</h3>
     <c:choose>
       <c:when test="${not empty newList}">
         <ol class="sidebar-list">
@@ -48,7 +48,7 @@
 
   <!-- 5 bản tin bạn đã xem -->
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">5 bản tin bạn đã xem</h3>
+    <h3 class="sidebar-card__title">Recently Read</h3>
     <c:choose>
       <c:when test="${not empty recentList}">
         <ol class="sidebar-list">

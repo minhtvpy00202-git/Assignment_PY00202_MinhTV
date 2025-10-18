@@ -32,8 +32,8 @@ public class HomeServlet extends HttpServlet {
         	List<Category> categories = safeList(() -> categoryDAO.findAll());
 
             // 2) Tin trang nhất (Home=true)
-            List<News> approvedNews = safeList(() -> newsDAO.findApproved(10));
-            req.setAttribute("approvedNews", approvedNews);
+        	List<News> approvedNews = safeList(() -> newsDAO.findHomeApproved(10));
+        	req.setAttribute("approvedNews", approvedNews);
 
             // 3) Top 5 hot (view cao)
             List<News> hotList = safeList(() -> newsDAO.findTopHot(5));
@@ -56,7 +56,7 @@ public class HomeServlet extends HttpServlet {
             // Có lỗi thì log và hiển thị trang rỗng thân thiện
             e.printStackTrace();
             req.setAttribute("error", "Không tải được dữ liệu trang chủ: " + e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);	
         }
     }
 

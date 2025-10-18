@@ -4,21 +4,21 @@
 	<section name="java.lang.Class">
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
-			<item value="var=&quot;imgUrl&quot;"/>
-			<item value="main"/>
-			<item value="vui lòng khớp"/>
-			<item value="findById"/>
-			<item value="số"/>
-			<item value="focus"/>
-			<item value="vui lòng"/>
-			<item value="tạo"/>
-			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?deleted=1&quot;);"/>
-			<item value="#list"/>
-			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?updated=1&quot;);resp.sendRedirect(req.getContextPath() + &quot;/admin/users?updated=1#list&quot;);"/>
-			<item value="resp.sendRedirect(req.getContextPath() + &quot;/admin/users?created=1&quot;);resp.sendRedirect(req.getContextPath() + &quot;/admin/users?created=1#list&quot;);"/>
-			<item value="số điẹnn"/>
-			<item value="thêm mới"/>
-			<item value="cập nhật"/>
+			<item value="war"/>
+			<item value="kết qu"/>
+			<item value="tìm kiếm"/>
+			<item value="tim kiếm"/>
+			<item value="nhập t"/>
+			<item value="cùng chuyên mục"/>
+			<item value="ngày sinhh"/>
+			<item value="edit"/>
+			<item value="setP"/>
+			<item value="list"/>
+			<item value="&lt;th&gt;"/>
+			<item value="&lt;th"/>
+			<item value="pin"/>
+			<item value="tìm kiếm - news"/>
+			<item value="delete"/>
 		</list>
 	</section>
 </section>

@@ -8,33 +8,32 @@
 	<packaging>war</packaging>
 	<name>NEWS</name>
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
-				<configuration>
-					<release>21</release>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.4.0</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<warSourceDirectory>src/main/webapp</warSourceDirectory>
-				</configuration>
-			</plugin>
-		</plugins>
+  <finalName>NewsPortal</finalName> <!-- tên WAR -->
+  <plugins>
+    <!-- Compiler plugin -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.11.0</version>
+      <configuration>
+        <source>${maven.compiler.source}</source>
+        <target>${maven.compiler.target}</target>
+        <encoding>${project.build.sourceEncoding}</encoding>
+      </configuration>
+    </plugin>
 
-		<resources>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
-
-	</build>
+    <!-- War plugin (mặc định đủ, tuỳ chọn cấu hình thêm) -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-war-plugin</artifactId>
+      <version>3.4.0</version>
+      <configuration>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <warName>${project.build.finalName}</warName>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
 	<dependencies>
 		<dependency>
 		  <groupId>org.jsoup</groupId>
@@ -78,4 +77,9 @@
 		</dependency>
 
 	</dependencies>
+	<properties>
+	    <maven.compiler.source>17</maven.compiler.source>
+	    <maven.compiler.target>17</maven.compiler.target>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
 </project>

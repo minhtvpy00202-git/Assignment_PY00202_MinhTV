@@ -33,10 +33,7 @@
       <textarea id="content" name="content" rows="15"><c:out value="${news.content}" escapeXml="false"/></textarea>
     </label>
 
-    <label>
-      <input type="checkbox" name="home" value="1" ${news.home ? 'checked' : ''}> 
-      Hiển thị Trang chủ
-    </label>
+    
 
     <button type="submit" class="btn">Lưu</button>
     <a class="btn ghost" href="${pageContext.request.contextPath}/reporter/posts">Hủy</a>

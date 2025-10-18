@@ -1,7 +1,7 @@
 INDEX VERSION 1.134+C:\FPOLY\JAVA3\Assignment_PY00202_MinhTV\Assignment_NewsPortal\.metadata\.plugins\org.eclipse.jdt.core
 3540661642.index
-3786550133.index
 185415029.index
+3786550133.index
 919332068.index
 1961023119.index
 4231244267.index
@@ -34,9 +34,9 @@ INDEX VERSION 1.134+C:\FPOLY\JAVA3\Assignment_PY00202_MinhTV\Assignment_NewsPort
 1518420777.index
 2703065127.index
 2834648970.index
-742764087.index
 3239658203.index
 3877407968.index
+742764087.index
 1432313625.index
 3719308469.index
 2626194594.index

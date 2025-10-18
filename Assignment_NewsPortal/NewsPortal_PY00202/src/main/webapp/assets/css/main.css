@@ -54,7 +54,7 @@ body {
 
 .logo-section {
     border-bottom: 1px solid #e2e2e2;
-    padding: 24px 0;
+    padding: 0;
     background: #ffffff;
 }
 
@@ -153,6 +153,7 @@ body {
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
     position: relative;
+    text-transform: uppercase;
 }
 
 .nav-link:hover {
@@ -188,12 +189,13 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    min-width: 200px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: none;
+    z-index: 1000;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -202,14 +204,20 @@ body {
 
 .dropdown-item {
     display: block;
-    padding: 10px 15px;
-    color: #333;
+    padding: 12px 16px;
+    color: #121212;
     text-decoration: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f5f5f5;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: normal;
+    transition: all 0.3s ease;
 }
 
 .dropdown-item:hover {
     background: #f8f9fa;
+    color: #000000;
 }
 
 .dropdown-item:last-child {
@@ -563,7 +571,7 @@ body {
 /* ===== MAIN CONTENT AREAS ===== */
 .main-content {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     gap: 48px;
     margin: 48px 0;
     max-width: 1280px;
@@ -1269,7 +1277,7 @@ body {
 }
 
 .card-title {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
     line-height: 1.2;
@@ -1290,7 +1298,7 @@ body {
     color: #666666;
     margin: 0;
     line-height: 1.6;
-    font-size: 1rem;
+    font-size: 0.82rem;
     font-family: 'Noto Serif', serif;
 }
 
@@ -1987,7 +1995,7 @@ span.nav-text,
 }
 
 .search-header h1 {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     color: #121212;
     margin: 0 0 16px 0;
@@ -2006,7 +2014,7 @@ span.nav-text,
 }
 
 .category-header h1 {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     color: #121212;
     margin: 0 0 16px 0;
@@ -2063,16 +2071,12 @@ span.nav-text,
     color: #666666;
 }
 
-font-family: 'Inter',
-sans-serif;
-text-transform: uppercase;
-letter-spacing: 1px;
-}
-
+/* ===== SEARCH PAGE STYLES ===== */
 .search-header p {
-    color: #666;
+    color: #666666;
     font-size: 16px;
     margin: 0;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .search-form-main {
@@ -2103,10 +2107,8 @@ letter-spacing: 1px;
 
 .search-info {
     background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
     margin-bottom: 20px;
+    text-align:center;
 }
 
 .search-info h2 {
@@ -2616,6 +2618,7 @@ blockquote {
 a {
     color: #121212;
     transition: color 0.3s ease;
+    text-decoration: none;
 }
 
 a:hover {
@@ -2917,4 +2920,1282 @@ body {
     .page-header h1 {
         font-size: 1.75rem;
     }
+}
+
+/* ===== POST CREATE PAGE STYLES ===== */
+
+/* Modern Main Content */
+.modern-main-content {
+    min-height: calc(100vh - 140px);
+    background: #fafafa;
+    padding: 32px 0;
+}
+
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Page Header for Post Create */
+.page-header .page-title-section {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 8px 0;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+}
+
+.page-subtitle {
+    color: #666666;
+    margin: 0;
+    font-size: 16px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.page-actions {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Dashboard Section */
+.dashboard-section {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    padding: 48px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 32px;
+}
+
+/* Modern Form Styles */
+.modern-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.modern-form .form-group {
+    margin-bottom: 32px;
+}
+
+.modern-form .form-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 8px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.modern-form .form-input,
+.modern-form .form-select,
+.modern-form .form-textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e2e2e2;
+    border-radius: 0;
+    font-size: 16px;
+    font-family: 'Noto Serif', serif;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    line-height: 1.5;
+}
+
+.modern-form .form-input:focus,
+.modern-form .form-select:focus,
+.modern-form .form-textarea:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 0 1px #000000;
+}
+
+.modern-form .form-input::placeholder,
+.modern-form .form-textarea::placeholder {
+    color: #999999;
+    font-style: italic;
+}
+
+/* Textarea Specific */
+.modern-form .form-textarea {
+    resize: vertical;
+    min-height: 200px;
+    font-family: 'Noto Serif', serif;
+    line-height: 1.7;
+}
+
+/* File Input */
+.modern-form .form-file {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px dashed #cccccc;
+    border-radius: 0;
+    background: #fafafa;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modern-form .form-file:hover {
+    border-color: #999999;
+    background: #f5f5f5;
+}
+
+.modern-form .form-file:focus {
+    outline: none;
+    border-color: #000000;
+    background: #ffffff;
+}
+
+/* Form Help Text */
+.modern-form .form-help {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #666666;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: italic;
+}
+
+/* Checkbox Wrapper */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #000000;
+}
+
+.checkbox-label {
+    font-size: 16px;
+    color: #121212;
+    margin: 0;
+    cursor: pointer;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 500;
+}
+
+/* Form Actions */
+.modern-form .form-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    padding-top: 32px;
+    border-top: 1px solid #e2e2e2;
+    margin-top: 48px;
+}
+
+/* Button Styles for Post Create */
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.btn-primary:hover {
+    background: #333333;
+    border-color: #333333;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+}
+
+.btn-secondary:hover {
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.btn-text {
+    font-weight: 600;
+}
+
+/* CKEditor Integration */
+.ck-editor {
+    border: 2px solid #e2e2e2 !important;
+    border-radius: 0 !important;
+}
+
+.ck-editor.ck-focused {
+    border-color: #000000 !important;
+    box-shadow: 0 0 0 1px #000000 !important;
+}
+
+.ck-editor__editable {
+    min-height: 400px !important;
+    font-family: 'Noto Serif', serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    padding: 24px !important;
+}
+
+.ck-toolbar {
+    border-bottom: 2px solid #e2e2e2 !important;
+    background: #fafafa !important;
+}
+
+.ck-button {
+    border-radius: 0 !important;
+}
+
+.ck-button:hover {
+    background: #e2e2e2 !important;
+}
+
+.ck-button.ck-on {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Responsive Design for Post Create */
+@media (max-width: 768px) {
+    .modern-main-content {
+        padding: 16px 0;
+    }
+
+    .content-container {
+        padding: 0 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+        padding: 24px;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .page-actions {
+        justify-content: flex-start;
+    }
+
+    .dashboard-section {
+        padding: 24px;
+        margin-top: 16px;
+    }
+
+    .modern-form .form-input,
+    .modern-form .form-select,
+    .modern-form .form-textarea {
+        padding: 12px 16px;
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+    }
+
+    .modern-form .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        padding: 16px 24px;
+    }
+
+    .ck-editor__editable {
+        min-height: 300px !important;
+        padding: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .dashboard-section {
+        padding: 16px;
+    }
+
+    .modern-form .form-group {
+        margin-bottom: 24px;
+    }
+
+    .modern-form .form-actions {
+        margin-top: 32px;
+        padding-top: 24px;
+    }
+}
+
+/* Loading State for Form Submission */
+.modern-form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.modern-form.loading .btn-primary::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+/* Form Validation States */
+.form-group.error .form-input,
+.form-group.error .form-select,
+.form-group.error .form-textarea {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 1px #dc3545;
+}
+
+.form-group.error .form-label {
+    color: #dc3545;
+}
+
+.form-error {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #dc3545;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.form-group.success .form-input,
+.form-group.success .form-select,
+.form-group.success .form-textarea {
+    border-color: #28a745;
+    box-shadow: 0 0 0 1px #28a745;
+}
+
+/* Character Counter */
+.character-counter {
+    text-align: right;
+    font-size: 12px;
+    color: #666666;
+    margin-top: 4px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.character-counter.warning {
+    color: #ffc107;
+}
+
+.character-counter.error {
+    color: #dc3545;
+}
+
+.logo-section .container h5 {
+	text-align: center;
+}/* 
+===== POST EDIT PAGE STYLES ===== */
+
+/* Admin Page Container */
+.admin-page {
+    min-height: calc(100vh - 140px);
+    background: #fafafa;
+    padding: 48px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-page h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 32px 0;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #000000;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Form Styling for Post Edit */
+.admin-page .form {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    padding: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.admin-page .form label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 8px;
+    margin-top: 24px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.admin-page .form label:first-of-type {
+    margin-top: 0;
+}
+
+.admin-page .form input[type="text"],
+.admin-page .form input[type="hidden"] + input,
+.admin-page .form input[name="title"],
+.admin-page .form select,
+.admin-page .form textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e2e2e2;
+    border-radius: 0;
+    font-size: 16px;
+    font-family: 'Noto Serif', serif;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.admin-page .form input[type="text"]:focus,
+.admin-page .form input[name="title"]:focus,
+.admin-page .form select:focus,
+.admin-page .form textarea:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 0 1px #000000;
+}
+
+/* File Input for Post Edit */
+.admin-page .form input[type="file"] {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px dashed #cccccc;
+    border-radius: 0;
+    background: #fafafa;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.admin-page .form input[type="file"]:hover {
+    border-color: #999999;
+    background: #f5f5f5;
+}
+
+.admin-page .form input[type="file"]:focus {
+    outline: none;
+    border-color: #000000;
+    background: #ffffff;
+}
+
+/* Small text for current image */
+.admin-page .form small {
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #666666;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: italic;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-left: 3px solid #000000;
+}
+
+/* Textarea Specific for Post Edit */
+.admin-page .form textarea {
+    resize: vertical;
+    min-height: 200px;
+    font-family: 'Noto Serif', serif;
+    line-height: 1.7;
+}
+
+/* Checkbox Styling for Post Edit */
+.admin-page .form label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    margin-top: 24px;
+    margin-bottom: 32px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.admin-page .form input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #000000;
+}
+
+/* Button Styling for Post Edit */
+.admin-page .form .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 140px;
+    justify-content: center;
+    margin-right: 16px;
+    margin-top: 32px;
+}
+
+.admin-page .form .btn:not(.ghost) {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.admin-page .form .btn:not(.ghost):hover {
+    background: #333333;
+    border-color: #333333;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.admin-page .form .btn.ghost {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+}
+
+.admin-page .form .btn.ghost:hover {
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* CKEditor Integration for Post Edit */
+.admin-page .ck-editor {
+    border: 2px solid #e2e2e2 !important;
+    border-radius: 0 !important;
+    margin-top: 8px;
+}
+
+.admin-page .ck-editor.ck-focused {
+    border-color: #000000 !important;
+    box-shadow: 0 0 0 1px #000000 !important;
+}
+
+.admin-page .ck-editor__editable {
+    min-height: 400px !important;
+    font-family: 'Noto Serif', serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    padding: 24px !important;
+}
+
+.admin-page .ck-toolbar {
+    border-bottom: 2px solid #e2e2e2 !important;
+    background: #fafafa !important;
+}
+
+.admin-page .ck-button {
+    border-radius: 0 !important;
+}
+
+.admin-page .ck-button:hover {
+    background: #e2e2e2 !important;
+}
+
+.admin-page .ck-button.ck-on {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Responsive Design for Post Edit */
+@media (max-width: 768px) {
+    .admin-page {
+        padding: 24px 16px;
+    }
+    
+    .admin-page h2 {
+        font-size: 2rem;
+        margin-bottom: 24px;
+    }
+    
+    .admin-page .form {
+        padding: 24px;
+    }
+    
+    .admin-page .form input[type="text"],
+    .admin-page .form input[name="title"],
+    .admin-page .form select,
+    .admin-page .form textarea,
+    .admin-page .form input[type="file"] {
+        padding: 12px 16px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .admin-page .form .btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 12px;
+        padding: 16px 24px;
+    }
+    
+    .admin-page .ck-editor__editable {
+        min-height: 300px !important;
+        padding: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-page h2 {
+        font-size: 1.75rem;
+    }
+    
+    .admin-page .form {
+        padding: 16px;
+    }
+    
+    .admin-page .form label {
+        margin-top: 20px;
+    }
+    
+    .admin-page .form .btn {
+        margin-top: 24px;
+    }
+}
+
+/* Loading State for Post Edit Form */
+.admin-page .form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.admin-page .form.loading .btn:not(.ghost)::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+/* Form Validation States for Post Edit */
+.admin-page .form label.error input,
+.admin-page .form label.error select,
+.admin-page .form label.error textarea {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 1px #dc3545;
+}
+
+.admin-page .form label.error {
+    color: #dc3545;
+}
+
+.admin-page .form .form-error {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #dc3545;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.admin-page .form label.success input,
+.admin-page .form label.success select,
+.admin-page .form label.success textarea {
+    border-color: #28a745;
+    box-shadow: 0 0 0 1px #28a745;
+}
+
+/* Alternative Modern Structure (if HTML is updated later) */
+.post-edit-container {
+    min-height: calc(100vh - 140px);
+    background: #fafafa;
+    padding: 32px 0;
+}
+
+.post-edit-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.post-edit-header {
+    background: #ffffff;
+    padding: 48px 32px;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.post-edit-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 8px 0;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+}
+
+.post-edit-header p {
+    color: #666666;
+    margin: 0;
+    font-size: 16px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.post-edit-actions {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.post-edit-form-section {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    padding: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Utility Classes for Post Edit */
+.post-edit-form-group {
+    margin-bottom: 32px;
+}
+
+.post-edit-form-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #121212;
+    margin-bottom: 8px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.post-edit-form-input,
+.post-edit-form-select,
+.post-edit-form-textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e2e2e2;
+    border-radius: 0;
+    font-size: 16px;
+    font-family: 'Noto Serif', serif;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    line-height: 1.5;
+}
+
+.post-edit-form-input:focus,
+.post-edit-form-select:focus,
+.post-edit-form-textarea:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 0 1px #000000;
+}/* ===== NEWS APPROVE/
+* ===== NEWS APPROVE PAGE STYLES ===== */
+
+/* News Approve Container */
+.admin-page h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 48px 0;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #000000;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Empty State Message */
+.admin-page p[style*="text-align: center"] {
+    background: #f8f9fa;
+    border: 1px solid #e2e2e2;
+    border-left: 4px solid #000000;
+    padding: 32px;
+    margin: 48px 0;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+    border-radius: 0;
+}
+
+/* Article Cards for News Approve */
+.admin-page .card.article {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 0;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.admin-page .card.article:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.admin-page .card.article:last-child {
+    margin-bottom: 0;
+}
+
+/* Article Title */
+.admin-page .card.article h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 16px 0;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.3;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 16px;
+}
+
+/* Article Meta Information */
+.admin-page .card.article small {
+    display: block;
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 20px;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+/* Article Excerpt */
+.admin-page .card.article p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333;
+    margin: 20px 0 32px 0;
+    font-family: 'Noto Serif', serif;
+    padding: 16px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+/* Actions Form */
+.admin-page .card.article .actions {
+    margin: 0;
+    padding: 0;
+}
+
+.admin-page .card.article .actions .con {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 16px;
+    justify-content: center;
+}
+
+/* Action Buttons */
+.admin-page .card.article .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 120px;
+    justify-content: center;
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Primary Approve Button */
+.admin-page .card.article .btn:not(.ghost):not(.danger) {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.admin-page .card.article .btn:not(.ghost):not(.danger):hover {
+    background: #333333;
+    border-color: #333333;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Ghost Button (Home Feature) */
+.admin-page .card.article .btn.ghost {
+    background: #ffffff;
+    color: #0066cc;
+    border-color: #0066cc;
+}
+
+.admin-page .card.article .btn.ghost:hover {
+    background: #0066cc;
+    color: #ffffff;
+    border-color: #0066cc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,102,204,0.2);
+}
+
+/* Danger Button (Delete) */
+.admin-page .card.article .btn.danger {
+    background: #ffffff;
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.admin-page .card.article .btn.danger:hover {
+    background: #dc3545;
+    color: #ffffff;
+    border-color: #dc3545;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220,53,69,0.2);
+}
+
+/* Button Focus States */
+.admin-page .card.article .btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+}
+
+.admin-page .card.article .btn.ghost:focus {
+    box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+}
+
+.admin-page .card.article .btn.danger:focus {
+    box-shadow: 0 0 0 3px rgba(220,53,69,0.1);
+}
+
+/* Loading State for Actions */
+.admin-page .card.article .actions.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.admin-page .card.article .actions.loading .btn::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 6px;
+}
+
+/* Status Indicators */
+.admin-page .card.article .status-indicator {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 0;
+    margin-left: 12px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.admin-page .card.article .status-pending {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.admin-page .card.article .status-featured {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Article Preview Link */
+.admin-page .card.article .preview-link {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e2e2e2;
+    color: #666666;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.admin-page .card.article .preview-link:hover {
+    background: #e2e2e2;
+    color: #333333;
+    text-decoration: none;
+}
+
+/* Responsive Design for News Approve */
+@media (max-width: 768px) {
+    .admin-page h2 {
+        font-size: 2rem;
+        margin-bottom: 32px;
+    }
+    
+    .admin-page .card.article {
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+    
+    .admin-page .card.article h3 {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .admin-page .card.article .actions .con {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .admin-page .card.article .btn {
+        width: 100%;
+        min-width: auto;
+        padding: 14px 20px;
+    }
+    
+    .admin-page .card.article small {
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+    
+    .admin-page .card.article p {
+        font-size: 15px;
+        margin: 16px 0 24px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-page {
+        padding: 24px 16px;
+    }
+    
+    .admin-page h2 {
+        font-size: 1.75rem;
+        margin-bottom: 24px;
+    }
+    
+    .admin-page .card.article {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .admin-page .card.article h3 {
+        font-size: 1.25rem;
+    }
+    
+    .admin-page .card.article .btn {
+        padding: 12px 16px;
+        font-size: 12px;
+    }
+}
+
+/* Batch Actions (if needed for future enhancement) */
+.news-approve-batch-actions {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    padding: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.news-approve-batch-actions .batch-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: #666666;
+}
+
+.news-approve-batch-actions input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #000000;
+}
+
+.news-approve-batch-actions .batch-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e2e2;
+    background: #f8f9fa;
+    color: #666666;
+    font-size: 13px;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.news-approve-batch-actions .batch-btn:hover {
+    background: #e2e2e2;
+    color: #333333;
+}
+
+/* Statistics Summary */
+.news-approve-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.news-approve-stat-card {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.news-approve-stat-card h4 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #121212;
+    margin: 0 0 8px 0;
+    font-family: 'Playfair Display', serif;
+}
+
+.news-approve-stat-card p {
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Filter and Search (if needed) */
+.news-approve-filters {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    padding: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.news-approve-filters select,
+.news-approve-filters input {
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+}
+
+.news-approve-filters select:focus,
+.news-approve-filters input:focus {
+    outline: none;
+    border-color: #000000;
+}
+
+.table a {
+  text-decoration: none;
+  color: #000; /* hoặc màu bạn muốn, ví dụ #1a1a1a */
+  font-weight: 500;
+}
+
+.table a:hover {
+  color: #2563eb; /* đổi màu khi hover nếu thích */
+  text-decoration: none; /* vẫn không gạch chân */
+}
+
+.news-content .content p {
+	text-align: justify;
+	line-height: 2;
+	margin: 0 0 16px
+}
+
+.news-content .content img {
+	display: block;        /* biến img thành khối để margin auto có tác dụng */
+  margin: 12px auto;     /* căn giữa ngang */
+  max-width: 100%;       /* co giãn theo khung */
+  height: auto;          /* giữ tỉ lệ */
 }
