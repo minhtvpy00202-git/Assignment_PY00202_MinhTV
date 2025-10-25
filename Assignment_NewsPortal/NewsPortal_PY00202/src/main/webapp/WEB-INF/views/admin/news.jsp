@@ -42,9 +42,16 @@
 		<div class="page-header">
 			<h1>QUẢN LÝ TIN TỨC</h1>
 			<p>Thêm, sửa, xóa và quản lý các bài tin tức</p>
+			
+			<!-- NÚT VIẾT BÀI MỚI CHO ADMIN -->
+  <div class="page-actions" style="flex:0 0 auto;">
+    <a class="btn btn-primary" href="${ctx}/reporter/post-create">
+      + Viết bài mới
+    </a>
+  </div>
 		</div>
 
-
+		
 
 		<!-- Danh sách tin tức -->
 		<div id="list" class="table-section">

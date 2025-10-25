@@ -72,7 +72,7 @@ public class CategoryDAO {
                 map.put(rs.getInt("Id"), rs.getString("Name"));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);  // không bắt buộc caller phải try/catch
+            throw new RuntimeException(e);  
         }
         return map;
     }

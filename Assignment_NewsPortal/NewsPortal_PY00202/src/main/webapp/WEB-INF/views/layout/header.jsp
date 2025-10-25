@@ -24,7 +24,7 @@
 			<div class="container">
 				<h1 class="main-logo">
 					<a href="${pageContext.request.contextPath}/home">NewsPortal</a>
-					<h5>Cổng tin tức hiện đại - chuyên nghiệp</h5>
+					<h5>Your Gateway to the World</h5>
 				</h1>
 			</div>
 		</div>
@@ -121,22 +121,22 @@
 									<a class="nav-link" href="${pageContext.request.contextPath}/reporter/dashboard">Dashboard</a>
 								</c:otherwise>
 							</c:choose>
-							<a class="nav-link" href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
+							<a href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
 						</c:when>
 						<c:when test="${not empty sessionScope.authUser}">
 							<c:choose>
 								<c:when test="${sessionScope.authUser.role}">
-									<a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
+									<a class="nav-link" style="color:red;" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
 								</c:when>
 								<c:otherwise>
-									<a class="nav-link" href="${pageContext.request.contextPath}/reporter/dashboard">Dashboard</a>
+									<a class="nav-link" style="color:red;" href="${pageContext.request.contextPath}/reporter/dashboard">Dashboard</a>
 								</c:otherwise>
 							</c:choose>
-							<a class="nav-link" href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
+							<a class="nav-link" style="color:red;" href="${pageContext.request.contextPath}/auth/logout">Đăng xuất</a>
 						</c:when>
 						<c:otherwise>
-							<a class="nav-link" href="${pageContext.request.contextPath}/auth/login">Đăng nhập</a>
-							<a class="nav-link" href="${pageContext.request.contextPath}/auth/register">Đăng ký</a>
+							<a class="nav-link" style="color:red;" href="${pageContext.request.contextPath}/auth/login">Đăng nhập</a>
+							<a class="nav-link" style="color:red;" href="${pageContext.request.contextPath}/auth/register">Đăng ký</a>
 						</c:otherwise>
 					</c:choose>
 				</div>

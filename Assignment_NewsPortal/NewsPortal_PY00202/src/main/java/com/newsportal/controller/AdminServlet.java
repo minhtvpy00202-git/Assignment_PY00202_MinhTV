@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet({ "/admin/dashboard", "/admin/news-approve", "/admin/news-detail", "/admin/settings" })
+@WebServlet({ "/admin/dashboard", "/admin/news-approve", "/admin/news-detail" })
 public class AdminServlet extends HttpServlet {
 
 	private final NewsDAO newsDAO = new NewsDAO();
@@ -125,10 +125,7 @@ public class AdminServlet extends HttpServlet {
 				return;
 			}
 
-			case "/admin/settings": {
-				req.getRequestDispatcher("/WEB-INF/views/admin/settings.jsp").forward(req, resp);
-				return;
-			}
+			
 			default:
 				resp.sendError(404);
 			}
@@ -192,11 +189,7 @@ public class AdminServlet extends HttpServlet {
 				resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
 				return;
 			}
-			case "/admin/settings": {
-				// Xử lý lưu cấu hình nếu có...
-				resp.sendRedirect(req.getContextPath() + "/admin/settings?ok=1");
-				return;
-			}
+			
 			default:
 				resp.sendError(404);
 			}

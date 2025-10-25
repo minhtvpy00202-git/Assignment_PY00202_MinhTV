@@ -201,3 +201,39 @@ thg 10 18, 2025 08:33:01.76 [18544:3536:1018/083301.765:ERROR:google_apis\gcm\en
 thg 10 18, 2025 08:34:46.14 [18544:3536:1018/083446.144:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 18, 2025 08:38:28.18 [18544:3536:1018/083828.182:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 18, 2025 08:45:39.26 [18544:3536:1018/084539.260:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+
+thg 10 20, 2025 07:25:12.28 NEW SESSION
+thg 10 20, 2025 07:25:12.30 [16600:16884:1020/072512.278:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 20, 2025 07:25:19.57 [16600:16748:1020/072519.572:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 07:25:20.83 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 20, 2025 07:25:48.87 [16600:16748:1020/072548.876:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 07:26:45.16 [16600:16748:1020/072645.161:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 07:28:26.83 [16600:16748:1020/072826.831:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 07:31:25.59 [16600:16748:1020/073125.596:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 07:39:25.08 [16600:16748:1020/073925.083:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 20, 2025 08:12:44.47 [16600:16604:1020/081244.471:ERROR:components\device_event_log\device_event_log_impl.cc:198] [08:12:44.464] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+thg 10 20, 2025 08:12:44.47 [16600:16604:1020/081244.473:ERROR:components\device_event_log\device_event_log_impl.cc:198] [08:12:44.474] USB: usb_service_win.cc:308 SetupDiEnumDeviceInterfaces: No more data is available. (0x103)
+thg 10 20, 2025 09:24:47.69 [16600:16748:1020/092447.698:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:434] Failed to connect to MCS endpoint with error -105
+thg 10 20, 2025 09:24:49.71 [16600:16748:1020/092449.718:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:434] Failed to connect to MCS endpoint with error -106
+thg 10 20, 2025 09:30:56.38 [16600:16748:1020/093056.387:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:434] Failed to connect to MCS endpoint with error -106
+thg 10 20, 2025 09:30:56.38 [16600:16748:1020/093056.387:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:434] Failed to connect to MCS endpoint with error -106
+
+thg 10 21, 2025 19:51:36.23 NEW SESSION
+thg 10 21, 2025 19:51:36.25 [16380:13936:1021/195136.234:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 21, 2025 19:51:38.91 [16380:11040:1021/195138.911:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 21, 2025 19:51:39.54 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 21, 2025 19:52:00.19 [16380:11040:1021/195200.189:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 21, 2025 19:52:56.38 [16380:11040:1021/195256.381:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 21, 2025 19:54:29.93 [16380:11040:1021/195429.933:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 21, 2025 19:58:16.73 [16380:11040:1021/195816.729:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 21, 2025 20:05:33.51 [16380:11040:1021/200533.519:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+
+thg 10 22, 2025 07:19:52.56 NEW SESSION
+thg 10 22, 2025 07:19:52.60 [11896:5612:1022/071952.566:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 22, 2025 07:19:55.47 [11896:15600:1022/071955.474:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 22, 2025 07:19:56.24 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 22, 2025 07:20:24.32 [11896:15600:1022/072024.324:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 22, 2025 07:21:17.71 [11896:15600:1022/072117.717:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 22, 2025 07:22:44.33 [11896:15600:1022/072244.332:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 22, 2025 07:25:35.47 [11896:15600:1022/072535.478:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 22, 2025 07:32:19.59 [11896:15600:1022/073219.595:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT

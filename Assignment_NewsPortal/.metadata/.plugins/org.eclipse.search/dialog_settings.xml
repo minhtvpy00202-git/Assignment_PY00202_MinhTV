@@ -26,12 +26,12 @@
 		<item key="WHOLE_WORD" value="false"/>
 		<item key="SEARCH_DERIVED" value="false"/>
 		<item key="SEARCH_IN_BINARIES" value="false"/>
-		<item key="HISTORY_SIZE" value="6"/>
+		<item key="HISTORY_SIZE" value="12"/>
 		<section name="HISTORY0">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="dd/mm"/>
+			<item key="textPattern" value="mailconfig"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -46,7 +46,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="mm/dd"/>
+			<item key="textPattern" value="mailconfid"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -58,7 +58,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="5 bản tin được xem nhiều"/>
+			<item key="textPattern" value="Banner"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -70,7 +70,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="categoryName"/>
+			<item key="textPattern" value="ReporterStat"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -82,7 +82,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="/login"/>
+			<item key="textPattern" value="setting"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -92,9 +92,81 @@
 		</section>
 		<section name="HISTORY5">
 			<item key="ignoreCase" value="true"/>
-			<item key="isRegExSearch" value="false"/>
+			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="thể thao"/>
+			<item key="textPattern" value="SocialLink"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY6">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="@WebFilter"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY7">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="jakarta.servlet.Filter"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY8">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="filter"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY9">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="implements Filter"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY10">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="/reporter"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY11">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="/ADMIN/DASHBOARD"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -107,9 +179,9 @@
 		<item key="scope" value="0"/>
 	</section>
 	<section name="DialogBounds_SearchDialog">
-		<item key="DIALOG_X_ORIGIN" value="890"/>
-		<item key="DIALOG_Y_ORIGIN" value="85"/>
-		<item key="DIALOG_WIDTH" value="505"/>
+		<item key="DIALOG_X_ORIGIN" value="521"/>
+		<item key="DIALOG_Y_ORIGIN" value="100"/>
+		<item key="DIALOG_WIDTH" value="510"/>
 		<item key="DIALOG_HEIGHT" value="488"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>

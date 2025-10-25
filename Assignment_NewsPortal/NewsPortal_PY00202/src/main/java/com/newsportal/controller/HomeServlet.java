@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/home")
+@WebServlet({"/home", "/most-viewed", "/latest", "/recent" })
 public class HomeServlet extends HttpServlet {
 
     private final NewsDAO newsDAO = new NewsDAO();
@@ -27,37 +27,108 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            // 1) Danh mục để render menu
-        	List<Category> categories = safeList(() -> categoryDAO.findAll());
+    	
+    	String path = req.getServletPath();
+    	 String mode;
+    	 String pageTitle;
+    	 
+    	 switch (path) {
+    	 
+    	 case "/home": {
+    	 try {
+             // 1) Danh mục để render menu
+         	List<Category> categories = safeList(() -> categoryDAO.findAll());
 
-            // 2) Tin trang nhất (Home=true)
-        	List<News> approvedNews = safeList(() -> newsDAO.findHomeApproved(10));
-        	req.setAttribute("approvedNews", approvedNews);
+             // 2) Tin trang nhất (Home=true)
+         	List<News> approvedNews = safeList(() -> newsDAO.findHomeApproved(10));
+         	req.setAttribute("approvedNews", approvedNews);
 
-            // 3) Top 5 hot (view cao)
-            List<News> hotList = safeList(() -> newsDAO.findTopHot(5));
-            req.setAttribute("hotList", hotList);
+             // 3) Top 5 hot (view cao)
+             List<News> hotList = safeList(() -> newsDAO.findTopHot(5));
+             req.setAttribute("hotList", hotList);
 
-            // 4) Top 5 mới (ngày đăng mới nhất)
-            List<News> newList = safeList(() -> newsDAO.findTopNew(5));
-            req.setAttribute("newList", newList);
+             // 4) Top 5 mới (ngày đăng mới nhất)
+             List<News> newList = safeList(() -> newsDAO.findTopNew(5));
+             req.setAttribute("newList", newList);
 
-            // 5) 5 tin xem gần đây (đọc từ cookie "recent" lưu id dạng: 31,22,10,...)
-            List<Integer> recentIds = readRecentIdsFromCookie(req, "recent", 5);
-            List<News> recentList = findNewsByIdsPreserveOrder(recentIds);
-            req.setAttribute("recentList", recentList);
+             // 5) 5 tin xem gần đây (đọc từ cookie "recent" lưu id dạng: 31,22,10,...)
+             List<Integer> recentIds = readRecentIdsFromCookie(req, "recent", 5);
+             List<News> recentList = findNewsByIdsPreserveOrder(recentIds);
+             req.setAttribute("recentList", recentList);
 
-            // Forward sang trang chủ
-            req.setAttribute("categories", new CategoryDAO().findAll());
-            req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
-
-        } catch (Exception e) {
-            // Có lỗi thì log và hiển thị trang rỗng thân thiện
-            e.printStackTrace();
-            req.setAttribute("error", "Không tải được dữ liệu trang chủ: " + e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);	
-        }
+             // Forward sang trang chủ
+             req.setAttribute("categories", new CategoryDAO().findAll());
+             req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+             return;
+         } catch (Exception e) {
+             // Có lỗi thì log và hiển thị trang rỗng thân thiện
+             e.printStackTrace();
+             req.setAttribute("error", "Không tải được dữ liệu trang chủ: " + e.getMessage());
+             req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);	
+             return;
+         }
+    	 }
+    	 
+    	 // Bài viết xem nhiều nhất
+    	 case "/most-viewed": {
+    		 List<News> items = safeList(() -> newsDAO.findTopHot(5));
+    		 req.setAttribute("items", items);
+    		 req.setAttribute("pageTitle", "Most Viewed");
+    		 req.setAttribute("mode", "most");
+    		 
+    		 //Side bar:
+    		 List<Integer> recentIds = readRecentIdsFromCookie(req, "recent", 5);
+    		 List<News> recentList = findNewsByIdsPreserveOrder(recentIds);
+             req.setAttribute("recentList", recentList);
+    		
+    		 req.setAttribute("newList", safeList(() ->newsDAO.findTopNew(5)));
+    		 
+    		 req.getRequestDispatcher("/WEB-INF/views/top5.jsp").forward(req, resp);
+             return;
+    		
+    		 
+    	 }
+    	 
+    	 //Bài viết mới nhất
+    	 
+    	 case "/latest":{
+    		 List<News> items = safeList(() -> newsDAO.findTopNew(5));
+             req.setAttribute("items", items);
+             req.setAttribute("pageTitle", "Latest News");
+             req.setAttribute("mode", "latest");
+             //Side bar:
+             List<Integer> recentIds = readRecentIdsFromCookie(req, "recent", 5);
+    		 List<News> recentList = findNewsByIdsPreserveOrder(recentIds);
+             req.setAttribute("recentList", recentList);
+             req.setAttribute("hotList", safeList(() -> newsDAO.findTopHot(5)));
+             
+             req.getRequestDispatcher("/WEB-INF/views/top5.jsp").forward(req, resp);
+             return;
+             }
+    	 
+    	 //Bài viết mới đọc:
+         case "/recent":{
+        	 List<Integer> recentIds = readRecentIdsFromCookie(req, "recent", 5);
+             List<News> items = findNewsByIdsPreserveOrder(recentIds);
+             req.setAttribute("items", items);
+             req.setAttribute("pageTitle", "Recent");
+             req.setAttribute("mode", "recent");
+             //Side bar:
+             req.setAttribute("hotList", safeList(() -> newsDAO.findTopHot(5)));
+             req.setAttribute("newList", safeList(() ->newsDAO.findTopNew(5)));
+             
+             req.getRequestDispatcher("/WEB-INF/views/top5.jsp").forward(req, resp);
+             return;
+             }
+         default:{
+             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+             return;}
+    	 
+    	 }
+    	 
+    	
+    	
+        
     }
 
  // ----- Helpers -----
@@ -97,7 +168,7 @@ public class HomeServlet extends HttpServlet {
     }
 
 
-    /** Lấy tin theo danh sách id và giữ nguyên thứ tự ids (DAO không có findByIds thì gọi findById từng cái). */
+    /** Lấy tin theo danh sách id và giữ nguyên thứ tự ids  */
     private List<News> findNewsByIdsPreserveOrder(List<Integer> ids) {
         if (ids == null || ids.isEmpty()) return Collections.emptyList();
         List<News> out = new ArrayList<>();

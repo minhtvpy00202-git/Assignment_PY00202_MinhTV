@@ -23,15 +23,11 @@ public class ReporterPostsServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Kiểm tra đăng nhập và quyền reporter
-        User user = (User) req.getSession().getAttribute("authUser");
-        if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/auth/login");
-            return;
-        }
-        if (user.isRole()) { // true = admin, chuyển về admin dashboard
-            resp.sendRedirect(req.getContextPath() + "/admin/news");
-            return;
-        }
+    	User user = (User) req.getSession().getAttribute("authUser");
+    	if (user == null) { // chỉ chặn khi CHƯA đăng nhập
+    	    resp.sendRedirect(req.getContextPath() + "/auth/login");
+    	    return;
+    	}
 
         try {
             // Lấy danh sách bài viết của reporter hiện tại

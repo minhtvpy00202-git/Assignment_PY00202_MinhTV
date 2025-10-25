@@ -1,12 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
+<c:set var="mode" value="${empty param.mode ? requestScope.mode : param.mode}" />
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <aside class="sidebar" aria-label="Tin phụ">
   <!-- 5 bản tin được xem nhiều -->
+  <c:if test="${mode ne 'most'}">
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">Most Viewed</h3>
+    <h3 class="sidebar-card__title"><a class="sidebar-section-link" href="${ctx}/most-viewed">5 Most Viewed</a></h3>
     <c:choose>
       <c:when test="${not empty hotList}">
         <ol class="sidebar-list">
@@ -24,10 +26,11 @@
       </c:otherwise>
     </c:choose>
   </section>
-
+</c:if>
   <!-- 5 bản tin mới nhất -->
+  <c:if test="${mode ne 'latest'}">
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">Latest News</h3>
+    <h3 class="sidebar-card__title"><a class="sidebar-section-link" href="${ctx}/latest">5 Latest News</a></h3>
     <c:choose>
       <c:when test="${not empty newList}">
         <ol class="sidebar-list">
@@ -45,10 +48,12 @@
       </c:otherwise>
     </c:choose>
   </section>
+  </c:if>
 
   <!-- 5 bản tin bạn đã xem -->
+  <c:if test="${mode ne 'recent'}">
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title">Recently Read</h3>
+    <h3 class="sidebar-card__title"><a class="sidebar-section-link" href="${ctx}/recent">5 Recently Read</a></h3>
     <c:choose>
       <c:when test="${not empty recentList}">
         <ol class="sidebar-list">
@@ -66,7 +71,7 @@
       </c:otherwise>
     </c:choose>
   </section>
-
+</c:if>
   <!-- Newsletter -->
   <section class="sidebar-card">
     <h3 class="sidebar-card__title">Đăng ký nhận tin</h3>

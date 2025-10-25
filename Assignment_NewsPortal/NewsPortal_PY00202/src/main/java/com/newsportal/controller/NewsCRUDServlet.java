@@ -219,7 +219,7 @@ public class NewsCRUDServlet extends HttpServlet {
 
     // ---------------- helpers ----------------
 
-    /** Bắt buộc đăng nhập & là phóng viên (role=false). Trả về null nếu đã redirect. */
+    /** Bắt buộc đăng nhập. Trả về null nếu đã redirect. */
     private User requireReporter(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         // LẤY ĐÚNG TÊN ATTR
         User me = (User) req.getSession().getAttribute("authUser");
@@ -227,11 +227,7 @@ public class NewsCRUDServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/auth/login"); // ĐÚNG URL
             return null;
         }
-        // Admin (role=true) không dùng giao diện phóng viên
-        if (me.isRole()) {
-            resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
-            return null;
-        }
+        
         return me;
     }
 
@@ -260,7 +256,7 @@ public class NewsCRUDServlet extends HttpServlet {
             Files.copy(in, dest, StandardCopyOption.REPLACE_EXISTING);
         }
 
-        // Lưu vào DB đường dẫn URL công khai, KHÔNG phải path ổ đĩa Windows
+        // Lưu vào DB đường dẫn URL công khai
         return PUBLIC_URL_PREFIX + newName; // ví dụ: /uploads/1739812345_ab12cd34.jpg
     }
 

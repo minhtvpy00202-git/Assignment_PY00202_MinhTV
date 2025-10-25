@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public final class DB {
 
-    // ====== Hằng số cấu hình DB (đổi ở đây khi cần) ======
+    // ====== Hằng số cấu hình DB======================
     private static final String URL  =
             "jdbc:sqlserver://localhost:1433;databaseName=NewsPortal;encrypt=false;trustServerCertificate=true";
     private static final String USER = "sa";
