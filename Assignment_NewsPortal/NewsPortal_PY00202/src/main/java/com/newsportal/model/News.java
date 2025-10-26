@@ -104,7 +104,7 @@ public class News {
     
     public String getExcerpt() {
         if (content == null) return "";
-        String text = Jsoup.parse(content).text();   // bỏ toàn bộ thẻ HTML
+        String text = Jsoup.parse(content).text();  
         text = text.trim().replaceAll("\\s+", " ");
         return text.length() > 300 ? text.substring(0, 300) + "..." : text;
     }

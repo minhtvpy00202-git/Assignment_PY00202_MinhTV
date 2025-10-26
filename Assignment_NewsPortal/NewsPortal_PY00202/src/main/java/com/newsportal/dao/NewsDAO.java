@@ -982,7 +982,7 @@ public class NewsDAO {
 	        try (ResultSet rs = ps.executeQuery()) {
 	            List<News> list = new ArrayList<>();
 	            while (rs.next()) {
-	                list.add(map(rs)); // dùng hàm map(ResultSet) có sẵn trong NewsDAO
+	                list.add(map(rs)); 
 	            }
 	            return list;
 	        }
