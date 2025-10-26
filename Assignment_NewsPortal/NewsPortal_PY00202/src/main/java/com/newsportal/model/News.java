@@ -19,26 +19,44 @@ public class News {
     private boolean home;        // hiển thị trang chủ
     private boolean approved;    // đã duyệt
     private Integer reporterId;  // FK Users, có thể null
+    private boolean isDelete;
 
     public News() {}
 
-    public News(int id, String title, String content, String image,
-                LocalDateTime postedDate, String author, int viewCount,
-                int categoryId, boolean home, boolean approved, Integer reporterId) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.image = image;
-        this.postedDate = postedDate;
-        this.author = author;
-        this.viewCount = viewCount;
-        this.categoryId = categoryId;
-        this.home = home;
-        this.approved = approved;
-        this.reporterId = reporterId;
-    }
+    
 
-    // --- Getters/Setters ---
+    public News(int id, String title, String content, String image, LocalDateTime postedDate, String author,
+			int viewCount, int categoryId, boolean home, boolean approved, Integer reporterId, boolean isDelete) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.image = image;
+		this.postedDate = postedDate;
+		this.author = author;
+		this.viewCount = viewCount;
+		this.categoryId = categoryId;
+		this.home = home;
+		this.approved = approved;
+		this.reporterId = reporterId;
+		this.isDelete = isDelete;
+	}
+
+
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+
+
+
+	// --- Getters/Setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

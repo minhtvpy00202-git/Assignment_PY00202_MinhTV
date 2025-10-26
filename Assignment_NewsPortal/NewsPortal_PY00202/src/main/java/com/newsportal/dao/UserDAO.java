@@ -17,11 +17,13 @@ import com.newsportal.model.User;
 import com.newsportal.util.DB;
 
 public class UserDAO {
+	private static final String ND = "ISNULL(IsDelete,0)=0";
+
 
     /* ======================== CRUD & Auth ======================== */
 
     public User findById(int id) throws Exception {
-        String sql = "SELECT * FROM Users WHERE Id=?";
+    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Id=?";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -32,7 +34,7 @@ public class UserDAO {
     }
 
     public List<User> findAll() throws Exception {
-        String sql = "SELECT * FROM Users ORDER BY Id DESC";
+    	String sql = "SELECT * FROM Users WHERE " + ND + " ORDER BY Id DESC";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -44,8 +46,8 @@ public class UserDAO {
 
     /** Tạo user mới. Role: true=Admin, false=Reporter */
     public int create(User u) throws Exception {
-        String sql = "INSERT INTO Users(Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+    	String sql = "INSERT INTO Users(Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated, IsDelete) "
+    	           + "VALUES (?, ?, ?, ?, ?, ?, ?, 1, 0)";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -78,8 +80,8 @@ public class UserDAO {
      * 
      */
     public int createAdminForm(User u) throws Exception {
-        String sql = "INSERT INTO Users (Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO Users (Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated, IsDelete) "
+    	           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -114,7 +116,7 @@ public class UserDAO {
 
     /** Đăng nhập (Activated=1) */
     public User login(String email, String password) throws Exception {
-        String sql = "SELECT * FROM Users WHERE Email=? AND [Password]=? AND Activated=1";
+    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Email=? AND [Password]=? AND Activated=1";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -127,50 +129,44 @@ public class UserDAO {
 
     /** Cập nhật thông tin người dùng (bao gồm role & gender) */
     public void update(User u) throws Exception {
-        String sql = """
-            UPDATE Users
-               SET [Password]=?, Fullname=?, Birthday=?, Gender=?, Mobile=?, Email=?, [Role]=?
-             WHERE Id=?
-            """;
+        String sql =
+            "UPDATE Users SET [Password]=?, Fullname=?, Birthday=?, Gender=?, Mobile=?, Email=?, [Role]=? " +
+            "WHERE " + ND + " AND Id=?";
+
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-
             ps.setString(1, u.getPassword());
             ps.setString(2, u.getFullname());
-
-            if (u.getBirthday() != null) {
-                ps.setDate(3, new java.sql.Date(u.getBirthday().getTime()));
-            } else {
-                ps.setNull(3, Types.DATE);
-            }
-
-            // gender
+            if (u.getBirthday() != null) ps.setDate(3, new java.sql.Date(u.getBirthday().getTime()));
+            else ps.setNull(3, Types.DATE);
             ps.setBoolean(4, u.isGender());
-            // Nếu model của bạn là Boolean có thể null:
-            // if (u.getGender() == null) ps.setNull(4, Types.BIT); else ps.setBoolean(4, u.getGender());
-
             ps.setString(5, u.getMobile());
             ps.setString(6, u.getEmail());
-
-            // role
             ps.setBoolean(7, u.isRole());
-
             ps.setInt(8, u.getId());
-
             ps.executeUpdate();
         }
     }
 
+
     public void delete(int id) throws Exception {
         try (Connection cn = DB.getConnection();
-             PreparedStatement ps = cn.prepareStatement("DELETE FROM Users WHERE Id=?")) {
+             PreparedStatement ps = cn.prepareStatement("UPDATE Users SET IsDelete=1 WHERE Id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+    
+    public void restore(int id) throws Exception {
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement("UPDATE Users SET IsDelete=0 WHERE Id=?")) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
 
     public boolean existsEmail(String email) throws Exception {
-        String sql = "SELECT 1 FROM Users WHERE Email=?";
+    	String sql = "SELECT 1 FROM Users WHERE " + ND + " AND Email=?";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -181,7 +177,7 @@ public class UserDAO {
     }
     
     public boolean existsMobile(String mobile) throws Exception {
-        String sql = "SELECT 1 FROM Users WHERE Mobile=?";
+    	String sql = "SELECT 1 FROM Users WHERE " + ND + " AND Mobile=?";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, mobile);
@@ -228,7 +224,7 @@ public class UserDAO {
     
     public int countAll() throws Exception {
         try (Connection c = DB.getConnection();
-             PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM Users");
+             PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM Users WHERE " + ND);
              ResultSet rs = ps.executeQuery()) {
             return rs.next() ? rs.getInt(1) : 0;
         }
@@ -248,8 +244,8 @@ public class UserDAO {
     
  // 
     public int create(User u, boolean activated) throws Exception {
-        String sql = "INSERT INTO Users(Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO Users(Fullname, Email, [Password], Mobile, Birthday, Gender, Role, Activated, IsDelete) "
+    	           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -276,7 +272,7 @@ public class UserDAO {
 
     /** Lấy danh sách tài khoản chờ duyệt (Activated=0) */
     public List<User> findPending() throws Exception {
-        String sql = "SELECT * FROM Users WHERE Activated=0 ORDER BY Id DESC";
+    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Activated=0 ORDER BY Id DESC";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -294,11 +290,12 @@ public class UserDAO {
             if (isAll) {
                 String like = "%" + kw + "%";
                 String sql = """
-                    SELECT * FROM Users
-                     WHERE Fullname LIKE ? OR Email LIKE ? 
-                        OR REPLACE(REPLACE(REPLACE(Mobile,' ',''),'-',''),'.','') LIKE ?
-                     ORDER BY Id DESC
-                    """;
+                        SELECT * FROM Users
+                        WHERE """ + ND + """
+                          AND (Fullname LIKE ? OR Email LIKE ?
+                               OR REPLACE(REPLACE(REPLACE(Mobile,' ',''),'-',''),'.','') LIKE ?)
+                        ORDER BY Id DESC
+                        """;
                 try (PreparedStatement ps = cn.prepareStatement(sql)) {
                     ps.setString(1, like);
                     ps.setString(2, like);
@@ -313,11 +310,10 @@ public class UserDAO {
                 switch (by.toLowerCase()) {
                     case "mobile": { // contains + bỏ ký tự định dạng
                         String likeDigits = "%" + kw.replaceAll("\\D+", "") + "%";
-                        String sql = """
-                            SELECT * FROM Users
-                             WHERE REPLACE(REPLACE(REPLACE(Mobile,' ',''),'-',''),'.','') LIKE ?
-                             ORDER BY Id DESC
-                            """;
+                        String sql =
+                                "SELECT * FROM Users " +
+                                "WHERE " + ND + " AND REPLACE(REPLACE(REPLACE(Mobile,' ',''),'-',''),'.','') LIKE ? " +
+                                "ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setString(1, likeDigits);
                             try (ResultSet rs = ps.executeQuery()) {
@@ -328,7 +324,7 @@ public class UserDAO {
                         }
                     }
                     case "fullname": {
-                        String sql = "SELECT * FROM Users WHERE Fullname LIKE ? ORDER BY Id DESC";
+                    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Fullname LIKE ? ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setString(1, "%" + kw + "%");
                             try (ResultSet rs = ps.executeQuery()) {
@@ -339,7 +335,7 @@ public class UserDAO {
                         }
                     }
                     case "email": {
-                        String sql = "SELECT * FROM Users WHERE Email LIKE ? ORDER BY Id DESC";
+                    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Email LIKE ? ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setString(1, "%" + kw + "%");
                             try (ResultSet rs = ps.executeQuery()) {
@@ -351,7 +347,7 @@ public class UserDAO {
                     }
                     case "role": { // true=ADMIN, false=REPORTER
                         boolean isAdmin = parseRoleToBoolean(kw);
-                        String sql = "SELECT * FROM Users WHERE Role=? ORDER BY Id DESC";
+                        String sql = "SELECT * FROM Users WHERE " + ND + " AND Role=? ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setBoolean(1, isAdmin);
                             try (ResultSet rs = ps.executeQuery()) {
@@ -363,7 +359,7 @@ public class UserDAO {
                     }
                     case "activated": { // true=đã kích hoạt, false=chưa
                         boolean on = parseYesNo(kw);
-                        String sql = "SELECT * FROM Users WHERE Activated=? ORDER BY Id DESC";
+                        String sql = "SELECT * FROM Users WHERE " + ND + " AND Activated=? ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setBoolean(1, on);
                             try (ResultSet rs = ps.executeQuery()) {
@@ -374,7 +370,7 @@ public class UserDAO {
                         }
                     }
                     default: { // fallback theo họ tên
-                        String sql = "SELECT * FROM Users WHERE Fullname LIKE ? ORDER BY Id DESC";
+                    	String sql = "SELECT * FROM Users WHERE " + ND + " AND Fullname LIKE ? ORDER BY Id DESC";
                         try (PreparedStatement ps = cn.prepareStatement(sql)) {
                             ps.setString(1, "%" + kw + "%");
                             try (ResultSet rs = ps.executeQuery()) {
@@ -410,7 +406,8 @@ public class UserDAO {
     
     
     public User findAuthorById(int id) {
-        String sql = "SELECT Id, Password, Fullname, Birthday, Gender, Mobile, Email, Role, Activated FROM [User] WHERE id = ?";
+    	String sql = "SELECT Id, Password, Fullname, Birthday, Gender, Mobile, Email, Role, Activated "
+                + "FROM Users WHERE " + ND + " AND Id = ?";
         try (Connection con = DB.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -441,8 +438,8 @@ public class UserDAO {
 
         // tạo "?, ?, ?, ..." theo số lượng ids
         String placeholders = ids.stream().map(i -> "?").collect(Collectors.joining(","));
-        String sql = "SELECT Id, Password, Fullname, Birthday, Gender, Mobile, Email, Role, Activated " +
-                     "FROM Users WHERE Id IN (" + placeholders + ")";
+        String sql = "SELECT Id, Password, Fullname, Birthday, Gender, Mobile, Email, Role, Activated "
+                + "FROM Users WHERE " + ND + " AND Id IN (" + placeholders + ")";
 
         try (Connection con = DB.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -474,7 +471,7 @@ public class UserDAO {
     
     /** Kiểm tra email đã tồn tại cho user KHÁC id cho trước */
     public boolean existsEmailExceptId(String email, int excludeId) throws Exception {
-        String sql = "SELECT 1 FROM Users WHERE Email=? AND Id<>?";
+    	String sql = "SELECT 1 FROM Users WHERE " + ND + " AND Email=? AND Id<>?";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -487,7 +484,7 @@ public class UserDAO {
 
     /** Kiểm tra số điện thoại đã tồn tại cho user KHÁC id cho trước */
     public boolean existsMobileExceptId(String mobile, int excludeId) throws Exception {
-        String sql = "SELECT 1 FROM Users WHERE Mobile=? AND Id<>?";
+    	String sql = "SELECT 1 FROM Users WHERE " + ND + " AND Mobile=? AND Id<>?";
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, mobile);
@@ -498,6 +495,52 @@ public class UserDAO {
         }
     }
 
+ // Lấy user đang hoạt động (IsDelete=0)
+    public List<User> findAllActive() throws Exception {
+        String sql = "SELECT * FROM Users WHERE " + ND + " ORDER BY Id DESC";
+        try (var cn = DB.getConnection();
+             var ps = cn.prepareStatement(sql);
+             var rs = ps.executeQuery()) {
+            var list = new ArrayList<User>();
+            while (rs.next()) list.add(map(rs));
+            return list;
+        }
+    }
+
+    // Lấy user đã xóa mềm (IsDelete=1)
+    public List<User> findDeleted() throws Exception {
+        String sql = "SELECT * FROM Users WHERE ISNULL(IsDelete,0)=1 ORDER BY Id DESC";
+        try (var cn = DB.getConnection();
+             var ps = cn.prepareStatement(sql);
+             var rs = ps.executeQuery()) {
+            var list = new ArrayList<User>();
+            while (rs.next()) list.add(map(rs));
+            return list;
+        }
+    }
+
+    // Tùy chọn: lấy tất cả, có thể bao gồm đã xóa mềm
+    public List<User> findAll(boolean includeDeleted) throws Exception {
+        String sql = includeDeleted
+            ? "SELECT * FROM Users ORDER BY Id DESC"
+            : "SELECT * FROM Users WHERE " + ND + " ORDER BY Id DESC";
+        try (var cn = DB.getConnection();
+             var ps = cn.prepareStatement(sql);
+             var rs = ps.executeQuery()) {
+            var list = new ArrayList<User>();
+            while (rs.next()) list.add(map(rs));
+            return list;
+        }
+    }
+
+    // XÓA VĨNH VIỄN (hard delete)
+    public void hardDelete(int id) throws Exception {
+        try (var cn = DB.getConnection();
+             var ps = cn.prepareStatement("DELETE FROM Users WHERE Id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
 
 
 

@@ -13,6 +13,7 @@ public class User {
     private boolean gender;
     private boolean role;     // true = Admin, false = Reporter
     private boolean activated;
+    private boolean isDelete;
 
     
     
@@ -71,8 +72,16 @@ public class User {
 	public void setActivated(boolean activated) {
 		this.activated = activated;
 	}
+	
+	
+	public boolean isDelete() {
+		return isDelete;
+	}
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
 	public User(int id, String fullname, String email, String password, String mobile, Date birthday,
-			boolean gender, boolean role, boolean activated) {
+			boolean gender, boolean role, boolean activated, boolean isDelete) {
 		super();
 		this.id = id;
 		this.fullname = fullname;
@@ -83,6 +92,7 @@ public class User {
 		this.gender = gender;
 		this.role = role;
 		this.activated = activated;
+		this.isDelete = isDelete;
 	}
 	public User() {
 		super();

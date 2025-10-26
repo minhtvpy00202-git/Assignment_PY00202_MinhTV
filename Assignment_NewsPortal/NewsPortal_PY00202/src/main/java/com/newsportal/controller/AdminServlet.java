@@ -150,27 +150,31 @@ public class AdminServlet extends HttpServlet {
 		try {
 			switch (path) {
 			case "/admin/news-approve": {
-				int id = Integer.parseInt(req.getParameter("id"));
-				switch (action) {
-				case "approve":
-					newsDAO.setApproved(id, true);
-					break;
-				case "reject":
-					newsDAO.delete(id);
-					break;
-				case "home-on":
-					newsDAO.setApproved(id, true); 
-					newsDAO.setHome(id, true);
-					break;
-				case "home-off":
-					newsDAO.setHome(id, false);
-					break;
-				default:
-					;
-				}
-				resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
-				return;
+			    int id = Integer.parseInt(req.getParameter("id"));
+			    switch (action) {
+			        case "approve":
+			            newsDAO.setApproved(id, true);
+			            queueAdd(req, id);   // <— thêm vào queue
+			            break;
+			        case "reject":
+			            newsDAO.delete(id);
+			            queueRemove(req, id); // <— loại khỏi queue nếu có
+			            break;
+			        case "home-on":
+			            newsDAO.setApproved(id, true);
+			            newsDAO.setHome(id, true);
+			            queueAdd(req, id);   // <— cũng thêm vào queue nếu đưa lên trang chủ
+			            break;
+			        case "home-off":
+			            newsDAO.setHome(id, false);
+			            // không động tới queue
+			            break;
+			        default: ;
+			    }
+			    resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
+			    return;
 			}
+
 
 			case "/admin/news-detail": {
 				// xử lý duyệt/từ chối ở trang chi tiết (nếu hiển thị)
@@ -226,4 +230,24 @@ public class AdminServlet extends HttpServlet {
 			return null;
 		}
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private static void queueAdd(HttpServletRequest req, int id) {
+	    var ss = req.getSession();
+	    var q = (java.util.List<Integer>) ss.getAttribute("bulkSendQueue");
+	    if (q == null) { q = new java.util.ArrayList<>(); ss.setAttribute("bulkSendQueue", q); }
+	    if (!q.contains(id)) q.add(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void queueRemove(HttpServletRequest req, int id) {
+	    var ss = req.getSession(false);
+	    if (ss == null) return;
+	    var q = (java.util.List<Integer>) ss.getAttribute("bulkSendQueue");
+	    if (q != null) q.remove(Integer.valueOf(id));
+	}
+	
+	
+
 }

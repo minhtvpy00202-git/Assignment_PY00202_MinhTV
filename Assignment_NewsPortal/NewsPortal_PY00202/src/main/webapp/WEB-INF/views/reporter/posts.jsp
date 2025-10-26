@@ -1,40 +1,38 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<c:set var="pageTitle" value="Quản lý Bài viết - NewsPortal" />
+<%@ taglib prefix="c"   uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<c:set var="pageTitle" value="Manage Posts - NewsPortal" />
 
 <%@ include file="../layout/admin-header.jsp" %>
 
 <main class="admin-main">
   <div class="container">
 
-    <!-- Header: dùng .page-header -->
     <div class="page-header">
-      <h1>Quản lý Bài viết</h1>
-      <p>Xem và quản lý tất cả bài viết của bạn</p>
+      <h1><fmt:message key="reporter.posts.title"/></h1>
+      <p><fmt:message key="reporter.posts.subtitle"/></p>
       <a href="${pageContext.request.contextPath}/reporter/post-create" class="btn btn-primary">
-        Viết bài mới
+        <fmt:message key="reporter.common.newPost"/>
       </a>
     </div>
 
-    <!-- Stats: dùng .admin-dashboard + .dashboard-card -->
     <div class="admin-dashboard">
       <div class="dashboard-card">
         <h3>${totalPosts != null ? totalPosts : 0}</h3>
-        <p>Tổng bài viết</p>
+        <p><fmt:message key="reporter.stats.total"/></p>
       </div>
       <div class="dashboard-card">
         <h3>${pendingPosts != null ? pendingPosts : 0}</h3>
-        <p>Chờ duyệt</p>
+        <p><fmt:message key="reporter.stats.pending"/></p>
       </div>
       <div class="dashboard-card">
         <h3>${approvedPosts != null ? approvedPosts : 0}</h3>
-        <p>Đã duyệt</p>
+        <p><fmt:message key="reporter.stats.approved"/></p>
       </div>
     </div>
 
-    <!-- Danh sách: dùng .table-section + .table -->
     <div class="table-section">
-      <h2>Danh sách bài viết</h2>
+      <h2><fmt:message key="reporter.posts.listTitle"/></h2>
 
       <c:if test="${not empty error}">
         <div class="alert alert-danger">${error}</div>
@@ -42,20 +40,25 @@
 
       <c:choose>
         <c:when test="${empty posts}">
-          <p>Chưa có bài viết nào. <a href="${pageContext.request.contextPath}/reporter/post-create">Viết bài mới →</a></p>
+          <p>
+            <fmt:message key="reporter.common.none"/>
+            <a href="${pageContext.request.contextPath}/reporter/post-create">
+              <fmt:message key="reporter.common.newPost"/> →
+            </a>
+          </p>
         </c:when>
         <c:otherwise>
           <div class="table-wrapper">
             <table class="table">
               <thead>
                 <tr>
-                  <th>STT</th>
-                  <th>Tiêu đề</th>
-                  <th>Chuyên mục</th>
-                  <th>Ngày đăng</th>
-                  <th>Lượt xem</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
+                  <th><fmt:message key="admin.common.col.index"/></th>
+                  <th><fmt:message key="admin.news.col.title"/></th>
+                  <th><fmt:message key="admin.news.col.category"/></th>
+                  <th><fmt:message key="admin.news.col.postedDate"/></th>
+                  <th><fmt:message key="reporter.meta.views"/></th>
+                  <th><fmt:message key="reporter.meta.status"/></th>
+                  <th><fmt:message key="admin.common.col.actions"/></th>
                 </tr>
               </thead>
               <tbody>
@@ -65,11 +68,11 @@
                     <td>
                       <strong>${post.title}</strong>
                       <c:if test="${post.home}">
-                        <span class="badge">Trang nhất</span>
+                        <span class="badge"><fmt:message key="admin.dashboard.homeFlag"/></span>
                       </c:if>
                     </td>
                     <td>
-                      ${categoryMap[post.categoryId] != null ? categoryMap[post.categoryId] : 'Chưa phân loại'}
+                      ${categoryMap[post.categoryId] != null ? categoryMap[post.categoryId] : '—'}
                     </td>
                     <td>
                       <c:choose>
@@ -82,18 +85,25 @@
                     <td class="text-center"><strong>${post.viewCount}</strong></td>
                     <td>
                       <span class="badge ${post.approved ? '' : 'alert-warning'}">
-                        ${post.approved ? 'Đã duyệt' : 'Chờ duyệt'}
+                        ${post.approved ? '<fmt:message key="reporter.status.approved"/>' :
+                                          '<fmt:message key="reporter.status.pending"/>'}
                       </span>
                     </td>
                     <td class="actions">
-                      <a class="btn btn-outline-primary" title="Xem"
-                         href="${pageContext.request.contextPath}/news/detail?id=${post.id}">Xem</a>
-                      <a class="btn btn-outline-primary" title="Sửa"
-                         href="${pageContext.request.contextPath}/reporter/post-edit?id=${post.id}">Sửa</a>
+                      <a class="btn btn-outline-primary" title="<fmt:message key='reporter.action.view'/>"
+                         href="${pageContext.request.contextPath}/news-detail?id=${post.id}">
+                        <fmt:message key="reporter.action.view"/>
+                      </a>
+                      <a class="btn btn-outline-primary" title="<fmt:message key='admin.common.edit'/>"
+                         href="${pageContext.request.contextPath}/reporter/post-edit?id=${post.id}">
+                        <fmt:message key="admin.common.edit"/>
+                      </a>
                       <form method="post" action="${pageContext.request.contextPath}/reporter/post-delete"
-                            onsubmit="return confirm('Xóa bài viết này?');">
+                            onsubmit="return confirm('<fmt:message key="reporter.common.confirmDelete"/>');">
                         <input type="hidden" name="id" value="${post.id}">
-                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <button type="submit" class="btn btn-danger">
+                          <fmt:message key="admin.common.delete"/>
+                        </button>
                       </form>
                     </td>
                   </tr>

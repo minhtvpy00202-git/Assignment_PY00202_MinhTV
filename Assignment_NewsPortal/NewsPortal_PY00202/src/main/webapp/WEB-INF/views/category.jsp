@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <%@ include file="layout/header.jsp" %>
 
 <div class="container">
@@ -9,12 +10,20 @@
     <!-- CONTENT AREA -->
     <section class="content-area">
       <div class="category-header">
-        <h1>Chuyên mục: <c:out value="${currentCategory.name}" /></h1>
+        <!-- Chuyên mục: {name} -->
+        <h1>
+          <fmt:message key="category.title">
+            <fmt:param value="${currentCategory.name}"/>
+          </fmt:message>
+        </h1>
       </div>
 
       <c:choose>
         <c:when test="${empty news}">
-          <div class="alert alert-info">Chưa có bài viết nào trong chuyên mục này.</div>
+          <!-- Chưa có bài viết nào trong chuyên mục này. -->
+          <div class="alert alert-info">
+            <fmt:message key="category.empty"/>
+          </div>
         </c:when>
         <c:otherwise>
           <div class="news-list">
@@ -22,21 +31,16 @@
               <!-- Biến tiện ích -->
               <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-              <!-- Chuẩn hoá URL ảnh theo Cách A -->
+              <!-- Chuẩn hoá URL ảnh -->
               <c:set var="img" value="${n.image}" />
-
-              <!-- 1) Ảnh mặc định nếu rỗng -->
               <c:if test="${empty img}">
                 <c:set var="img" value="/assets/img/sample.jpg" />
               </c:if>
-
-              <!-- 2) Nếu là URL tuyệt đối (http/https) thì dùng luôn, KHÔNG qua c:url -->
               <c:choose>
                 <c:when test="${fn:startsWith(img,'http://') || fn:startsWith(img,'https://')}">
                   <c:set var="imgUrl" value="${img}" />
                 </c:when>
                 <c:otherwise>
-                  <!-- 3) Chuẩn hoá để chắc chắn bắt đầu bằng '/' -->
                   <c:choose>
                     <c:when test="${fn:startsWith(img,'/')}">
                       <c:set var="imgPath" value="${img}" />
@@ -45,16 +49,9 @@
                       <c:set var="imgPath" value="/${img}" />
                     </c:otherwise>
                   </c:choose>
-                  <!-- 4) Dùng c:url để tự prepend context path -->
                   <c:url var="imgUrl" value="${imgPath}" />
                 </c:otherwise>
               </c:choose>
-
-              <!-- Rút gọn nội dung hiển thị nhanh -->
-              <c:set var="excerpt" value="${n.content}" />
-              <c:if test="${fn:length(excerpt) > 160}">
-                <c:set var="excerpt" value="${fn:substring(excerpt,0,160)}..." />
-              </c:if>
 
               <!-- ITEM -->
               <article class="card post-row">
@@ -70,13 +67,34 @@
                         <c:out value="${n.title}" />
                       </a>
                     </h2>
+
                     <p class="card-text small">
-                      <span>${n.viewCount} lượt xem</span>
-                      <c:if test="${n.postedDate != null}">
-                        <fmt:parseDate value="${n.postedDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="pd"/>
-                        <span> | Đăng ngày: <fmt:formatDate value="${pd}" pattern="dd/MM/yyyy"/></span>
+                      <c:if test="${n.author != null}">
+                        <span>
+                          <!-- Đăng bởi: -->
+                          | <fmt:message key="news.by"/>:
+                          <c:out value="${n.author}"/>
+                        </span>
                       </c:if>
+
+                      <c:if test="${n.postedDate != null}">
+                        <fmt:parseDate value="${n.postedDate}"
+                                       pattern="yyyy-MM-dd'T'HH:mm:ss" var="pd"/>
+                        <span>
+                          <!-- Đăng ngày: dd/MM/yyyy -->
+                          | <fmt:message key="news.published"/>:
+                          <fmt:formatDate value="${pd}" pattern="dd/MM/yyyy"/>
+                        </span>
+                      </c:if>
+
+                      <span>
+                        <!-- {0} lượt xem -->
+                        | <fmt:message key="news.views">
+                            <fmt:param value="${n.viewCount}"/>
+                          </fmt:message>
+                      </span>
                     </p>
+
                     <p class="card-text"><c:out value="${n.excerpt}" /></p>
                   </div>
                 </div>
@@ -92,13 +110,19 @@
         <div class="pagination-wrapper">
           <div class="pagination">
             <c:if test="${page > 1}">
-              <a class="page-link" href="${baseUrl}&page=${page-1}">← Trước</a>
+              <a class="page-link" href="${baseUrl}&page=${page-1}">
+                ← <fmt:message key="category.pager.prev"/>
+              </a>
             </c:if>
+
             <c:forEach var="i" begin="1" end="${totalPages}">
               <a class="page-link ${i==page ? 'active' : ''}" href="${baseUrl}&page=${i}">${i}</a>
             </c:forEach>
+
             <c:if test="${page < totalPages}">
-              <a class="page-link" href="${baseUrl}&page=${page+1}">Sau →</a>
+              <a class="page-link" href="${baseUrl}&page=${page+1}">
+                <fmt:message key="category.pager.next"/> →
+              </a>
             </c:if>
           </div>
         </div>
@@ -107,7 +131,7 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar-area">
-      <jsp:include page="layout/sidebar.jsp" />
+      <jsp:include page="layout/sidebar-home.jsp" />
     </aside>
   </div>
 </div>

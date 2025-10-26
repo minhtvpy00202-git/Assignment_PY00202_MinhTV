@@ -237,3 +237,32 @@ thg 10 22, 2025 07:21:17.71 [11896:15600:1022/072117.717:ERROR:google_apis\gcm\e
 thg 10 22, 2025 07:22:44.33 [11896:15600:1022/072244.332:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 22, 2025 07:25:35.47 [11896:15600:1022/072535.478:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 22, 2025 07:32:19.59 [11896:15600:1022/073219.595:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+
+thg 10 25, 2025 09:25:18.69 NEW SESSION
+thg 10 25, 2025 09:25:18.73 [20016:8968:1025/092518.690:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 25, 2025 09:25:21.67 [20016:18524:1025/092521.677:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 09:25:22.55 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 25, 2025 09:25:47.44 [20016:18524:1025/092547.441:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 09:26:38.80 [20016:18524:1025/092638.799:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 25, 2025 14:56:05.47 [20016:18524:1025/145605.472:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 14:56:26.54 [20016:18524:1025/145626.539:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 25, 2025 14:56:59.83 [20016:21440:1025/145659.837:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 0 rejected by interface blink.mojom.WidgetHost
+thg 10 25, 2025 14:57:30.67 [20016:18524:1025/145730.678:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 14:57:53.13 [20016:18524:1025/145753.134:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 14:58:45.80 [20016:18524:1025/145845.804:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 25, 2025 15:00:21.76 [20016:18524:1025/150021.767:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 25, 2025 16:21:31.56 [20016:21440:1025/162131.567:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:732] Message 0 rejected by interface blink.mojom.WidgetHost
+thg 10 25, 2025 21:13:26.60 [20016:18524:1025/211326.604:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:483] ConnectionHandler failed with net error: -2
+
+thg 10 26, 2025 07:17:58.83 NEW SESSION
+thg 10 26, 2025 07:17:58.85 [13116:20000:1026/071758.833:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 26, 2025 07:18:01.75 [13116:20156:1026/071801.756:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 26, 2025 07:18:02.77 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 26, 2025 07:18:26.70 [13116:20156:1026/071826.709:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 26, 2025 07:27:00.61 [18848:5608:1026/072700.610:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 26, 2025 07:27:03.17 [18848:10592:1026/072703.176:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 26, 2025 07:27:03.22 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 26, 2025 07:27:31.38 [18848:10592:1026/072731.389:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 26, 2025 07:28:24.70 [18848:10592:1026/072824.700:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 26, 2025 07:30:05.42 [18848:10592:1026/073005.422:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 26, 2025 07:33:41.50 [18848:10592:1026/073341.506:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED

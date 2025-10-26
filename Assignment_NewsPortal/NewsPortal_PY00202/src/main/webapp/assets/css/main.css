@@ -1142,6 +1142,7 @@ body {
     padding: 6px 12px;
     font-size: 12px;
     margin-right: 8px;
+    height: 34px;
 }
 
 .table .actions form {
@@ -2576,7 +2577,7 @@ span.nav-text,
 }
 
 .admin-search .btn-search {
-    margin-left: 8px;
+    margin-left: 28px;
     /* đẩy nhẹ nút ra khỏi dropdown */
     padding: 10px 20px;
     border-radius: 6px;
@@ -4199,3 +4200,13 @@ body {
   max-width: 100%;       /* co giãn theo khung */
   height: auto;          /* giữ tỉ lệ */
 }
+
+.lang-switch { display:flex; align-items:center; gap:8px; }
+    .lang-switch .sep { opacity:.5; }
+    .lang-switch a,
+    .lang-switch button {
+      display:inline-block; text-decoration:none; background:transparent;
+      border:1px solid #d9d9d9; padding:4px 8px; border-radius:8px; cursor:pointer;
+      font-weight:500; line-height:1;
+    }
+    .lang-switch .active { border-color:#000; font-weight:700; }

@@ -1,23 +1,30 @@
 package com.newsportal.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
+
 import com.newsportal.dao.CategoryDAO;
 import com.newsportal.dao.NewsDAO;
+import com.newsportal.dao.UserDAO;
 import com.newsportal.model.News;
 import com.newsportal.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.*;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.text.Collator;
+import java.util.Locale;
 
 @WebServlet({"/admin/news", "/admin/news-edit"})
 @MultipartConfig(maxFileSize = 10 * 1024 * 1024, maxRequestSize = 50 * 1024 * 1024)
@@ -122,49 +129,68 @@ public class AdminNewsCRUDServlet extends HttpServlet {
     /* ====== VIEWS ====== */
     private void list(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String q = req.getParameter("q");
+        if (q == null) q = "";
+        q = q.trim();
+
+        int cat = 0, page = 1, size = 10, rep = 0;
+        try { cat  = Integer.parseInt(req.getParameter("cat"));  } catch (Exception ignore) {} //thể loại
+        try { page = Integer.parseInt(req.getParameter("page")); } catch (Exception ignore) {} //số trang hiện tại
+        try { size = Integer.parseInt(req.getParameter("size")); } catch (Exception ignore) {} //số bản ghi trên 1 trang
+        try { rep  = Integer.parseInt(req.getParameter("rep"));  } catch (Exception ignore) {} //phóng viên
+        if (page < 1) page = 1;
+        if (size < 1) size = 10;
+
         try {
-            String q   = p(req, "q", "");          // tiêu đề/nội dung
-            int cat    = pInt(req, "cat", 0);      // 0 = tất cả
-            int page   = pInt(req, "page", 1);
-            int size   = pInt(req, "size", 10);    // mặc định 10 dòng/trang
-            if (page < 1) page = 1;
-            if (size <= 0) size = 10;
+            // danh sách tác giả (chỉ reporter: Role=false)
+            var userDAO = new UserDAO();
+            var allUsers = userDAO.findAllActive();
+         // Sắp xếp danh sách theo tên (A-Z, không phân biệt hoa thường)
+            Collator vnCollator = Collator.getInstance(new Locale("vi", "VN"));
+            allUsers.sort((u1, u2) -> vnCollator.compare(u1.getFullname(), u2.getFullname()));
+            req.setAttribute("reporters", allUsers);
 
-            List<News> items;
+            // lấy dữ liệu bài
+            java.util.List<com.newsportal.model.News> items;
             int total;
-
-            if ((q == null || q.isBlank()) && cat <= 0) {
-                total = newsDAO.countAll();
-                int totalPages = (int)Math.ceil(total / (double)size);
-                if (totalPages == 0) totalPages = 1;
-                if (page > totalPages) page = totalPages;
-
+            
+            //Lấy danh sách tin tức theo bộ lọc thể loại
+            boolean noFilter = (q.isBlank() && (cat <= 0) && (rep <= 0));
+            if (noFilter) {
                 items = newsDAO.findAll(page, size);
-                req.setAttribute("total", total);
-                req.setAttribute("totalPages", totalPages);
+                total = newsDAO.countAll();
             } else {
-                total = newsDAO.countSearchResults(q, cat);
-                int totalPages = (int)Math.ceil(total / (double)size);
-                if (totalPages == 0) totalPages = 1;
-                if (page > totalPages) page = totalPages;
-
-                items = newsDAO.searchAdvancedPaged(q, cat, page, size);
-                req.setAttribute("total", total);
-                req.setAttribute("totalPages", totalPages);
+                Integer reporterId = (rep > 0) ? rep : null;
+                items = newsDAO.searchAdvancedPagedByReporter(q, Math.max(0, cat), reporterId, page, size);
+                total = newsDAO.countSearchResultsByReporter(q, Math.max(0, cat), reporterId);
             }
 
+            int totalPages = (int) Math.ceil(total / (double) size);
+            if (totalPages == 0) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+
+            var categories = categoryDAO.findAll(false);
+            java.util.Map<Integer, String> catMap = new java.util.HashMap<>();
+            for (var c : categories) catMap.put(c.getId(), c.getName());
+
             req.setAttribute("items", items);
-            req.setAttribute("categories", categoryDAO.findAll());
-            req.setAttribute("q", q);
-            req.setAttribute("cat", cat);
-            req.setAttribute("page", page);
-            req.setAttribute("size", size);
+            req.setAttribute("categories", categories);
+            req.setAttribute("catMap", catMap);
+
+            req.setAttribute("q", q); //q: từ khóa tìm kiếm
+            req.setAttribute("cat", cat); //cat: thể loại
+            req.setAttribute("rep", rep);  // rep: reporter - nhà báo / phóng viên      
+            req.setAttribute("page", page); // số trang hiện tại
+            req.setAttribute("size", size); // số bài 1 trang
+            req.setAttribute("total", total); //tổng bài
+            req.setAttribute("totalPages", totalPages); //tổng trang
 
             req.getRequestDispatcher("/WEB-INF/views/admin/news.jsp").forward(req, resp);
         } catch (Exception e) {
-            throw new ServletException("Không tải danh sách tin tức", e);
+            throw new ServletException("Không tải danh sách tin", e);
         }
     }
+
 
     /* ====== BIND + UPLOAD ====== */
 

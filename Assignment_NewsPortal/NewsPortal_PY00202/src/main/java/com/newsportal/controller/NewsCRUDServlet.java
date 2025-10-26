@@ -46,6 +46,11 @@ public class NewsCRUDServlet extends HttpServlet {
     	    "C:/FPOLY/JAVA3/Assignment_PY00202_MinhTV/Assignment_NewsPortal/newsportal-uploads"
     	);
     private static final String PUBLIC_URL_PREFIX = "/uploads/";
+    
+  
+ // Dùng LibreTranslate (miễn phí). Có thể đổi endpoint qua ENV LT_ENDPOINT, API key qua LT_API_KEY (thường không cần).
+    private final com.newsportal.i18n.TranslationService translator =
+    	    new com.newsportal.i18n.MyMemoryTranslateService();
 
     // ---------------- entry points ----------------
 
@@ -92,6 +97,11 @@ public class NewsCRUDServlet extends HttpServlet {
 
     private void handleCreateGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	
+    	System.out.println("[DEBUG] AUTO_TRANSLATE=" + AUTO_TRANSLATE 
+    		    + ", ENV.AUTO_TRANSLATE=" + System.getenv("AUTO_TRANSLATE"));
+
+    	
         User me = requireReporter(req, resp);
         if (me == null) return;
 
@@ -128,8 +138,32 @@ public class NewsCRUDServlet extends HttpServlet {
             n.setHome(home);
             n.setApproved(false);         // chờ duyệt
             n.setReporterId(me.getId());
-
+            
+            //Tạo bài viết:
             int newId = newsDAO.create(n);
+            
+            //Tự động dịch VI -> EN
+         
+            if (AUTO_TRANSLATE) {
+              try {
+                String enTitle   = translator.translateViToEn(title, false);
+                String enContent = translator.translateViToEn(content, true);  // content là HTML
+                String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
+                    com.newsportal.util.TextUtils.stripHtml(enContent), 300);
+                newsDAO.upsertTranslation(newId, "en", enTitle, enExcerpt, enContent);
+              } catch (Exception ex) {
+                ex.printStackTrace(); // hoặc dùng logger
+                System.err.println("[TRANSLATE][ERROR] endpoint=" 
+                	     + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
+                	     + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
+                	  ex.printStackTrace();
+              }
+            } else {
+            	   System.out.println("[AUTO_TRANSLATE] Skip: missing API key or feature off.");
+            }
+            
+            
+            
             resp.sendRedirect(req.getContextPath() + "/reporter/posts?created=" + newId);
         } catch (Exception e) {
             throw new ServletException(e);
@@ -190,6 +224,29 @@ public class NewsCRUDServlet extends HttpServlet {
             if (newImage != null) n.setImage(newImage);
 
             newsDAO.update(n, newImage != null);
+            
+            //Làm mới bản dịch sau khi sửa:
+            if (AUTO_TRANSLATE) {
+            	  try {
+            	    String enTitle   = translator.translateViToEn(n.getTitle(), false);
+            	    String enContent = translator.translateViToEn(n.getContent(), true);
+            	    String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
+            	        com.newsportal.util.TextUtils.stripHtml(enContent), 300);
+            	    newsDAO.upsertTranslation(n.getId(), "en", enTitle, enExcerpt, enContent);
+            	    
+            	    
+            	    
+            	  } catch (Exception ex) {
+            		  System.err.println("[TRANSLATE][ERROR] endpoint=" 
+            				     + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
+            				     + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
+            				  ex.printStackTrace();
+            	  }
+            	} else {
+            		   System.out.println("[AUTO_TRANSLATE] Skip: missing API key or feature off.");
+            	}
+            
+            
             resp.sendRedirect(req.getContextPath()+"/reporter/posts?updated="+id);
         } catch (Exception e) {
             throw new ServletException(e);
@@ -259,5 +316,21 @@ public class NewsCRUDServlet extends HttpServlet {
         // Lưu vào DB đường dẫn URL công khai
         return PUBLIC_URL_PREFIX + newName; // ví dụ: /uploads/1739812345_ab12cd34.jpg
     }
+    
+ // NewsCRUDServlet: thêm helper
+    private boolean hasTranslateKey() {
+      String k = System.getenv("GOOGLE_TRANSLATE_API_KEY");
+      return k != null && !k.isBlank();
+    }
+    
+    private static boolean boolPropEnv(String key, boolean defVal) {
+    	  String v = System.getProperty(key);
+    	  if (v == null) v = System.getenv(key);
+    	  if (v == null) return defVal;
+    	  return "true".equalsIgnoreCase(v) || "1".equals(v);
+    	}
+    	private final boolean AUTO_TRANSLATE = boolPropEnv("AUTO_TRANSLATE", true);
+
+
 
 }

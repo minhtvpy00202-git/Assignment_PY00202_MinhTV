@@ -9,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @WebServlet("/admin/newsletter")
@@ -18,8 +20,8 @@ public class NewsletterCRUDServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // Có thể hỗ trợ edit theo email (load để tick checkbox), còn không thì chỉ list
-        list(req, resp);
+        boolean includeDeleted = pBool(req, "includeDeleted"); // ?includeDeleted=1 để xem cả xóa mềm
+        list(req, resp, includeDeleted);
     }
 
     @Override
@@ -28,40 +30,63 @@ public class NewsletterCRUDServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = p(req, "action", "list");
         String email  = p(req, "email", "");
+        boolean includeDeleted = pBool(req, "includeDeleted"); // giữ lại trạng thái lọc khi redirect
 
         try {
             switch (action) {
-                case "create": { // đăng ký mới
+                case "create": { // đăng ký mới / hoặc revive nếu tồn tại
+                    requireEmail(email);
                     dao.subscribe(email);
                     break;
                 }
-                case "update": { // bật/tắt
+                case "update": { // bật/tắt nhận thư
+                	requireEmail(email);
                     boolean enabled = pBool(req, "enabled");
-                    if (enabled) dao.subscribe(email); else dao.unsubscribe(email);
+                    dao.updateEnabled(email, enabled);
                     break;
                 }
-                case "delete": { // coi như hủy đăng ký
-                    dao.unsubscribe(email);
+                case "delete": { // xóa mềm (ẩn hoàn toàn)
+                    requireEmail(email);
+                    dao.softDelete(email);
+                    break;
+                }
+                case "restore": { // khôi phục bản ghi đã xóa mềm
+                    requireEmail(email);
+                    dao.restore(email);
                     break;
                 }
                 default: /* no-op */ ;
             }
         } catch (Exception e) {
-            throw new ServletException("Lỗi xử lý Newsletter", e);
+            throw new ServletException("Lỗi xử lý Newsletter: " + e.getMessage(), e);
         }
 
-        resp.sendRedirect(req.getContextPath() + "/admin/newsletter");
+        // giữ tham số includeDeleted khi quay lại trang
+        String qs = includeDeleted ? "?includeDeleted=1" : "";
+        resp.sendRedirect(req.getContextPath() + "/admin/newsletter" + qs);
     }
 
-    private void list(HttpServletRequest req, HttpServletResponse resp)
+    private void list(HttpServletRequest req, HttpServletResponse resp, boolean includeDeleted)
             throws ServletException, IOException {
         try {
-            List<Newsletter> items = dao.findAll();
+            List<Newsletter> items = includeDeleted ? dao.findAll(true) : dao.findAllActive();
             req.setAttribute("items", items);
-            req.setAttribute("categories", new CategoryDAO().findAll());
+            req.setAttribute("includeDeleted", includeDeleted);
+
+            CategoryDAO categoryDAO = new CategoryDAO();
+            req.setAttribute("categories", categoryDAO.findAll());          
+            req.setAttribute("categoryMap", categoryDAO.toIdNameMap());     
+
             req.getRequestDispatcher("/WEB-INF/views/admin/newsletter.jsp").forward(req, resp);
         } catch (Exception e) {
-            throw new ServletException("Không tải danh sách newsletter", e);
+            throw new ServletException("Không tải danh sách newsletter: " + e.getMessage(), e);
+        }
+    }
+
+
+    private static void requireEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Email không được để trống.");
         }
     }
 
@@ -74,6 +99,6 @@ public class NewsletterCRUDServlet extends HttpServlet {
         String v = r.getParameter(k);
         if (v == null) return false;
         v = v.trim().toLowerCase();
-        return "on".equals(v) || "true".equals(v) || "1".equals(v);
+        return "on".equals(v) || "true".equals(v) || "1".equals(v) || "yes".equals(v);
     }
 }
