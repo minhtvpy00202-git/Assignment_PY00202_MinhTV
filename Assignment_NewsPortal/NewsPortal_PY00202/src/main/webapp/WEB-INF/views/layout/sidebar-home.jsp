@@ -91,39 +91,57 @@
 
   <!-- Newsletter -->
   <section class="sidebar-card">
-    <h3 class="sidebar-card__title"><fmt:message key="sidebar.newsletter.title"/></h3>
+  <h3 class="sidebar-card__title">
+    <fmt:message key="sidebar.newsletter.title"/>
+  </h3>
 
-    <form method="post" action="${ctx}/newsletter/subscribe" class="sidebar-form">
-      <input type="email" name="email"
-             placeholder="<fmt:message key='sidebar.newsletter.placeholder'/>" required />
+  <!-- Chuẩn bị text i18n cho placeholder -->
+  <fmt:message key="sidebar.newsletter.placeholder" var="nl_placeholder"/>
+  <fmt:message key="sidebar.newsletter.unsubscribe" var="nl_unsub"/>
+  <fmt:message key="sidebar.newsletter.submit" var="nl_sub"/>
 
-      <!-- Danh sách chuyên mục -->
-      <c:choose>
-        <c:when test="${not empty categories}">
-          <label for="newsletter-category" class="sr-only">
-            <fmt:message key="sidebar.newsletter.chooseCategory"/>
-          </label>
-          <select class="form-select" id="newsletter-category" name="categoryId" class="sidebar-select">
-            <!-- value="" => backend hiểu là NULL: nhận mọi chuyên mục -->
-            <option value="">
-              <fmt:message key="sidebar.newsletter.allCategories"/>
+  <form method="post" action="${ctx}/newsletter/subscribe" class="sidebar-form">
+    <input type="email" name="email" placeholder="${nl_placeholder}" required />
+
+    <!-- Danh sách chuyên mục -->
+    <c:choose>
+      <c:when test="${not empty categories}">
+        <label for="newsletter-category" class="sr-only">
+          <fmt:message key="sidebar.newsletter.chooseCategory"/>
+        </label>
+
+        <fmt:message key="sidebar.newsletter.allCategories" var="nl_allCats"/>
+
+        <select class="form-select sidebar-select" id="newsletter-category" name="categoryId">
+          <!-- value="" => backend hiểu là NULL: nhận mọi chuyên mục -->
+          <option value="">${nl_allCats}</option>
+
+          <c:forEach var="cat" items="${categories}">
+            <!-- cat.name đã là tên localized nếu Servlet dùng findAllLocalized(lang) -->
+            <option value="${cat.id}">
+              <c:out value="${cat.name}"/>
             </option>
-            <c:forEach var="cat" items="${categories}">
-              <option value="${cat.id}">${cat.name}</option>
-            </c:forEach>
-          </select>
-        </c:when>
-        <c:otherwise>
-          <p class="sidebar-empty"><fmt:message key="sidebar.newsletter.noCategory"/></p>
-        </c:otherwise>
-      </c:choose>
+          </c:forEach>
+        </select>
+      </c:when>
+      <c:otherwise>
+        <p class="sidebar-empty">
+          <fmt:message key="sidebar.newsletter.noCategory"/>
+        </p>
+      </c:otherwise>
+    </c:choose>
 
-      <button type="submit"><fmt:message key="sidebar.newsletter.submit"/></button>
-    </form>
+    <!-- Hàng nút: Đăng ký & Hủy đăng ký -->
+    <div class="btn-row" style="display:flex; gap:.5rem; margin-top:.5rem;">
+      <button type="submit">${nl_sub}</button>
+      <button type="submit" formaction="${ctx}/newsletter/unsubscribe">${nl_unsub}</button>
+    </div>
+  </form>
 
-    <c:if test="${not empty param.sub_msg}">
-      <p class="sidebar-success">${param.sub_msg}</p>
-    </c:if>
-  </section>
+  <!-- Thông báo từ NewsletterServlet: ?sub_msg=... -->
+  <c:if test="${not empty param.sub_msg}">
+    <p class="sidebar-success">${fn:escapeXml(param.sub_msg)}</p>
+  </c:if>
+</section>
 
 </aside>

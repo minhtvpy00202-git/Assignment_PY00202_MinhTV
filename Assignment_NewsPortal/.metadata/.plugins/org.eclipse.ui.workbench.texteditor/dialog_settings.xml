@@ -4,6 +4,12 @@
 	<section name="java.lang.Class">
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="countpen"/>
+			<item value="delete"/>
+			<item value="un"/>
+			<item value="handle"/>
+			<item value="cookie"/>
+			<item value="transla"/>
 			<item value="increase"/>
 			<item value="increa"/>
 			<item value="newsDAO"/>
@@ -13,12 +19,6 @@
 			<item value="de"/>
 			<item value="dao"/>
 			<item value="findbyidann"/>
-			<item value="org.jsoup"/>
-			<item value="save"/>
-			<item value="entit"/>
-			<item value="LT_ENd"/>
-			<item value="handleedit"/>
-			<item value="handlecreatePos"/>
 		</list>
 	</section>
 </section>

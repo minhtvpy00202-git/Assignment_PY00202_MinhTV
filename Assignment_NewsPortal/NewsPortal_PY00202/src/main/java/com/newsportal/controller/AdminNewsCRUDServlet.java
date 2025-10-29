@@ -49,7 +49,7 @@ public class AdminNewsCRUDServlet extends HttpServlet {
                 News n = newsDAO.findById(id);
                 if (n == null) { resp.sendError(404, "Không tìm thấy tin id=" + id); return; }
 
-                req.setAttribute("news", n);                       // <-- JSP news-edit.jsp đang dùng biến 'news'
+                req.setAttribute("news", n);                       
                 req.setAttribute("categories", categoryDAO.findAll());
                 req.getRequestDispatcher("/WEB-INF/views/admin/news-edit.jsp").forward(req, resp);
                 return;

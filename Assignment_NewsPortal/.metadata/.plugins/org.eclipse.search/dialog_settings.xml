@@ -31,7 +31,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="String lang = (String) request.getSession().getAttribute(&quot;lang&quot;);"/>
+			<item key="textPattern" value="Cookie"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -46,7 +46,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="reporter-sidebar.jsp"/>
+			<item key="textPattern" value="String lang = (String) request.getSession().getAttribute(&quot;lang&quot;);"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -58,7 +58,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="admin/newsletter"/>
+			<item key="textPattern" value="reporter-sidebar.jsp"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -70,7 +70,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="mailconfig"/>
+			<item key="textPattern" value="admin/newsletter"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -82,7 +82,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="mailconfid"/>
+			<item key="textPattern" value="mailconfig"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -94,7 +94,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Banner"/>
+			<item key="textPattern" value="mailconfid"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -106,7 +106,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="ReporterStat"/>
+			<item key="textPattern" value="Banner"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -118,7 +118,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="setting"/>
+			<item key="textPattern" value="ReporterStat"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -130,7 +130,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="SocialLink"/>
+			<item key="textPattern" value="setting"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -142,7 +142,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="@WebFilter"/>
+			<item key="textPattern" value="SocialLink"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -154,7 +154,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="jakarta.servlet.Filter"/>
+			<item key="textPattern" value="@WebFilter"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -166,7 +166,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="filter"/>
+			<item key="textPattern" value="jakarta.servlet.Filter"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>

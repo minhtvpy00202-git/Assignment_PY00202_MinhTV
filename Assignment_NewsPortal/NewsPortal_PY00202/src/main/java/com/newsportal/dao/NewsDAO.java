@@ -280,7 +280,7 @@ public class NewsDAO {
 
 	public int countPending() throws Exception {
 		try (Connection c = DB.getConnection();
-				PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM News WHERE Approved=0");
+				PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM News WHERE Approved=0 AND isDelete = 0");
 				ResultSet rs = ps.executeQuery()) {
 			return rs.next() ? rs.getInt(1) : 0;
 		}
@@ -1010,6 +1010,178 @@ public class NewsDAO {
 	        return ps.executeUpdate();
 	    }
 	}
+	
+	//Tìm bản nháp đang chờ duyệt (nếu có)
+	public News findPendingDraftOf(int baseId) throws Exception {
+	    String sql = """
+	        SELECT Id, Title, [Content], [Image], PostedDate, Author, ViewCount,
+	               CategoryId, [Home], Approved, ReporterId
+	        FROM dbo.News
+	        WHERE ISNULL(IsDelete,0)=0
+	          AND Approved = 0
+	          AND ParentId = ?
+	        ORDER BY PostedDate DESC
+	    """;
+	    try (var cn = DB.getConnection(); var ps = cn.prepareStatement(sql)) {
+	        ps.setInt(1, baseId);
+	        try (var rs = ps.executeQuery()) {
+	            return rs.next() ? map(rs) : null;
+	        }
+	    }
+	}
+	
+	
+	/**
+	 * Tạo bản nháp (clone) khi phóng viên sửa bài gốc.
+	 * @param base         bản gốc (đã kiểm tra quyền sở hữu trước đó)
+	 * @param edited       dữ liệu đã chỉnh (title, content, categoryId, home, image có thể null để giữ ảnh cũ)
+	 * @param keepOldImage nếu true và edited.image == null thì dùng lại ảnh từ base
+	 * @return id bản nháp mới
+	 */
+	public int createDraftClone(News base, News edited, boolean keepOldImage) throws Exception {
+	    String sql = """
+	        INSERT INTO dbo.News
+	          (Title, [Content], [Image], PostedDate, Author, ViewCount,
+	           CategoryId, [Home], Approved, ReporterId, IsDelete, ParentId)
+	        VALUES
+	          (?, ?, ?, GETDATE(), ?, 0,
+	           ?, ?, 0, ?, 0, ?)
+	    """;
+	    try (var cn = DB.getConnection();
+	         var ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+	        String img = edited.getImage();
+	        if (keepOldImage && (img == null || img.isBlank())) {
+	            img = base.getImage(); // giữ ảnh cũ nếu không upload ảnh mới
+	        }
+
+	        int i = 1;
+	        ps.setString(i++, edited.getTitle());
+	        ps.setString(i++, edited.getContent());
+	        ps.setString(i++, img);
+	        ps.setString(i++, edited.getAuthor());
+	        ps.setInt(i++, edited.getCategoryId());
+	        ps.setBoolean(i++, edited.isHome());
+	        ps.setInt(i++, base.getReporterId() == null ? (edited.getReporterId()==null? Types.NULL: edited.getReporterId()) : base.getReporterId());
+	        ps.setInt(i++, base.getId()); // ParentId trỏ về bản gốc
+
+	        ps.executeUpdate();
+	        try (ResultSet rs = ps.getGeneratedKeys()) {
+	            return rs.next() ? rs.getInt(1) : 0;
+	        }
+	    }
+	}
+	
+	//Bật tắt tự động dịch
+	public boolean hasPendingDraft(int baseId) throws Exception {
+	    return findPendingDraftOf(baseId) != null;
+	}
+	
+	
+	// ====== NewsDAO: tiện ích đọc meta nhanh (ParentId, ViewCount, flags) ======
+	private static final class NewsMeta {
+	    Integer id;
+	    Integer parentId;
+	    Integer viewCount;
+	    boolean approved;
+	    boolean isDelete;
+	}
+
+	private NewsMeta getMeta(int id) throws SQLException {
+	    String sql = "SELECT Id, ParentId, ViewCount, Approved, ISNULL(IsDelete,0) AS IsDelete FROM dbo.News WHERE Id=?";
+	    try (var cn = DB.getConnection(); var ps = cn.prepareStatement(sql)) {
+	        ps.setInt(1, id);
+	        try (var rs = ps.executeQuery()) {
+	            if (!rs.next()) return null;
+	            NewsMeta m = new NewsMeta();
+	            m.id        = rs.getInt("Id");
+	            m.parentId  = (Integer) rs.getObject("ParentId"); // null nếu bản gốc
+	            m.viewCount = rs.getInt("ViewCount");
+	            m.approved  = rs.getBoolean("Approved");
+	            m.isDelete  = rs.getInt("IsDelete") == 1;
+	            return m;
+	        }
+	    }
+	}
+
+	/** Trả về ParentId (có thể null) mà không cần map sang model.News */
+	public Integer getParentIdRaw(int id) throws SQLException {
+	    String sql = "SELECT ParentId FROM dbo.News WHERE Id=?";
+	    try (var cn = DB.getConnection(); var ps = cn.prepareStatement(sql)) {
+	        ps.setInt(1, id);
+	        try (var rs = ps.executeQuery()) {
+	            return rs.next() ? (Integer) rs.getObject(1) : null;
+	        }
+	    }
+	}
+
+	/** Đặt IsDelete (soft-delete) tiện dụng (đã có delete(id) = set IsDelete=1; thêm restore thì đã có) */
+	public void setIsDelete(int id, boolean del) throws SQLException {
+	    try (var cn = DB.getConnection();
+	         var ps = cn.prepareStatement("UPDATE dbo.News SET IsDelete=? WHERE Id=?")) {
+	        ps.setInt(1, del ? 1 : 0);
+	        ps.setInt(2, id);
+	        ps.executeUpdate();
+	    }
+	}
+
+	/**
+	 * DUYỆT một bản NHÁP (draft) và THAY THẾ bản GỐC:
+	 * - Publish draft (Approved=1)
+	 * - Archive base (IsDelete=1)
+	 * - Gộp ViewCount từ base sang draft (tuỳ chọn – ở đây có)
+	 * Tất cả chạy trong 1 transaction.
+	 */
+	public void approveDraftReplaceBase(int draftId) throws Exception {
+	    try (var cn = DB.getConnection()) {
+	        cn.setAutoCommit(false);
+	        try {
+	            NewsMeta draft = getMeta(draftId);
+	            if (draft == null)           throw new IllegalStateException("Draft not found");
+	            if (draft.approved)          throw new IllegalStateException("Draft already approved");
+	            if (draft.isDelete)          throw new IllegalStateException("Draft deleted");
+	            if (draft.parentId == null)  throw new IllegalStateException("Not a draft (no ParentId)");
+
+	            NewsMeta base = getMeta(draft.parentId);
+	            if (base == null)            throw new IllegalStateException("Base not found");
+	            if (base.isDelete)           throw new IllegalStateException("Base already archived");
+
+	            // 1) Publish draft
+	            try (var ps = cn.prepareStatement("UPDATE dbo.News SET Approved=1 WHERE Id=?")) {
+	                ps.setInt(1, draftId);
+	                ps.executeUpdate();
+	            }
+
+	            // 2) Archive base (ẩn khỏi public)
+	            try (var ps = cn.prepareStatement("UPDATE dbo.News SET IsDelete=1 WHERE Id=?")) {
+	                ps.setInt(1, base.id);
+	                ps.executeUpdate();
+	            }
+
+	            // 3) Gộp view từ base -> draft (giữ lại thành quả)
+	            if (base.viewCount != null && base.viewCount > 0) {
+	                try (var ps = cn.prepareStatement("UPDATE dbo.News SET ViewCount = ViewCount + ? WHERE Id=?")) {
+	                    ps.setInt(1, base.viewCount);
+	                    ps.setInt(2, draftId);
+	                    ps.executeUpdate();
+	                }
+	            }
+
+	            cn.commit();
+	        } catch (Exception ex) {
+	            cn.rollback();
+	            throw ex;
+	        } finally {
+	            cn.setAutoCommit(true);
+	        }
+	    }
+	}
+
+	
+	
+
+
+
 
 
 }

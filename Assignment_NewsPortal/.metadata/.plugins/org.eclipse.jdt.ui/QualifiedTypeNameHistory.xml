@@ -4,4 +4,5 @@
     <fullyQualifiedTypeName name="com.newsportal.model.User"/>
     <fullyQualifiedTypeName name="com.newsportal.dao.CategoryDAO"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
 </qualifiedTypeNameHistroy>

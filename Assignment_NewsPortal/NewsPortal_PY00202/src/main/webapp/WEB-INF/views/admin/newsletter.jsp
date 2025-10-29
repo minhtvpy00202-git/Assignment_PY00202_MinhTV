@@ -9,15 +9,49 @@
   <h2><fmt:message key="admin.newsletter.pageTitle"/></h2>
 
   <!-- Subscribe new email -->
-  <form method="post" action="${ctx}/admin/newsletter" class="form">
-    <input type="hidden" name="action" value="create" />
-    <label>
-      <fmt:message key="admin.newsletter.emailLabel"/>
-      <input type="email" name="email" required
-             placeholder="<fmt:message key='admin.newsletter.emailPlaceholder'/>" />
+<form method="post" action="${ctx}/admin/newsletter" class="form">
+  <input type="hidden" name="action" value="create" />
+
+  <label style="display:block">
+    <fmt:message key="admin.newsletter.emailLabel"/>
+    <input type="email" name="email" required
+           placeholder="<fmt:message key='admin.newsletter.emailPlaceholder'/>" />
+  </label>
+
+  <!-- CHỌN CHUYÊN MỤC (giống sidebar, có i18n) -->
+<c:set var="lang" value="${sessionScope.lang != null ? sessionScope.lang : 'vi'}"/>
+
+<c:choose>
+  <c:when test="${not empty categories}">
+    <label for="newsletter-category" style="display:block">
+      <fmt:message key="sidebar.newsletter.chooseCategory"/>
     </label>
-    <button type="submit"><fmt:message key="admin.newsletter.addBtn"/></button>
-  </form>
+    <select id="newsletter-category" name="categoryId" class="form-select">
+      <!-- value rỗng -> backend hiểu là NULL: nhận mọi chuyên mục -->
+      <option value="">
+        <fmt:message key="admin.newsletter.category.all"/>
+      </option>
+      <c:forEach var="cat" items="${categories}">
+        <!-- Hiển thị name đã được localize -->
+        <option value="${cat.id}">
+          <c:out value="${cat.name}"/>
+        </option>
+      </c:forEach>
+    </select>
+  </c:when>
+  <c:otherwise>
+    <p class="sidebar-empty">
+      <fmt:message key="sidebar.newsletter.noCategory"/>
+    </p>
+  </c:otherwise>
+</c:choose>
+
+
+  <button type="submit">
+    <fmt:message key="admin.newsletter.addBtn"/>
+  </button>
+</form>
+
 
   <div class="table-wrapper">
     <table class="table">

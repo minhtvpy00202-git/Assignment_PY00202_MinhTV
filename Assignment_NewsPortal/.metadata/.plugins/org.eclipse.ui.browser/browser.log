@@ -266,3 +266,36 @@ thg 10 26, 2025 07:27:31.38 [18848:10592:1026/072731.389:ERROR:google_apis\gcm\e
 thg 10 26, 2025 07:28:24.70 [18848:10592:1026/072824.700:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 26, 2025 07:30:05.42 [18848:10592:1026/073005.422:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
 thg 10 26, 2025 07:33:41.50 [18848:10592:1026/073341.506:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+
+thg 10 28, 2025 18:55:56.99 NEW SESSION
+thg 10 28, 2025 18:55:57.04 [1524:9504:1028/185556.994:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 28, 2025 18:55:59.89 [1524:15588:1028/185559.889:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 18:56:01.08 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 28, 2025 18:56:21.58 [15632:21600:1028/185621.582:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 28, 2025 18:56:24.17 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 28, 2025 18:56:24.20 [15632:10896:1028/185624.204:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 18:57:11.28 [17256:22232:1028/185711.286:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 28, 2025 18:57:14.01 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 28, 2025 18:57:14.07 [17256:11892:1028/185714.070:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 18:57:38.75 [17256:11892:1028/185738.749:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+
+thg 10 28, 2025 20:29:33.87 NEW SESSION
+thg 10 28, 2025 20:29:33.88 [2576:20720:1028/202933.868:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 28, 2025 20:29:36.41 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 28, 2025 20:29:36.45 [2576:21180:1028/202936.459:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 20:30:00.55 [2576:21180:1028/203000.549:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 20:30:53.98 [2576:21180:1028/203053.984:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 28, 2025 20:32:45.77 [2576:21180:1028/203245.776:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: QUOTA_EXCEEDED
+thg 10 28, 2025 20:53:46.88 [2576:9152:1028/205346.884:ERROR:components\device_event_log\device_event_log_impl.cc:198] [20:53:46.884] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+thg 10 28, 2025 20:53:46.99 [2576:9152:1028/205346.994:ERROR:components\device_event_log\device_event_log_impl.cc:198] [20:53:46.995] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+
+thg 10 29, 2025 07:24:27.36 NEW SESSION
+thg 10 29, 2025 07:24:27.42 [9148:3208:1029/072427.367:ERROR:chrome\browser\extensions\external_registry_loader_win.cc:158] File C:\Program Files (x86)\Internet Download Manager\IDMGCExt.crx for key Software\Google\Chrome\Extensions\ngpampappnmepgilojfohadhhmbhlaek does not exist or is not readable.
+thg 10 29, 2025 07:24:30.15 [9148:12220:1029/072430.152:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:24:31.11 Created TensorFlow Lite XNNPACK delegate for CPU.
+thg 10 29, 2025 07:24:56.89 [9148:12220:1029/072456.899:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:25:42.51 [9148:12220:1029/072542.512:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:27:06.92 [9148:12220:1029/072706.925:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:30:52.21 [9148:12220:1029/073052.211:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:38:06.72 [9148:12220:1029/073806.725:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+thg 10 29, 2025 07:42:30.57 [9148:3920:1029/074230.570:ERROR:components\device_event_log\device_event_log_impl.cc:198] [07:42:30.570] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)

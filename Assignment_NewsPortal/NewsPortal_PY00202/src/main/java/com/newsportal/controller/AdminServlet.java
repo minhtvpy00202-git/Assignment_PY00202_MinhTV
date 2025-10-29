@@ -105,25 +105,28 @@ public class AdminServlet extends HttpServlet {
 			}
 
 			case "/admin/news-detail": {
-				int id = Integer.parseInt(req.getParameter("id"));
-				News news = newsDAO.findById(id);
-				if (news == null) {
-					resp.sendError(404);
-					return;
-				}
+			    int id = Integer.parseInt(req.getParameter("id"));
+			    News news = newsDAO.findById(id);
+			    if (news == null) {
+			        resp.sendError(404);
+			        return;
+			    }
+			    // Lấy ParentId thô (không cần sửa model)
+			    Integer parentId = newsDAO.getParentIdRaw(id);
 
-				// Nếu vào từ trang duyệt sẽ có ref=approve => JSP sẽ hiển thị nút
-				String ref = req.getParameter("ref");
-				req.setAttribute("news", news);
-				req.setAttribute("ref", ref);
-				// gán phóng viên (nếu có)
-				if (news.getReporterId() != null) {
-					var map = userDAO.findByIds(Set.of(news.getReporterId()));
-					req.setAttribute("newsAuthor", map.get(news.getReporterId()));
-				}
-				req.getRequestDispatcher("/WEB-INF/views/news-detail.jsp").forward(req, resp);
-				return;
+			    String ref = req.getParameter("ref");
+			    req.setAttribute("news", news);
+			    req.setAttribute("ref", ref);
+			    req.setAttribute("parentId", parentId); // NEW
+
+			    if (news.getReporterId() != null) {
+			        var map = userDAO.findByIds(Set.of(news.getReporterId()));
+			        req.setAttribute("newsAuthor", map.get(news.getReporterId()));
+			    }
+			    req.getRequestDispatcher("/WEB-INF/views/news-detail.jsp").forward(req, resp);
+			    return;
 			}
+
 
 			
 			default:
@@ -152,23 +155,46 @@ public class AdminServlet extends HttpServlet {
 			case "/admin/news-approve": {
 			    int id = Integer.parseInt(req.getParameter("id"));
 			    switch (action) {
-			        case "approve":
-			            newsDAO.setApproved(id, true);
-			            queueAdd(req, id);   // <— thêm vào queue
+			        case "approve": {
+			            Integer parentId = newsDAO.getParentIdRaw(id);
+			            if (parentId != null) {
+			                // là DRAFT => duyệt thay thế bản gốc
+			                newsDAO.approveDraftReplaceBase(id);
+			            } else {
+			                // là BẢN GỐC => duyệt bình thường
+			                newsDAO.setApproved(id, true);
+			            }
+			            queueAdd(req, id); // giữ nguyên queue hiện có của Minh
 			            break;
-			        case "reject":
+			        }
+
+			        case "reject": {
+			            // Từ chối: soft-delete entry này (draft hay base đều ẩn đi)
 			            newsDAO.delete(id);
-			            queueRemove(req, id); // <— loại khỏi queue nếu có
+			            queueRemove(req, id);
 			            break;
-			        case "home-on":
-			            newsDAO.setApproved(id, true);
-			            newsDAO.setHome(id, true);
-			            queueAdd(req, id);   // <— cũng thêm vào queue nếu đưa lên trang chủ
+			        }
+
+			        case "home-on": {
+			            Integer parentId = newsDAO.getParentIdRaw(id);
+			            if (parentId != null) {
+			                // DRAFT: duyệt & thay thế, sau đó bật Home cho "id" (đã là bài hiển thị)
+			                newsDAO.approveDraftReplaceBase(id);
+			                newsDAO.setHome(id, true);
+			            } else {
+			                // BẢN GỐC: duyệt & bật Home
+			                newsDAO.setApproved(id, true);
+			                newsDAO.setHome(id, true);
+			            }
+			            queueAdd(req, id);
 			            break;
-			        case "home-off":
+			        }
+
+			        case "home-off": {
+			            // Tắt Home cho bài tương ứng (dù là bản gốc hay draft đã duyệt)
 			            newsDAO.setHome(id, false);
-			            // không động tới queue
 			            break;
+			        }
 			        default: ;
 			    }
 			    resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
@@ -176,23 +202,29 @@ public class AdminServlet extends HttpServlet {
 			}
 
 
+
 			case "/admin/news-detail": {
-				// xử lý duyệt/từ chối ở trang chi tiết (nếu hiển thị)
-				int id = Integer.parseInt(req.getParameter("id"));
-				switch (action) {
-				case "approve":
-					newsDAO.setApproved(id, true);
-					break;
-				case "reject":
-					newsDAO.delete(id);
-					break;
-				default:
-					;
-				}
-				// quay lại trang duyệt
-				resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
-				return;
+			    int id = Integer.parseInt(req.getParameter("id"));
+			    switch (action) {
+			        case "approve": {
+			            Integer parentId = newsDAO.getParentIdRaw(id);
+			            if (parentId != null) {
+			                newsDAO.approveDraftReplaceBase(id);
+			            } else {
+			                newsDAO.setApproved(id, true);
+			            }
+			            break;
+			        }
+			        case "reject": {
+			            newsDAO.delete(id); // soft-delete
+			            break;
+			        }
+			        default: ;
+			    }
+			    resp.sendRedirect(req.getContextPath() + "/admin/news-approve");
+			    return;
 			}
+
 			
 			default:
 				resp.sendError(404);

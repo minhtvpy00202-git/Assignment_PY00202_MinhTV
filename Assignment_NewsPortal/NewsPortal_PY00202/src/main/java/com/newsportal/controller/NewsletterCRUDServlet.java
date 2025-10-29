@@ -31,12 +31,14 @@ public class NewsletterCRUDServlet extends HttpServlet {
         String action = p(req, "action", "list");
         String email  = p(req, "email", "");
         boolean includeDeleted = pBool(req, "includeDeleted"); // giữ lại trạng thái lọc khi redirect
+        
+        Integer categoryId = parseNullableInt(p(req, "categoryId", null));
 
         try {
             switch (action) {
                 case "create": { // đăng ký mới / hoặc revive nếu tồn tại
                     requireEmail(email);
-                    dao.subscribe(email);
+                    dao.subscribe(email, categoryId);
                     break;
                 }
                 case "update": { // bật/tắt nhận thư
@@ -73,15 +75,20 @@ public class NewsletterCRUDServlet extends HttpServlet {
             req.setAttribute("items", items);
             req.setAttribute("includeDeleted", includeDeleted);
 
+            String lang = (String) req.getSession().getAttribute("lang");
+            if (lang == null || lang.isBlank()) lang = "vi";
+
             CategoryDAO categoryDAO = new CategoryDAO();
-            req.setAttribute("categories", categoryDAO.findAll());          
-            req.setAttribute("categoryMap", categoryDAO.toIdNameMap());     
+            // Dùng dữ liệu đã địa phương hoá
+            req.setAttribute("categories", categoryDAO.findAllLocalized(lang));
+            req.setAttribute("categoryMap", categoryDAO.toIdNameMapLocalized(lang));
 
             req.getRequestDispatcher("/WEB-INF/views/admin/newsletter.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Không tải danh sách newsletter: " + e.getMessage(), e);
         }
     }
+
 
 
     private static void requireEmail(String email) {
@@ -100,5 +107,12 @@ public class NewsletterCRUDServlet extends HttpServlet {
         if (v == null) return false;
         v = v.trim().toLowerCase();
         return "on".equals(v) || "true".equals(v) || "1".equals(v) || "yes".equals(v);
+    }
+    
+    private Integer parseNullableInt(String s) {
+        if (s == null) return null;
+        s = s.trim();
+        if (s.isEmpty()) return null;
+        try { return Integer.valueOf(s); } catch (Exception e) { return null; }
     }
 }

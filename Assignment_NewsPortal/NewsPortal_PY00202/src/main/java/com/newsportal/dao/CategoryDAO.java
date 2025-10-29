@@ -51,14 +51,14 @@ public class CategoryDAO {
         }
     }
 
-    public void create(String name) throws Exception {
-        String sql = "INSERT INTO Categories(Name, IsDelete) VALUES (?, 0)";
-        try (Connection c = DB.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ps.executeUpdate();
-        }
-    }
+//    public void create(String name) throws Exception {
+//        String sql = "INSERT INTO Categories(Name, IsDelete) VALUES (?, 0)";
+//        try (Connection c = DB.getConnection();
+//             PreparedStatement ps = c.prepareStatement(sql)) {
+//            ps.setString(1, name);
+//            ps.executeUpdate();
+//        }
+//    }
 
     /** Chỉ cho phép cập nhật tên với bản ghi active */
     public void update(int id, String name) throws Exception {
@@ -202,6 +202,65 @@ public class CategoryDAO {
         }
       }
     }
+    
+    public Map<Integer, String> toIdNameMapLocalized(String lang) {
+        Map<Integer, String> map = new HashMap<>();
+        String sql = CAT_SELECT_L10N + "WHERE ISNULL(c.IsDelete,0)=0 ORDER BY [Name]";
+        try (var con = DB.getConnection(); var ps = con.prepareStatement(sql)) {
+            ps.setString(1, normalizeLang(lang));
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    map.put(rs.getInt("Id"), rs.getString("Name")); // đã là tên theo lang
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return map;
+    }
+
+    
+ // đổi chữ ký: từ void -> int (trả về Id vừa tạo)
+    public int create(String name) throws Exception {
+      String sql = "INSERT INTO Categories(Name, IsDelete) VALUES (?, 0)";
+      try (Connection c = DB.getConnection();
+           PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        ps.setString(1, name);
+        ps.executeUpdate();
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+          if (rs.next()) return rs.getInt(1);
+          throw new SQLException("No generated key for Categories");
+        }
+      }
+    }
+    
+    
+    /** Thêm/cập nhật bản dịch cho 1 category. */
+    public void upsertTranslation(int categoryId, String lang, String name, String description) throws Exception {
+      String sql = """
+          MERGE CategoryTranslations AS tgt
+          USING (SELECT ? AS CategoryId, ? AS Lang) AS src
+            ON tgt.CategoryId = src.CategoryId AND tgt.Lang = src.Lang
+          WHEN MATCHED THEN
+             UPDATE SET Name = ?, Description = ?
+          WHEN NOT MATCHED THEN
+             INSERT (CategoryId, Lang, Name, Description) VALUES (?, ?, ?, ?);
+          """;
+      try (Connection c = DB.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+        int i = 1;
+        ps.setInt(i++, categoryId);
+        ps.setString(i++, lang);
+        ps.setString(i++, name);
+        ps.setString(i++, description);
+        ps.setInt(i++, categoryId);
+        ps.setString(i++, lang);
+        ps.setString(i++, name);
+        ps.setString(i++, description);
+        ps.executeUpdate();
+      }
+    }
+
+
 
 
 }

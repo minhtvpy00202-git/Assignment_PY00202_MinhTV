@@ -48,7 +48,7 @@ public class NewsCRUDServlet extends HttpServlet {
     private static final String PUBLIC_URL_PREFIX = "/uploads/";
     
   
- // Dùng LibreTranslate (miễn phí). Có thể đổi endpoint qua ENV LT_ENDPOINT, API key qua LT_API_KEY (thường không cần).
+ // Dùng MyMemoryTranslate (miễn phí). Có thể đổi endpoint qua ENV LT_ENDPOINT, API key qua LT_API_KEY (thường không cần).
     private final com.newsportal.i18n.TranslationService translator =
     	    new com.newsportal.i18n.MyMemoryTranslateService();
 
@@ -136,39 +136,38 @@ public class NewsCRUDServlet extends HttpServlet {
             n.setViewCount(0);
             n.setCategoryId(categoryId);
             n.setHome(home);
-            n.setApproved(false);         // chờ duyệt
             n.setReporterId(me.getId());
-            
-            //Tạo bài viết:
+
+            // ✅ Auto-approve nếu người viết là admin (Role = true)
+            n.setApproved(me.isRole());
+
             int newId = newsDAO.create(n);
-            
-            //Tự động dịch VI -> EN
-         
+
+            // (Tùy chọn) Auto-translate vẫn giữ nguyên
             if (AUTO_TRANSLATE) {
-              try {
-                String enTitle   = translator.translateViToEn(title, false);
-                String enContent = translator.translateViToEn(content, true);  // content là HTML
-                String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
-                    com.newsportal.util.TextUtils.stripHtml(enContent), 300);
-                newsDAO.upsertTranslation(newId, "en", enTitle, enExcerpt, enContent);
-              } catch (Exception ex) {
-                ex.printStackTrace(); // hoặc dùng logger
-                System.err.println("[TRANSLATE][ERROR] endpoint=" 
-                	     + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
-                	     + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
-                	  ex.printStackTrace();
-              }
+                try {
+                    String enTitle   = translator.translateViToEn(title, false);
+                    String enContent = translator.translateViToEn(content, true);
+                    String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
+                            com.newsportal.util.TextUtils.stripHtml(enContent), 300);
+                    newsDAO.upsertTranslation(newId, "en", enTitle, enExcerpt, enContent);
+                } catch (Exception ex) {
+                    System.err.println("[TRANSLATE][ERROR] endpoint="
+                            + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
+                            + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
+                    ex.printStackTrace();
+                }
             } else {
-            	   System.out.println("[AUTO_TRANSLATE] Skip: missing API key or feature off.");
+                System.out.println("[AUTO_TRANSLATE] Skip: feature off.");
             }
-            
-            
-            
+
+            // Điều hướng: nếu là admin viết thì có thể chuyển thẳng sang list bài viết đã tạo
             resp.sendRedirect(req.getContextPath() + "/reporter/posts?created=" + newId);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+
 
     private void handleEditGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -181,16 +180,24 @@ public class NewsCRUDServlet extends HttpServlet {
         }
 
         try {
-            News n = newsDAO.findByIdAndReporter(Integer.parseInt(idParam), me.getId());
-            if (n == null) { resp.sendError(403, "Không có quyền"); return; }
+            News base = newsDAO.findByIdAndReporter(Integer.parseInt(idParam), me.getId());
+            if (base == null) { resp.sendError(403, "Không có quyền"); return; }
+
+            // thông báo đã có bản nháp chờ duyệt
+            News existingDraft = newsDAO.findPendingDraftOf(base.getId());
+            if (existingDraft != null) {
+                req.setAttribute("draftExists", true);
+                req.setAttribute("draft", existingDraft);
+            }
 
             req.setAttribute("categories", categoryDAO.findAll());
-            req.setAttribute("news", n);
+            req.setAttribute("news", base);
             req.getRequestDispatcher("/WEB-INF/views/reporter/post-edit.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+
 
     private void handleEditPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -202,7 +209,7 @@ public class NewsCRUDServlet extends HttpServlet {
         if (idParam == null || !idParam.matches("\\d+")) {
             resp.sendError(400, "Thiếu/ sai id"); return;
         }
-        int id = Integer.parseInt(idParam);
+        int baseId = Integer.parseInt(idParam);
 
         String title      = req.getParameter("title");
         String content    = req.getParameter("content");
@@ -212,46 +219,56 @@ public class NewsCRUDServlet extends HttpServlet {
         String newImage = saveThumbnailIfAny(req.getPart("thumbnail")); // null nếu không đổi
 
         try {
-            News n = newsDAO.findByIdAndReporter(id, me.getId());
-            if (n == null) { resp.sendError(403, "Không có quyền"); return; }
+            // 1) Lấy bản gốc & kiểm quyền
+            News base = newsDAO.findByIdAndReporter(baseId, me.getId());
+            if (base == null) { resp.sendError(403, "Không có quyền"); return; }
 
-            n.setTitle(title);
-            n.setContent(content);
-            n.setCategoryId(categoryId);
-            n.setHome(home);
-            n.setApproved(false);    // sửa xong quay lại chờ duyệt
-            n.setAuthor(me.getFullname());
-            if (newImage != null) n.setImage(newImage);
-
-            newsDAO.update(n, newImage != null);
             
-            //Làm mới bản dịch sau khi sửa:
+            // chặn tạo nháp mới nếu đã có 1 nháp pending:
+            if (newsDAO.hasPendingDraft(baseId)) {
+		           resp.sendRedirect(req.getContextPath()+"/reporter/posts?draftExists="+baseId);
+		            return;
+		           }
+
+            // 2) Chuẩn bị dữ liệu NHÁP
+            News edited = new News();
+            edited.setTitle(title);
+            edited.setContent(content);
+            edited.setCategoryId(categoryId);
+            edited.setHome(home);
+            edited.setApproved(false);            // nháp chờ duyệt
+            edited.setAuthor(me.getFullname());
+            edited.setReporterId(me.getId());
+            edited.setImage(newImage);            // có thể null -> giữ ảnh cũ
+
+            // 3) Tạo bản nháp (clone) – KHÔNG update bản gốc
+            int draftId = newsDAO.createDraftClone(base, edited, /*keepOldImage*/ true);
+
+            // 4) Dịch tự động cho bản nháp 
             if (AUTO_TRANSLATE) {
-            	  try {
-            	    String enTitle   = translator.translateViToEn(n.getTitle(), false);
-            	    String enContent = translator.translateViToEn(n.getContent(), true);
-            	    String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
-            	        com.newsportal.util.TextUtils.stripHtml(enContent), 300);
-            	    newsDAO.upsertTranslation(n.getId(), "en", enTitle, enExcerpt, enContent);
-            	    
-            	    
-            	    
-            	  } catch (Exception ex) {
-            		  System.err.println("[TRANSLATE][ERROR] endpoint=" 
-            				     + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
-            				     + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
-            				  ex.printStackTrace();
-            	  }
-            	} else {
-            		   System.out.println("[AUTO_TRANSLATE] Skip: missing API key or feature off.");
-            	}
-            
-            
-            resp.sendRedirect(req.getContextPath()+"/reporter/posts?updated="+id);
+                try {
+                    String enTitle   = translator.translateViToEn(edited.getTitle(), false);
+                    String enContent = translator.translateViToEn(edited.getContent(), true);
+                    String enExcerpt = com.newsportal.util.TextUtils.ellipsize(
+                            com.newsportal.util.TextUtils.stripHtml(enContent), 300);
+                    newsDAO.upsertTranslation(draftId, "en", enTitle, enExcerpt, enContent);
+                } catch (Exception ex) {
+                    System.err.println("[TRANSLATE][ERROR] endpoint="
+                            + System.getenv().getOrDefault("LT_ENDPOINT", "https://libretranslate.de/translate")
+                            + ", hasKey=" + (System.getenv("LT_API_KEY") != null));
+                    ex.printStackTrace();
+                }
+            } else {
+                System.out.println("[AUTO_TRANSLATE] Skip: feature off.");
+            }
+
+            // 5) Điều hướng: báo tạo nháp thành công
+            resp.sendRedirect(req.getContextPath()+"/reporter/posts?draftCreated="+draftId+"&baseId="+baseId);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+
 
     private void handleDeletePost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -329,7 +346,9 @@ public class NewsCRUDServlet extends HttpServlet {
     	  if (v == null) return defVal;
     	  return "true".equalsIgnoreCase(v) || "1".equals(v);
     	}
-    	private final boolean AUTO_TRANSLATE = boolPropEnv("AUTO_TRANSLATE", true);
+    
+    
+    private final boolean AUTO_TRANSLATE = boolPropEnv("AUTO_TRANSLATE", true);
 
 
 

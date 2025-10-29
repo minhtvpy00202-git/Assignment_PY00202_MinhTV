@@ -43,10 +43,12 @@ public class NewsletterServlet extends HttpServlet {
                 return;
             }
             if ("/unsubscribe".equals(action)) {
-                dao.unsubscribe(email);
-                redirectWithMsg(resp, back, "sub_msg", "Đã hủy nhận newsletter.");
+                boolean ok = dao.unsubscribe(email);
+                redirectWithMsg(resp, back, "sub_msg",
+                    ok ? "Đã hủy nhận newsletter." : "Email không tồn tại trong hệ thống.");
                 return;
             }
+
 
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         } catch (Exception e) {

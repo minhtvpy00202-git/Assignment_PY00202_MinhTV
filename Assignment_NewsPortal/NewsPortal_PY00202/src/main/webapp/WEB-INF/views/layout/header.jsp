@@ -176,7 +176,6 @@
 
         <!-- Phải: VI/EN + ô tìm kiếm -->
         <div class="nav-actions">
-          <!-- Dùng JS setLang(...) hoặc thay bằng link /lang?l=vi|en nếu bạn đã tạo LanguageServlet -->
           <div class="lang-switch">
             <button type="button"
                     onclick="setLang('vi')"

@@ -36,14 +36,15 @@ public class NewsletterDAO {
     
     
     // Hủy theo dõi nhưng không xóa: chỉ tắt Enabled (bản ghi vẫn còn, IsDelete=0)
-    public void unsubscribe(String email) throws Exception {
-        String sql = "UPDATE Newsletters SET Enabled = 0 WHERE Email = ? AND IsDelete = 0";
-        try (Connection cn = DB.getConnection();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+    public boolean unsubscribe(String email) throws Exception {
+        String sql = "UPDATE Newsletter SET Enabled = 0 WHERE Email = ? AND ISNULL(IsDelete,0)=0";
+        try (var c = DB.getConnection(); var ps = c.prepareStatement(sql)) {
             ps.setString(1, email);
-            ps.executeUpdate();
+            int n = ps.executeUpdate();
+            return n > 0; // true nếu có bản ghi để hủy
         }
     }
+
 
     // Soft delete: IsDelete=1 (ẩn hoàn toàn ở các truy vấn mặc định)
     public void softDelete(String email) throws Exception {
